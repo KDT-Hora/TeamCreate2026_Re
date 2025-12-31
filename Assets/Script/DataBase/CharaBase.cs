@@ -127,11 +127,11 @@ namespace Data
         }
         // ------------------------ デバック表示用 ------------------------
         /// <summary>
-        /// ゲーム画面にステータスを文字で表示する (OnGUI)
+        /// ゲーム画面にステータスを文字で表示する
         /// </summary>
         private void OnGUI()
         {
-            // カメラがない、またはステータスが未設定なら何もしない
+            // カメラがない、ステータスが未設定なら何もしない
             if (Camera.main == null || m_statusCalculated == null) return;
 
             // キャラクターの頭上（Y軸 + 2.0f）をスクリーン座標に変換
@@ -146,19 +146,15 @@ namespace Data
 
             // 表示する情報の作成
             string debugText = $"Name: {GetName()}\n";
-/*                +
-                               $"Lv: {m_level}\n" +
-                               $"HP: {m_statusRuntime.hp} / {m_statusCalculated.maxHp}\n" +
-                               $"ATK: {m_statusRuntime.atk}";*/
 
-            // 文字スタイルの設定（白文字・太字）
+            // 文字スタイルの設定
             GUIStyle style = new GUIStyle();
             style.normal.textColor = Color.white;
             style.fontSize = 14;
             style.fontStyle = FontStyle.Bold;
             style.alignment = TextAnchor.MiddleCenter;
 
-            // 影用のスタイル（黒文字）
+            // 影用のスタイル
             GUIStyle shadowStyle = new GUIStyle(style);
             shadowStyle.normal.textColor = Color.black;
 
@@ -166,7 +162,7 @@ namespace Data
             Rect rect = new Rect(screenPos.x - 100, screenPos.y, 200, 100);
             Rect shadowRect = new Rect(rect.x + 2, rect.y + 2, rect.width, rect.height);
 
-            // 影 → 本体の順で描画して読みやすくする
+            // 影 本体の順で描画して読みやすくする
             GUI.Label(shadowRect, debugText, shadowStyle);
             GUI.Label(rect, debugText, style);
         }
