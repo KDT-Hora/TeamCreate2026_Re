@@ -8,6 +8,8 @@ namespace Protect
             switch (protectId)
             {
                 case 1: return new ProtectCounter();
+                case 2: return new ProtectCounter();
+                case 3: return new ProtectCounter();
             }
     
             return null; // デフォルトなし

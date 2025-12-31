@@ -6,16 +6,14 @@ namespace Data
 {
     public class Enemy : CharaBase
     {
-        GameObject m_obj;
-        public GameObject obj => m_obj;
+//        GameObject m_obj;
+//        public GameObject obj => m_obj;
+//        Transform m_transform;
 
-        Transform m_transform;
-
-        public Enemy(GameObject obj, StatusBase playerStatus, int level) : base(playerStatus, level)
+        public void Initialize(StatusBase enemyStatus, int level)
         {
-            //  オブジェクト引き渡し
-            m_obj = obj;
-            Debug.Log("Enemy生成");
+            base.Initialize(enemyStatus, level);
+            Debug.Log("Enemy初期化");
         }
     }
 }

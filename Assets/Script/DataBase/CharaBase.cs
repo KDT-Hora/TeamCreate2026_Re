@@ -17,7 +17,18 @@ namespace Data
         // Œ»İ‚ÌƒŒƒxƒ‹
         protected int m_level = 1;
         // ------------------------ ‰Šú‰»‚Æ‚© ------------------------
-        public CharaBase(StatusBase data, int level)
+/*        public CharaBase(StatusBase data, int level)
+        {
+            m_statusBase = data;
+            m_level = level;
+
+            m_statusCalculated = new StatusCalculated();
+            m_statusRuntime = new StatusRuntime();
+
+            CalculateStatus();
+            FullRecovery();
+        }*/
+        public void Initialize(StatusBase data, int level)
         {
             m_statusBase = data;
             m_level = level;
@@ -28,7 +39,6 @@ namespace Data
             CalculateStatus();
             FullRecovery();
         }
-
         protected virtual void CalculateStatus()
         {
             if (m_statusBase == null) return;
