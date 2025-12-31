@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Data
 {
-    public class BattleEnemyFactory
+    public class EnemyFactory
     {
         public static Enemy CreateEnemy(int id, int level, GameObject prefab)
         {
@@ -30,7 +30,7 @@ namespace Data
             }
             // Enemyê∂ê¨
             enemyScript.Initialize(chara, level);
-
+            Debug.Log("ìGê∂ê¨");
             return enemyScript;
         }
     }

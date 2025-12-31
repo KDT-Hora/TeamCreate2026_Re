@@ -125,5 +125,50 @@ namespace Data
             m_statusRuntime.hp = m_statusCalculated.maxHp;
             m_statusRuntime.mp = m_statusCalculated.maxMp;
         }
+        // ------------------------ デバック表示用 ------------------------
+        /// <summary>
+        /// ゲーム画面にステータスを文字で表示する (OnGUI)
+        /// </summary>
+        private void OnGUI()
+        {
+            // カメラがない、またはステータスが未設定なら何もしない
+            if (Camera.main == null || m_statusCalculated == null) return;
+
+            // キャラクターの頭上（Y軸 + 2.0f）をスクリーン座標に変換
+            Vector3 worldPos = transform.position + Vector3.up * 2.0f;
+            Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
+
+            // カメラの背後にある場合は描画しない
+            if (screenPos.z <= 0) return;
+
+            // GUI座標系はY軸が上から下なので、座標を反転させる
+            screenPos.y = Screen.height - screenPos.y;
+
+            // 表示する情報の作成
+            string debugText = $"Name: {GetName()}\n";
+/*                +
+                               $"Lv: {m_level}\n" +
+                               $"HP: {m_statusRuntime.hp} / {m_statusCalculated.maxHp}\n" +
+                               $"ATK: {m_statusRuntime.atk}";*/
+
+            // 文字スタイルの設定（白文字・太字）
+            GUIStyle style = new GUIStyle();
+            style.normal.textColor = Color.white;
+            style.fontSize = 14;
+            style.fontStyle = FontStyle.Bold;
+            style.alignment = TextAnchor.MiddleCenter;
+
+            // 影用のスタイル（黒文字）
+            GUIStyle shadowStyle = new GUIStyle(style);
+            shadowStyle.normal.textColor = Color.black;
+
+            // 表示位置の矩形定義
+            Rect rect = new Rect(screenPos.x - 100, screenPos.y, 200, 100);
+            Rect shadowRect = new Rect(rect.x + 2, rect.y + 2, rect.width, rect.height);
+
+            // 影 → 本体の順で描画して読みやすくする
+            GUI.Label(shadowRect, debugText, shadowStyle);
+            GUI.Label(rect, debugText, style);
+        }
     }
 }

@@ -31,7 +31,7 @@ namespace Data
             }
             // Playerê∂ê¨
             playerScript.Initialize(chara, level, protectSystem);
-
+            Debug.Log("ÉvÉåÉCÉÑÅ[ê∂ê¨");
             return playerScript;
         }
     }
