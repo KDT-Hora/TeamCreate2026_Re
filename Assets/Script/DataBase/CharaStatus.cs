@@ -17,17 +17,18 @@ namespace Data
     /// <summary>
     /// ƒLƒƒƒ‰ƒNƒ^[‘S”Ê‚ÌŠî–{ƒXƒe[ƒ^ƒX
     /// ƒŒƒxƒ‹‚P“_‚Å‚ÌŠî‘b’l
-    /// </summary>
+    [System.Serializable]
     public class StatusBase
     {
         public int id;      // ID
         public string name; // –¼‘O
 
+        public int baseHp;      // Šî‘bHP
+        public int baseMp;      // –‚—Í
         public int baseAtk;     // UŒ‚—Í
         public int baseDef;     // –hŒä—Í
         public int baseMatk;    // –‚–@UŒ‚—Í
         public int baseMdef;    // –‚–@–hŒä—Í
-        public int baseMp;      // –‚—Í
         public int baseSpeed;   // ‘¬‚³
 
         public ElementType element; // ‘®«
@@ -37,11 +38,12 @@ namespace Data
     /// </summary>
     public class StatusCalculated
     {
+        public int maxHp;   // Å‘åHP
+        public int maxMp;   // –‚—Í
         public int atk;     // UŒ‚—Í
         public int def;     // –hŒä—Í
         public int matk;    // –‚–@UŒ‚—Í
         public int mdef;    // –‚–@–hŒä—Í
-        public int mp;      // –‚—Í
         public int speed;   // ‘¬‚³
     }
     /// <summary>
@@ -49,11 +51,12 @@ namespace Data
     /// </summary>
     public class StatusRuntime
     {
-        public int atk;
-        public int def;
-        public int matk;
-        public int mdef;
-        public int mp;
-        public int speed;
+        public int hp;      // hp
+        public int mp;      // –‚—Í
+        public int atk;     // UŒ‚—Í
+        public int def;     // –hŒä—Í        
+        public int matk;    // –‚–@UŒ‚—Í        
+        public int mdef;    // –‚–@–hŒä—Í        
+        public int speed;   // ‘¬‚³
     }
 }
