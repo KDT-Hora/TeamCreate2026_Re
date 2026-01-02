@@ -28,6 +28,12 @@ namespace Data
             CalculateStatus();
             FullRecovery();
         }*/
+        // 1/2 デストラクタ忘れていたので追加
+        // ここってpublicなしでいいんやっけ?
+        ~CharaBase()
+        {
+            Debug.Log("[Data.CharaBase] shutdown");    
+        }
         public void Initialize(StatusBase data, int level)
         {
             m_statusBase = data;
