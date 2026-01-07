@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class UnitController : MonoBehaviour
+public class DataUnitController : MonoBehaviour
 {
     public int unitID; // ‚±‚±‚ÉID‚ª“ü‚é
 
