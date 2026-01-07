@@ -1,9 +1,11 @@
 using UnityEngine;
 
-public static class GameData
-{
-    public static int playerCount = 3;
-    public static int enemyCount = 3;
+namespace Data {
+    public static class GameData
+    {
+        public static int playerCount = 3;
+        public static int enemyCount = 3;
+    }
 }
 /*
  * ‚±‚ñ‚ÈŠ´‚¶‚Åg‚¤—\’èH

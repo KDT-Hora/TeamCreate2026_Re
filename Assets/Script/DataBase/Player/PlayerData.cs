@@ -4,9 +4,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// プレイヤー用データリスト
-[CreateAssetMenu(fileName = "PlayerData", menuName = "Scriptable Objects/PlayerData")]
-public class PlayerData : ScriptableObject
-{
-    public List<StatusBase> playerDatas;
+namespace Data {
+    // プレイヤー用データリスト
+    [CreateAssetMenu(fileName = "PlayerData", menuName = "Scriptable Objects/PlayerData")]
+    public class PlayerData : ScriptableObject
+    {
+        public List<StatusBase> playerDatas;
+    }
 }

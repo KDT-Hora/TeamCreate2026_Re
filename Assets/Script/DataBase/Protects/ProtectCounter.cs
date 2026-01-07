@@ -1,6 +1,6 @@
 using Data;
 using UnityEngine;
-namespace Protect
+namespace Data
 {
     // 庇い処理 カウンタークラス
     public class ProtectCounter : ProtectSystem {

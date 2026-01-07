@@ -1,12 +1,14 @@
 using UnityEngine;
 
-public class DataUnitController : MonoBehaviour
-{
-    public int unitID; // ここにIDが入る
-
-    // 確認用: 生成されたらログを出す
-    void Start()
+namespace Data {
+    public class DataUnitController : MonoBehaviour
     {
-        Debug.Log(gameObject.name + " (ID: " + unitID + ") generated");
+        public int unitID; // ここにIDが入る
+    
+        // 確認用: 生成されたらログを出す
+        void Start()
+        {
+            Debug.Log(gameObject.name + " (ID: " + unitID + ") generated");
+        }
     }
 }

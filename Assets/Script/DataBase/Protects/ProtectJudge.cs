@@ -3,7 +3,7 @@ using System;
 using System.Diagnostics;
 using UnityEngine;
 
-namespace Protect
+namespace Data
 {
     // 庇い判定の確認システム
     // ジャッジの判定はGameManager？でする

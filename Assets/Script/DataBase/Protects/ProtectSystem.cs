@@ -1,7 +1,7 @@
 using Data;
 using UnityEngine;
 
-namespace Protect
+namespace Data
 {
     // ”İ‚¢ˆ—‚ÌŠî’êƒNƒ‰ƒX
     public class ProtectSystem {

@@ -1,5 +1,5 @@
 using UnityEngine;
-namespace Protect
+namespace Data
 {
     public static class ProtectSystemFactory
     {

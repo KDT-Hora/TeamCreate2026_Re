@@ -4,9 +4,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-// 敵用データリスト
-[CreateAssetMenu(fileName = "EnemyData", menuName = "Scriptable Objects/EnemyData")]
-public class EnemyData : ScriptableObject
-{
-    public List<StatusBase> enemyDatas;
+namespace Data {
+    // 敵用データリスト
+    [CreateAssetMenu(fileName = "EnemyData", menuName = "Scriptable Objects/EnemyData")]
+    public class EnemyData : ScriptableObject
+    {
+        public List<StatusBase> enemyDatas;
+    }
 }
