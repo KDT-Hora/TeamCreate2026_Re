@@ -83,14 +83,6 @@ namespace Data
             return "Unknown";
         }
         /// <summary>
-        /// ステータスの取得
-        /// </summary>
-        /// <returns></returns>
-        public StatusRuntime GetStatus()
-        {
-            return m_statusRuntime;
-        }
-        /// <summary>
         /// 死亡判定
         /// </summary>
         /// <returns></returns>
