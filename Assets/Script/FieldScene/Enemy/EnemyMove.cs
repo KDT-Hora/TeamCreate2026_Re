@@ -6,7 +6,7 @@ public class EnemyMove : MonoBehaviour
     public float patrolRange = 3f;
 
     // 1ƒtƒŒ[ƒ€‚ ‚½‚è‚ÌˆÚ“®—Ê
-    public float patrolSpeed = 0.05f;
+    public float patrolSpeed = 0.005f;
     public float chaseSpeed = 0.01f;
 
     // ’ÇÕ‹——£
