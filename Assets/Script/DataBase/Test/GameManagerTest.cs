@@ -12,13 +12,23 @@ public class GameManagerTest : MonoBehaviour
     public float teamDistance = 5.0f; // 中心からの距離（X座標）
     void Start()
     {
-        SpawnPlayers();
+        if (PartyManager.Instance != null)
+        {
+            int count = GameData.playerCount;
+            PartyManager.Instance.SetupParty(count, playerPrefab);
+            PartyManager.Instance.SetPartyPosition(Vector3.zero, spacing, teamDistance);
+        }
+        else
+        {
+            Debug.LogError("PartyManagerがシーンにありません！");
+        }
+//        SpawnPlayers();
         SpawnEnemies();
         Debug.Log("生成");
     }
 
     // プレイヤーを複数生成する
-    void SpawnPlayers()
+/*    void SpawnPlayers()
     {
         int count = GameData.playerCount;
         int level = 1;
@@ -43,7 +53,7 @@ public class GameManagerTest : MonoBehaviour
 //                }
             }
         }
-    }
+    }*/
 
     // エネミーを複数生成する
     void SpawnEnemies()
