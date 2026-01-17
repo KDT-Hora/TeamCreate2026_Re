@@ -31,7 +31,7 @@ namespace Data
             }
             // Player生成
             playerScript.Initialize(chara, level, protectSystem);
-            Debug.Log("プレイヤー生成");
+            Debug.Log($"プレイヤー生成 ID: {id}");
             return playerScript;
         }
     }

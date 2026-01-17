@@ -10,6 +10,8 @@ public class PartyManager : MonoBehaviour
     // パーティーリスト
     public List<Player> partyMembers = new List<Player>();
 
+    public GameObject testPlayerPrefab;
+
     private void Awake()
     {
         if (Instance == null)
@@ -22,6 +24,16 @@ public class PartyManager : MonoBehaviour
         {
             // すでに存在する場合は新しい方削除して守るンゴ
             Destroy(gameObject);
+        }
+    }
+
+    void Start()
+    {
+        // メンバーがまだいなくて、プレハブがセットされていたら生成テストを行う
+        if (partyMembers.Count == 0 && testPlayerPrefab != null)
+        {
+            // 3人生成してみる
+            SetupParty(3, testPlayerPrefab);
         }
     }
 

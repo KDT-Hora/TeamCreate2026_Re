@@ -22,7 +22,15 @@ public class GameManagerTest : MonoBehaviour
         {
             Debug.LogError("PartyManagerがシーンにありません！");
         }
-//        SpawnPlayers();
+        if (PartyManager.Instance != null)
+        {
+            foreach (var player in PartyManager.Instance.partyMembers)
+            {
+                Debug.Log($"バトル開始時の {player.name} のHP: {player.GetStatusRuntime().hp}");
+            }
+        }
+
+        // SpawnPlayers();
         SpawnEnemies();
         Debug.Log("生成");
     }
