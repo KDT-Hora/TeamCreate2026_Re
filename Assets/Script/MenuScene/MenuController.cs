@@ -2,15 +2,22 @@ using UnityEngine;
 
 public class MenuController : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+    public GameObject menuBackground;
+    public GameObject menuWindow;
+
+    public void ToggleMenu()
     {
-        
+        if (menuWindow.activeSelf)
+        {
+            menuWindow.SetActive(false);
+            menuBackground.SetActive(false);
+        }
+        else
+        {
+            menuBackground.SetActive(true);
+            menuWindow.SetActive(false);
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
