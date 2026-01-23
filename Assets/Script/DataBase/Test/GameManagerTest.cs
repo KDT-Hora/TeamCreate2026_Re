@@ -7,12 +7,12 @@ public class GameManagerTest : MonoBehaviour
     // バトル配置の管理
 //    public BattleFormation battleFormation;
 
-    [Header("設定")]
+/*    [Header("設定")]
     public GameObject playerPrefab;
     public GameObject enemyPrefab;
     [Header("配置設定")]
     public float spacing = 2.0f;      // 隣との間隔
-    public float teamDistance = 5.0f; // 中心からの距離（X座標）
+    public float teamDistance = 5.0f; // 中心からの距離（X座標）*/
     void Start()
     {
 /*        if (battleFormation != null)
@@ -26,26 +26,36 @@ public class GameManagerTest : MonoBehaviour
 
         if (DataManager.Instance != null)
         {
-            int count = GameData.playerCount;
-            DataManager.Instance.SetupParty(count, playerPrefab);
-            DataManager.Instance.SetPartyPosition(Vector3.zero, spacing, teamDistance);
+            int id = DataManager.Instance.nextEnemyID;
+            int lv = DataManager.Instance.nextEnemyLevel;
+
+            DataManager.Instance.StartBattle(id, lv);
+            /*            int count = GameData.playerCount;
+                        DataManager.Instance.SetupParty(count, playerPrefab);
+                        DataManager.Instance.SetPartyPosition(Vector3.zero, spacing, teamDistance);*/
+            //DataManager.Instance.StartBattle(0,2);
+            foreach (var player in DataManager.Instance.currentParty.members)
+            {
+                string status = player.IsDead() ? "[死亡]" : "[生存]";
+                Debug.Log($"パーティ情報: {player.name} HP:{player.GetStatusRuntime().hp} {status}");
+            }
         }
         else
         {
-            Debug.LogError("PartyManagerがシーンにありません！");
+            Debug.LogError("PartyManagerがシーンにない");
         }
 
-        if (DataManager.Instance != null)
+/*        if (DataManager.Instance != null)
         {
             foreach (var player in DataManager.Instance.currentParty.members)
             {
                 string status = player.IsDead() ? "[死亡]" : "[生存]";
                 Debug.Log($"バトル開始: {player.name} HP:{player.GetStatusRuntime().hp} {status}");
             }
-        }
+        }*/
 
         // SpawnPlayers();
-        SpawnEnemies();
+        // SpawnEnemies();
         Debug.Log("生成");
     }
 
@@ -78,7 +88,7 @@ public class GameManagerTest : MonoBehaviour
     }*/
 
     // エネミーを複数生成する
-    void SpawnEnemies()
+   /* void SpawnEnemies()
     {
         int count = GameData.enemyCount;
         int level = 1;
@@ -102,5 +112,5 @@ public class GameManagerTest : MonoBehaviour
 //                }
             }
         }
-    }
+    }*/
 }
