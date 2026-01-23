@@ -92,7 +92,7 @@ public class EnemyMove : MonoBehaviour
     // ===== 当たり判定 =====
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Playe"))
+        if (collision.gameObject.CompareTag("Player"))
         {
             Debug.Log("プレイヤーに当たった → 敵を初期位置へ戻す");
             ResetEnemy();

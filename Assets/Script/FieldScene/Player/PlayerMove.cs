@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMove : MonoBehaviour
@@ -6,9 +7,15 @@ public class PlayerMove : MonoBehaviour
 
     private Rigidbody rb;
 
+   Animator m_anim;
+
+    string next_anim;
+    string now_anim;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+       m_anim = GetComponentInChildren<Animator>();
     }
 
     void FixedUpdate()
@@ -17,10 +24,30 @@ public class PlayerMove : MonoBehaviour
         float x = 0f;
         float z = 0f;
 
-        if (Input.GetKey(KeyCode.A)) x -= 1f; // 左
-        if (Input.GetKey(KeyCode.D)) x += 1f; // 右
-        if (Input.GetKey(KeyCode.W)) z += 1f; // 前
-        if (Input.GetKey(KeyCode.S)) z -= 1f; // 後
+        if (Input.GetKey(KeyCode.A)) {
+            x -= 1f; // 左
+            next_anim = "LeftRun";
+        }
+        if (Input.GetKey(KeyCode.D)){
+            x += 1f; // 右
+            next_anim = "RightRun";
+        }
+        if (Input.GetKey(KeyCode.W)){
+            z += 1f; // 前
+            next_anim = "UpRun";
+        }
+        if (Input.GetKey(KeyCode.S)){
+            z -= 1f; // 後
+            next_anim = "DownRun";
+        }
+
+        if(next_anim != now_anim)
+        {
+            now_anim = next_anim;
+            m_anim.CrossFade(now_anim, 0.1f,0);
+            next_anim ="Idle";
+        }
+        
 
         // 斜め移動の速度調整
         Vector3 direction = new Vector3(x, 0f, z).normalized;
