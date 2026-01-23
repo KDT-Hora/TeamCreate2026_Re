@@ -26,7 +26,6 @@ public class DataManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    // ★追加: テスト用に自動生成する機能（これがないとHierarchyで矢印が出ません）
     void Start()
     {
         if (currentParty.members.Count == 0 && testPlayerPrefab != null)
@@ -68,18 +67,17 @@ public class DataManager : MonoBehaviour
         {
             if (p.IsDead())
             {
-                // 死んでるキャラは非表示にして、配置リストに入れない
+                // 死んでるキャラは非表示
                 p.gameObject.SetActive(false);
             }
             else
             {
-                // 生きてるキャラは表示する
+                // 生きてるキャラは表示
                 p.gameObject.SetActive(true);
                 aliveMembers.Add(p);
             }
         }
 
-        // ここから下は「aliveMembers（生きてる人）」だけで配置計算
         int count = aliveMembers.Count;
         float startZ = -((count - 1) * spacing) / 2.0f;
 
@@ -93,7 +91,7 @@ public class DataManager : MonoBehaviour
         }
     }
 
-    // ★追加: 全滅判定（フィールドなどで使う用）
+    // 全滅判定（フィールドなどで使う用）
     public bool IsAllDead()
     {
         foreach (var member in currentParty.members)
