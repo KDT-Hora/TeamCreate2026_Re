@@ -20,9 +20,9 @@ public class FieldTest : MonoBehaviour
         // テスト用でダメージ与える
         if (Input.GetKeyDown(KeyCode.D))
         {
-            if(DataManager.Instance != null && DataManager.Instance.partyMembers.Count > 0)
+            if(DataManager.Instance != null && DataManager.Instance.currentParty.members.Count > 0)
             {
-                Player leader = DataManager.Instance.partyMembers[0];
+                Player leader = DataManager.Instance.currentParty.members[0];
                 Debug.Log($"減少前HP {leader.GetStatusRuntime().hp}");
                 leader.TakeDamage(10);
                 Debug.Log($"減少後HP {leader.GetStatusRuntime().hp}");

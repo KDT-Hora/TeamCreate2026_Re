@@ -37,7 +37,7 @@ public class GameManagerTest : MonoBehaviour
 
         if (DataManager.Instance != null)
         {
-            foreach (var player in DataManager.Instance.partyMembers)
+            foreach (var player in DataManager.Instance.currentParty.members)
             {
                 string status = player.IsDead() ? "[死亡]" : "[生存]";
                 Debug.Log($"バトル開始: {player.name} HP:{player.GetStatusRuntime().hp} {status}");
