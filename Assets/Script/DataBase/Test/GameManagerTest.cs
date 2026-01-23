@@ -4,6 +4,9 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class GameManagerTest : MonoBehaviour
 {
+    // バトル配置の管理
+//    public BattleFormation battleFormation;
+
     [Header("設定")]
     public GameObject playerPrefab;
     public GameObject enemyPrefab;
@@ -12,6 +15,15 @@ public class GameManagerTest : MonoBehaviour
     public float teamDistance = 5.0f; // 中心からの距離（X座標）
     void Start()
     {
+/*        if (battleFormation != null)
+        {
+            battleFormation.ArrangeParty();
+        }
+        else
+        {
+            Debug.LogError("BattleFormation がセットされていません！Inspectorを確認してください。");
+        }*/
+
         if (DataManager.Instance != null)
         {
             int count = GameData.playerCount;
@@ -22,11 +34,13 @@ public class GameManagerTest : MonoBehaviour
         {
             Debug.LogError("PartyManagerがシーンにありません！");
         }
+
         if (DataManager.Instance != null)
         {
             foreach (var player in DataManager.Instance.partyMembers)
             {
-                Debug.Log($"バトル開始時の {player.name} のHP: {player.GetStatusRuntime().hp}");
+                string status = player.IsDead() ? "[死亡]" : "[生存]";
+                Debug.Log($"バトル開始: {player.name} HP:{player.GetStatusRuntime().hp} {status}");
             }
         }
 
