@@ -7,8 +7,6 @@ using UnityEngine;
 public class DataManager : MonoBehaviour
 {
     public static DataManager Instance { get; private set; }
-    
-    public PartyData partyData { get; private set; }
 
     private void Awake()
     {
@@ -21,8 +19,6 @@ public class DataManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        // パーティーデータ初期化
-        partyData = new PartyData();
     }
 
     private void Start()
