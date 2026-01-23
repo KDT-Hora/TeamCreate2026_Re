@@ -12,19 +12,19 @@ public class GameManagerTest : MonoBehaviour
     public float teamDistance = 5.0f; // 中心からの距離（X座標）
     void Start()
     {
-        if (PartyManager.Instance != null)
+        if (DataManager.Instance != null)
         {
             int count = GameData.playerCount;
-            PartyManager.Instance.SetupParty(count, playerPrefab);
-            PartyManager.Instance.SetPartyPosition(Vector3.zero, spacing, teamDistance);
+            DataManager.Instance.SetupParty(count, playerPrefab);
+            DataManager.Instance.SetPartyPosition(Vector3.zero, spacing, teamDistance);
         }
         else
         {
             Debug.LogError("PartyManagerがシーンにありません！");
         }
-        if (PartyManager.Instance != null)
+        if (DataManager.Instance != null)
         {
-            foreach (var player in PartyManager.Instance.partyMembers)
+            foreach (var player in DataManager.Instance.partyMembers)
             {
                 Debug.Log($"バトル開始時の {player.name} のHP: {player.GetStatusRuntime().hp}");
             }
