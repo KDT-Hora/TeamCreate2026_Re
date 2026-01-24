@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: EnemyData
   m_EditorClassIdentifier: 
   enemyDatas:
-  - id: 0
-    name: enemy1
+  - id: 1
+    name: enemy2
     baseHp: 10
     baseMp: 10
     baseAtk: 10
@@ -23,8 +23,8 @@ MonoBehaviour:
     baseMdef: 10
     baseSpeed: 10
     element: 0
-  - id: 1
-    name: enemy2
+  - id: 2
+    name: enemy3
     baseHp: 10
     baseMp: 10
     baseAtk: 10
