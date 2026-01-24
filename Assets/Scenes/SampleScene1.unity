@@ -148,9 +148,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23a0f9618c5bc204296ee3ccaba0de30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spacing: 2
-  teamDistance: 5
-  height: 1
 --- !u!4 &421853
 Transform:
   m_ObjectHideFlags: 0
@@ -195,6 +192,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6077f5363247891499682b77a7660fc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  encounterEnemyID: 0
+  encounterEnemyLevel: 5
 --- !u!4 &144734486
 Transform:
   m_ObjectHideFlags: 0
@@ -404,8 +403,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85ad6ac38e0125440b2a1e2b11377535, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 2385991288831861150, guid: d7fb45787718aac48abac97a7222d32d, type: 3}
-  initialMemberCount: 3
 --- !u!4 &1417200118
 Transform:
   m_ObjectHideFlags: 0
@@ -559,6 +556,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentParty:
     members: []
+  PlayerPrefab: {fileID: 2385991288831861150, guid: d7fb45787718aac48abac97a7222d32d, type: 3}
+  EnemyPrefab: {fileID: 9202568357546063932, guid: 4238d82b6dad44e4281d485bf7263ee9, type: 3}
+  spacing: 2
+  teamDistance: 5
+  height: 1
+  nextEnemyID: 0
+  nextEnemyLevel: 1
+  bossIDs: 0200000004000000
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
