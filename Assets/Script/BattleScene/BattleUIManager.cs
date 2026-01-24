@@ -65,6 +65,9 @@ public class BattleUIManager : MonoBehaviour
 
         // 基本コマンド + キャラの持つスキル（今回はCommonSkills + キャラの個別スキル等を統合する想定）
         List<SkillData> skillsToShow = new List<SkillData>(battleManager.commonSkills);
+        // キャラ固有スキル追加（例）
+    //    skillsToShow.AddRange(unit.personalSkills);
+
 
         foreach (var skill in skillsToShow)
         {
@@ -120,14 +123,5 @@ public class BattleUIManager : MonoBehaviour
         resultText.color = isWin ? Color.yellow : Color.red;
     }
 }
-
-/*
-
-お気持ち表明
-
-自分が考えたものでもないのに、仕様固まってないものを作れるわけないでしょーが
-心が苦しい
-
-*/
 
 
