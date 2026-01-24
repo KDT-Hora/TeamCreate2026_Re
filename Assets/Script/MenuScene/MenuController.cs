@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class MenuController : MonoBehaviour
 {
@@ -10,12 +11,11 @@ public class MenuController : MonoBehaviour
 
     void Start()
     {
-        Button button;
+        
 
         {
-            button = GetComponent<Button>();
             image=GetComponent<Image>();
-            
+            defoSprite=image.sprite;
         }
     }
 
@@ -26,15 +26,17 @@ public class MenuController : MonoBehaviour
 
     private void Update()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, 10.0f))
+        var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        var hit = Physics2D.Raycast(ray.origin, ray.direction);
+
+        if (hit.collider)
         {
-            Debug.Log(hit.point);
+            image.sprite=nextSprite;
         }
         else
         {
-            image.sprite=defoSprite;
+            image.sprite=nextSprite;
         }
+
     }
 }
