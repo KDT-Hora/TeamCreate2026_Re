@@ -9,7 +9,7 @@ public class TitleButton : MonoBehaviour
     void Update()
     {
         // スペースキーを押したらバトルシーンへ移動
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.anyKeyDown)
         {
             FadeManager.FadeChangeScene("FieldScene", 1.0f);
         }
