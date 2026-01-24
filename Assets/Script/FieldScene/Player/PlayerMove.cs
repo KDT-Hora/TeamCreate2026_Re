@@ -46,6 +46,7 @@ public class PlayerMove : MonoBehaviour
         {
             now_anim = next_anim;
             m_anim.CrossFade(now_anim, 0.1f,0);
+            m_anim.Update(0);
             next_anim ="Idle";
         }
         
