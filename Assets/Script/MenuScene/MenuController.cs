@@ -1,23 +1,40 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MenuController : MonoBehaviour
 {
+    public Sprite defoSprite;
+    public Sprite nextSprite;
+    public RectTransform targetImageRect;
+    private Image image;
 
-    public GameObject menuBackground;
-    public GameObject menuWindow;
-
-    public void ToggleMenu()
+    void Start()
     {
-        if (menuWindow.activeSelf)
+        Button button;
+
         {
-            menuWindow.SetActive(false);
-            menuBackground.SetActive(false);
-        }
-        else
-        {
-            menuBackground.SetActive(true);
-            menuWindow.SetActive(false);
+            button = GetComponent<Button>();
+            image=GetComponent<Image>();
+            
         }
     }
 
+    public void OnClick()
+    {
+
+    }
+
+    private void Update()
+    {
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, 10.0f))
+        {
+            Debug.Log(hit.point);
+        }
+        else
+        {
+            image.sprite=defoSprite;
+        }
+    }
 }
