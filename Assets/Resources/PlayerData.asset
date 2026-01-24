@@ -14,32 +14,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerDatas:
   - id: 0
-    name: player1
-    baseHp: 10
-    baseMp: 10
-    baseAtk: 10
-    baseDef: 10
-    baseMatk: 10
-    baseMdef: 10
-    baseSpeed: 10
+    name: main
+    baseHp: 500
+    baseMp: 100
+    baseAtk: 120
+    baseDef: 50
+    baseMatk: 100
+    baseMdef: 50
+    baseSpeed: 65
     element: 0
   - id: 1
-    name: player2
-    baseHp: 10
-    baseMp: 10
-    baseAtk: 10
-    baseDef: 10
-    baseMatk: 10
+    name: heroine
+    baseHp: 500
+    baseMp: 200
+    baseAtk: 100
+    baseDef: 70
+    baseMatk: 90
     baseMdef: 10
-    baseSpeed: 10
-    element: 0
+    baseSpeed: 55
+    element: 1
   - id: 2
-    name: player3
-    baseHp: 10
-    baseMp: 10
-    baseAtk: 10
-    baseDef: 10
-    baseMatk: 10
-    baseMdef: 10
-    baseSpeed: 10
-    element: 0
+    name: fellow
+    baseHp: 500
+    baseMp: 300
+    baseAtk: 90
+    baseDef: 40
+    baseMatk: 130
+    baseMdef: 90
+    baseSpeed: 45
+    element: 2

@@ -29,6 +29,7 @@ namespace Data
         public int baseDef;     // –hŒä—Í
         public int baseMatk;    // –‚–@UŒ‚—Í
         public int baseMdef;    // –‚–@–hŒä—Í
+        public int baseSpeed;   // ‘¬“x
 
         public ElementType element; // ‘®«
     }
@@ -43,6 +44,7 @@ namespace Data
         public int def;     // –hŒä—Í
         public int matk;    // –‚–@UŒ‚—Í
         public int mdef;    // –‚–@–hŒä—Í
+        public int speed;   // ‘¬“x
     }
     /// <summary>
     /// ’l‚ğ•Ï‰»‚³‚¹‚é—p‚ÌƒXƒe[ƒ^ƒX
@@ -54,6 +56,7 @@ namespace Data
         public int atk;     // UŒ‚—Í
         public int def;     // –hŒä—Í        
         public int matk;    // –‚–@UŒ‚—Í        
-        public int mdef;    // –‚–@–hŒä—Í        
+        public int mdef;    // –‚–@–hŒä—Í
+        public int speed;   // ‘¬“x
     }
 }
