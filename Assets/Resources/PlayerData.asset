@@ -34,7 +34,7 @@ MonoBehaviour:
     baseSpeed: 10
     element: 0
   - id: 2
-    name: player2
+    name: player3
     baseHp: 10
     baseMp: 10
     baseAtk: 10

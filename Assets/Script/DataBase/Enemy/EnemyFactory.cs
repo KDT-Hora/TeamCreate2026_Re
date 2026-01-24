@@ -30,7 +30,7 @@ namespace Data
             }
             // Enemyê∂ê¨
             enemyScript.Initialize(chara, level);
-            Debug.Log("ìGê∂ê¨");
+            Debug.Log($"ìGê∂ê¨ID: {id}");
             return enemyScript;
         }
     }
