@@ -16,12 +16,41 @@ public class PlayerMove : MonoBehaviour
     void Start()
     {
         SoundManager.Instance.PlayBGM("BGM_Field");
-        rb = GetComponent<Rigidbody>();
-       m_anim = GetComponentInChildren<Animator>();
+        //rb = GetComponent<Rigidbody>();
+       //m_anim = GetComponentInChildren<Animator>();
     }
+
+    void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+        if (rb == null)
+        {
+            rb = GetComponentInChildren<Rigidbody>();
+        }
+        if (rb == null)
+        {
+            rb = GetComponentInParent<Rigidbody>();
+        }
+        if (rb == null)
+        {
+            Debug.LogError("Rigidbody が見つかりません");
+        }
+
+        m_anim = GetComponentInChildren<Animator>();
+        if (m_anim == null)
+        {
+            Debug.LogWarning("Animator が見つかりません");
+        }
+    }
+
 
     void FixedUpdate()
     {
+        if (rb == null)
+        {
+            return;
+        }
+
         // ===== キーボード入力処理 =====
         float x = 0f;
         float z = 0f;
@@ -46,9 +75,12 @@ public class PlayerMove : MonoBehaviour
         if(next_anim != now_anim)
         {
             now_anim = next_anim;
-            m_anim.CrossFade(now_anim, 0.1f,0);
-            m_anim.Update(0);
-            next_anim ="Idle";
+            if (m_anim != null)
+            {
+                m_anim.CrossFade(now_anim, 0.1f, 0);
+                m_anim.Update(0);
+            }
+            next_anim = "Idle";
         }
         
 
