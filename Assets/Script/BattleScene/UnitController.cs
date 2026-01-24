@@ -53,6 +53,7 @@ public class UnitController : MonoBehaviour
         // UI‰Šú‰»
         if (nameText) nameText.text = unitName;
         UpdateHPBar();
+        AddHate(0);
         if (hpFillImage) hpFillImage.color = new Color(0.2f, 1f, 0.2f); // –¾‚é‚¢—Î
     }
 
