@@ -95,7 +95,7 @@ public class EnemyMove : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             Debug.Log("プレイヤーに当たった → 敵を初期位置へ戻す");
-            ResetEnemy();
+            //ResetEnemy();
         }
     }
 

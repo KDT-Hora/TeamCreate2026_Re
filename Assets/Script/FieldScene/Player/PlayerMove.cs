@@ -1,3 +1,4 @@
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -67,6 +68,7 @@ public class PlayerMove : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy"))
         {
             Debug.Log("敵に当たった！");
+            FadeManager.FadeChangeScene("BattleScene", 1.0f);
         }
     }
 }
