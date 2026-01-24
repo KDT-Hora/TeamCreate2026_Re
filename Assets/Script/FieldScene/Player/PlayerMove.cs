@@ -50,49 +50,36 @@ public class PlayerMove : MonoBehaviour
         {
             return;
         }
-
-        // ===== キーボード入力処理 =====
+        // キーボード入力
         float x = 0f;
         float z = 0f;
+        bool moving = false;
 
-        if (Input.GetKey(KeyCode.A)) {
-            x -= 1f; // 左
-            next_anim = "LeftRun";
-        }
-        if (Input.GetKey(KeyCode.D)){
-            x += 1f; // 右
-            next_anim = "RightRun";
-        }
-        if (Input.GetKey(KeyCode.W)){
-            z += 1f; // 前
-            next_anim = "UpRun";
-        }
-        if (Input.GetKey(KeyCode.S)){
-            z -= 1f; // 後
-            next_anim = "DownRun";
-        }
+        if (Input.GetKey(KeyCode.A)) { x -= 1f; next_anim = "LeftRun"; moving = true; }
+        if (Input.GetKey(KeyCode.D)) { x += 1f; next_anim = "RightRun"; moving = true; }
+        if (Input.GetKey(KeyCode.W)) { z += 1f; next_anim = "UpRun"; moving = true; }
+        if (Input.GetKey(KeyCode.S)) { z -= 1f; next_anim = "DownRun"; moving = true; }
 
-        if(next_anim != now_anim)
+        if (!moving)
         {
-            now_anim = next_anim;
-            if (m_anim != null)
-            {
-                m_anim.CrossFade(now_anim, 0.1f, 0);
-                m_anim.Update(0);
-            }
-            next_anim = "Idle";
+            next_anim = "Idle"; // 動いていなければ必ずIdleに
         }
-        
 
-        // 斜め移動の速度調整
-        Vector3 direction = new Vector3(x, 0f, z).normalized;
+        // Animatorに反映
+        bool running = moving;
+        if (m_anim != null)
+        {
+            m_anim.SetBool("isRunning", running);
+            if (next_anim != now_anim)
+            {
+                now_anim = next_anim;
+                m_anim.CrossFade(now_anim, 0.1f, 0);
+            }
+        }
 
-        // ===== 移動処理 =====
-        rb.linearVelocity = new Vector3(
-            direction.x * speed,
-            rb.linearVelocity.y,   // 重力処理は採用しない
-            direction.z * speed
-        );
+        // 移動処理
+        Vector3 movement = new Vector3(x, 0f, z).normalized * speed * Time.fixedDeltaTime;
+        rb.MovePosition(rb.position + movement);
     }
 
     // ===== 敵との当たり判定 =====
