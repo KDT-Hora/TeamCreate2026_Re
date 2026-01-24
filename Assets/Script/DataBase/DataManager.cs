@@ -210,4 +210,10 @@ public class DataManager : MonoBehaviour
         }
         return true;
     }
+
+    // ‰Šú‰»
+    public void ResetData()
+    {
+        currentParty = new PartyData();
+    }
 }
