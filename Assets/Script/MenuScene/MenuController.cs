@@ -1,23 +1,42 @@
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class MenuController : MonoBehaviour
 {
+    public Sprite defoSprite;
+    public Sprite nextSprite;
+    public RectTransform targetImageRect;
+    private Image image;
 
-    public GameObject menuBackground;
-    public GameObject menuWindow;
-
-    public void ToggleMenu()
+    void Start()
     {
-        if (menuWindow.activeSelf)
+        
+
         {
-            menuWindow.SetActive(false);
-            menuBackground.SetActive(false);
-        }
-        else
-        {
-            menuBackground.SetActive(true);
-            menuWindow.SetActive(false);
+            image=GetComponent<Image>();
+            defoSprite=image.sprite;
         }
     }
 
+    public void OnClick()
+    {
+
+    }
+
+    private void Update()
+    {
+        var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        var hit = Physics2D.Raycast(ray.origin, ray.direction);
+
+        if (hit.collider)
+        {
+            image.sprite=nextSprite;
+        }
+        else
+        {
+            image.sprite=nextSprite;
+        }
+
+    }
 }

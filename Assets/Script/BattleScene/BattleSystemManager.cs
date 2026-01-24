@@ -241,6 +241,7 @@ public class BattleSystemManager : MonoBehaviour
                 if (coverUnit != null)
                 {
                     // 庇う発動
+                    //  ターゲット変更しか発動していないので、特有処理を入れてない
                     Debug.Log(coverUnit.unitName + "が庇った！");
                     action.target = coverUnit;
                     coverUnit.hasCoveredThisTurn = true; // 1回のみ
