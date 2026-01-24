@@ -9,7 +9,14 @@ public class BattleUIManager : MonoBehaviour
     public GameObject rootMenuPanel;    // 「戦う」「逃げる」
     public GameObject actionMenuPanel;  // コマンド一覧
     public GameObject targetMenuPanel;  // 対象一覧
-    public GameObject resultPanel;
+    public GameObject resultPanel;      //  リザルト
+
+    [Header("UI")]
+    public GameObject PlayerUIBox;       //  プレイヤーUI群 
+    public GameObject EnemyUIBox;        //  敵UI群
+    public GameObject PlayerUI;     //  プレイヤーUI
+    public GameObject EnemyUI;      //  敵UI
+   
 
     [Header("Buttons & Text")]
     public Button fightButton;
