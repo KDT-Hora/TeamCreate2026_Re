@@ -1,4 +1,4 @@
-using Data;
+/*using Data;
 using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
@@ -22,4 +22,4 @@ public class CharaDatas
     public int baseSpeed;   // ‘¬‚³
 
     public ElementType element; // ‘®«
-}
+}*/

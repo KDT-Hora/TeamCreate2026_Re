@@ -6,6 +6,13 @@ using UnityEngine.SceneManagement; // ‚±‚ê‚ª•K—v
 
 public class TitleButton : MonoBehaviour
 {
+    void Start()
+    {
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayBGM("BGM_Title");
+        }
+    }
 
     void Update()
     {
@@ -14,9 +21,5 @@ public class TitleButton : MonoBehaviour
         {
             FadeManager.FadeChangeScene("SelectScene", 1.0f);
         }
-    }
-
-    void Start()
-    {
     }
 }
