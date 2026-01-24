@@ -260,6 +260,10 @@ public class BattleSystemManager : MonoBehaviour
         {
             StartPlayerTurn(); // 最初に戻る
         }
+        else // 戦闘終了
+        {
+            System.FadeManager.FadeChangeScene("FieldScene", 1.0f);
+        }
     }
 
     // リターゲットロジック（リストの次、最後なら最初）
@@ -330,7 +334,6 @@ public class BattleSystemManager : MonoBehaviour
     {
         bool allPlayersDead = players.All(p => p.isDead);
         bool allEnemiesDead = enemies.All(e => e.isDead);
-
         if (allEnemiesDead)
         {
             state = BattleState.Win;

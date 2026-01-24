@@ -112,6 +112,11 @@ namespace System {
                 Debug.Log("[Class:FadeManager] Failed to get instance");
                 return;
             }
+            if (Instance.GetFadeState())
+            {
+                // フェード中は処理しない
+                return;
+            }
             Debug.Log("[Class:FadeManager] Fade ChangeScene");
             //Instance.StartCoroutine(Instance.FadeChangeSceneCoroutine(sceneName, fadeTime));
             Instance.StartFadeCoroutine(Instance.FadeChangeSceneCoroutine(a_sceneName, a_fadeTime));
