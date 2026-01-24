@@ -15,6 +15,7 @@ public class PlayerMove : MonoBehaviour
 
     void Start()
     {
+        SoundManager.Instance.PlayBGM("BGM_Field");
         rb = GetComponent<Rigidbody>();
        m_anim = GetComponentInChildren<Animator>();
     }
@@ -69,6 +70,8 @@ public class PlayerMove : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy"))
         {
             Debug.Log("敵に当たった！");
+            SoundManager.Instance.PlaySE("SE_Enemy_Hit");
+            SoundManager.Instance.PlayBGM("BGM_Battle");
             FadeManager.FadeChangeScene("BattleScene", 1.0f);
         }
     }
