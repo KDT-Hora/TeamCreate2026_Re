@@ -21,7 +21,7 @@ public class DataManager : MonoBehaviour
     public int nextEnemyID = 0;
     public int nextEnemyLevel = 1;
     [Header("É{ÉXÇÃIDê›íË")]
-    public int bossID = 5;
+    public List<int> bossIDs;
 
     private void Awake()
     {
@@ -138,7 +138,7 @@ public class DataManager : MonoBehaviour
             enemiesToSpawn.Add(mainEnemy);
         }
 
-        bool isBoss = (targetID == bossID);
+        bool isBoss = bossIDs.Contains(targetID);
 
         if (!isBoss)
         {
