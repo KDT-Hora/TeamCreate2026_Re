@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class CharaButton : MonoBehaviour
+public class CancelButton : MonoBehaviour
 {
     [SerializeField] private GameObject back;
     [SerializeField] private GameObject book;
@@ -20,18 +20,19 @@ public class CharaButton : MonoBehaviour
 
     public void OnClickBack()
     {
-        back.SetActive(false);
-        book.SetActive(true);
-        text.SetActive(true);
-        button1.SetActive(false);
-        button2.SetActive(false);
-        button3.SetActive(false);
-        button4.SetActive(false);
-        button5.SetActive(true);
+        back.SetActive(true);
+        book.SetActive(false);
+        text.SetActive(false);
+        button1.SetActive(true);
+        button2.SetActive(true);
+        button3.SetActive(true);
+        button4.SetActive(true);
+        button5.SetActive(false);
     }
 
+    // Update is called once per frame
     void Update()
     {
-
+        
     }
 }
