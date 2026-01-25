@@ -6,13 +6,10 @@ using UnityEngine.SceneManagement; // これが必要
 
 public class FieldButton : MonoBehaviour
 {
-    void Update()
+    public void ClickToMenu()
     {
-        // スペースキーを押したらバトルシーンへ移動
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            FadeManager.FadeChangeScene("MenuScene", 1.0f);
-        }
+        SoundManager.Instance.PlaySE("SE_Confirm");
+        FadeManager.FadeChangeScene("MenuScene", 1.0f);
     }
 
     void Start()
