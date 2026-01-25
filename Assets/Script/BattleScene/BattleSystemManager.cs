@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Mono.Cecil.Cil;
 
 public enum BattleState { Start, PlayerMenu, ActionSelect, TargetSelect, EnemyPhase, ExecutePhase, Win, Lose }
 
@@ -28,22 +29,44 @@ public class BattleSystemManager : MonoBehaviour
 
     void Start()
     {
+        //  デバッグ用の初期化
+        DebugInit();
+
+
         state = BattleState.Start;
-        StartCoroutine(SetupBattle());
+        //  キャラクターステータス設定
         CharactorStateSet();
+        //  敵の生成
+        EnemyCreate();
+        StartCoroutine(SetupBattle());
+    }
+
+    void DebugInit()
+    {
+        //　データマネージャーの初期化
+        DataManager.Instance.SetupParty(3, DataManager.Instance.PlayerPrefab);
+
     }
 
     //  キャラクターのステータス設定
     void CharactorStateSet()
     {
-        //  プレイヤーのステータス初期化
+        var plaerDataList = DataManager.Instance.currentParty.members;
+        for (int i = 0; i < players.Count; i++)
+        {
+            var playerConstData = plaerDataList[i].GetStatusCalculated().maxHp;
+            var playerData = plaerDataList[i].GetStatusRuntime();
+            players[i].UnitInit(playerConstData,playerData);
 
+        }
 
+    }
+
+    void EnemyCreate()
+    {
+        //  敵の生成
 
         //  敵のステータス初期化
-
-
-
     }
 
     IEnumerator SetupBattle()

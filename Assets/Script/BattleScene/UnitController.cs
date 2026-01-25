@@ -25,6 +25,11 @@ public class UnitController : MonoBehaviour
     public Slider hateSlider;
     public Image hateFillImage;           // 色変更用
 
+    // HP量の数値表示
+    [Header("UI Value")]
+    public TextMeshProUGUI hpValueText; // または Text
+    public TextMeshProUGUI hateValueText; // または Text
+
     //   public UnitUI unitUI;
 
 
@@ -41,7 +46,7 @@ public class UnitController : MonoBehaviour
 
     private CharaAnim characterAnimator;
 
-    void Start()
+    protected virtual void Start()
     {
         originalPosition = transform.position;
         renderers = GetComponentsInChildren<Renderer>();
@@ -57,11 +62,33 @@ public class UnitController : MonoBehaviour
         if (hpFillImage) hpFillImage.color = new Color(0.2f, 1f, 0.2f); // 明るい緑
     }
 
+    //  ユニットの初期化
+    //  戦闘開始時に呼び出し
+    public void UnitInit(int aMaxHP,Data.StatusRuntime aStatus)
+    {
+        //  ステータス初期化
+        //  データ共有部からステータス初期化
+        maxHp = aMaxHP;
+        currentHp = maxHp;
+        speed = aStatus.speed;
+
+        isDead = false;
+        // UI初期化
+        if (nameText) nameText.text = unitName;
+        UpdateHPBar();
+        AddHate(0);
+
+    }
+
     public void UpdateHPBar()
     {
         if (hpSlider)
         {
             hpSlider.value = (float)currentHp / maxHp;
+        }
+        if (hpValueText)
+        {
+            hpValueText.text = $"{currentHp} / {maxHp}";
         }
     }
 
@@ -92,6 +119,10 @@ public class UnitController : MonoBehaviour
         if (hateSlider)
         {
             hateSlider.value = (float)currentHate / 100;
+        }
+        if (hateValueText)
+        {
+            hateValueText.text = $"{currentHate} / {maxHate}";
         }
 
     }
