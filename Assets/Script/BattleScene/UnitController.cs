@@ -2,7 +2,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 using TMPro;
-using Data; // TextMeshProを使用する場合
+using Data;
+using Protect; // TextMeshProを使用する場合
 
 
 public class UnitController : MonoBehaviour
@@ -71,6 +72,8 @@ public class UnitController : MonoBehaviour
     //  戦闘開始時に呼び出し
     public void UnitInit(Player aUnitData)
     {
+        Debug.Log($"UnitInit called for {aUnitData.GetName()}");
+
         unitData = aUnitData;
 
         //  ステータス初期化
@@ -112,6 +115,9 @@ public class UnitController : MonoBehaviour
             isDead = true;
             // 死亡時の見た目（例: 暗くする、倒れるなど）
             foreach (var r in renderers) r.material.color = Color.gray;
+
+            //  死亡したキャラは非表示に
+            gameObject.SetActive(false);
         }
         UpdateHPBar();
     }
@@ -138,46 +144,51 @@ public class UnitController : MonoBehaviour
 
     }
 
+    public ProtectSystem GetProtectSystem()
+    {
+        return unitData.GetProtectSystem();
+    }
+
     public int GetSpeed()
     {
         return unitData.GetStatusCalculated().speed;
-    }
-
-    public void SetUnitName(string aName)
-    {
-  //      unitData.SetName(aName);
     }
     public string GetUnitName()
     {
         return unitData.GetName();
     }
 
+    public Player GetUnitData()
+    {
+        return unitData;
+    }
+
     // --- アニメーション関連 ---
 
     // 行動時のジャンプ演出
-    public IEnumerator AnimateActionJump()
-    {
-        float duration = 0.2f;
-        float height = 0.5f;
-        float elapsed = 0f;
+    //public IEnumerator AnimateActionJump()
+    //{
+    //    float duration = 0.2f;
+    //    float height = 0.5f;
+    //    float elapsed = 0f;
 
-        // 上へ
-        while (elapsed < duration)
-        {
-            transform.position = originalPosition + Vector3.up * Mathf.Lerp(0, height, elapsed / duration);
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-        // 下へ
-        elapsed = 0f;
-        while (elapsed < duration)
-        {
-            transform.position = originalPosition + Vector3.up * Mathf.Lerp(height, 0, elapsed / duration);
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-        transform.position = originalPosition;
-    }
+    //    // 上へ
+    //    while (elapsed < duration)
+    //    {
+    //        transform.position = originalPosition + Vector3.up * Mathf.Lerp(0, height, elapsed / duration);
+    //        elapsed += Time.deltaTime;
+    //        yield return null;
+    //    }
+    //    // 下へ
+    //    elapsed = 0f;
+    //    while (elapsed < duration)
+    //    {
+    //        transform.position = originalPosition + Vector3.up * Mathf.Lerp(height, 0, elapsed / duration);
+    //        elapsed += Time.deltaTime;
+    //        yield return null;
+    //    }
+    //    transform.position = originalPosition;
+    //}
 
     public IEnumerator AnimateActionAttack()
     {
@@ -194,8 +205,6 @@ public class UnitController : MonoBehaviour
 
 
     }
-
-
 
 
     // 対象選択時などの点滅演出

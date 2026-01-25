@@ -63,7 +63,7 @@ public class BattleUIManager : MonoBehaviour
         phaseText.text = $"{unit.GetUnitName()} の行動";
 
         // 既存ボタン削除
-        //    foreach (Transform child in actionButtonContainer) Destroy(child.gameObject);
+        foreach (Transform child in actionButtonContainer) Destroy(child.gameObject);
 
         // 基本コマンド + キャラの持つスキル（今回はCommonSkills + キャラの個別スキル等を統合する想定）
         List<SkillData> skillsToShow = new List<SkillData>(battleManager.commonSkills);

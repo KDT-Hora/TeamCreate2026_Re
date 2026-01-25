@@ -104,6 +104,9 @@ public class DataManager : MonoBehaviour
                 newPlayer.name = newPlayer.GetName();
                 newPlayer.transform.localPosition = Vector3.zero;
 
+                //  ”İ‚¢ˆ——p‚ÌProtectSystem‚ğ¶¬‚µ‚Ä‰Šú‰»
+                newPlayer.SetProtextSystem(Protect.ProtectSystemFactory.Create(dataId));
+
                 currentParty.members.Add(newPlayer);
             }
     

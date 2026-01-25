@@ -67,10 +67,19 @@ public class EnemyUnitFactory : MonoBehaviour
             status.Initialize(chara, 1, null);
 
             //  ボスのプレハブから、UnitControllerの取得
+            Debug.Log("UnitControllerの取得");
             bossController = bossPrefab.GetComponent<UnitController>();
+            Debug.Log("UnitInit開始");
             bossController.UnitInit(status);
+            Debug.Log("UI生成開始");
+            UnitUICreate(bossController);
+
+            //  Unitのゲージの初期化
+            Debug.Log("HPバー更新開始");
+            bossController.UpdateHPBar();
 
             Debug.Log("ボス生成処理完了: " + bossPrefab.name);
+
         }
 
         return bossController;
@@ -125,13 +134,36 @@ public class EnemyUnitFactory : MonoBehaviour
             //  ボスのプレハブから、UnitControllerの取得
             Debug.Log("プレハブ取得");
             enemyController = enemyPrefab.GetComponent<UnitController>();
+
             Debug.Log("UnitInit開始");
             enemyController.UnitInit(status);
 
+            UnitUICreate(enemyController);
+
+            //  Unitのゲージの初期化
+            enemyController.UpdateHPBar();
+
             Debug.Log("敵生成処理完了: " + enemyPrefab.name);
-        }
+        } 
 
         return enemyController;
 
     }
+
+    void UnitUICreate(UnitController unit)
+    {
+        Debug.Log("敵UI生成処理開始");
+
+        //  敵UI生成
+        GameObject enemyUIObj = Instantiate(enemyUIPrefub, enemyUIParent);
+        //  敵UIとユニットの紐付け
+        Debug.Log("敵UIとユニットの紐付け");
+        unit.hpSlider = enemyUIObj.GetComponent<EnemyUI>().hpSlider;
+        //    enemyUIObj.GetComponent<EnemyUI>().hpSlider = unit.hpSlider;
+        //  敵UIの名前設定
+        Debug.Log("敵UIの名前設定");
+        enemyUIObj.GetComponent<EnemyUI>().nameText.text = unit.GetUnitName();
+
+    }
+
 }

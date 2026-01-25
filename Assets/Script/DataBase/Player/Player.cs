@@ -26,5 +26,14 @@ namespace Data
             m_protectSystem = protectSystem;
             Debug.Log("èâä˙âª");
         }
+
+        public ProtectSystem GetProtectSystem()
+        {
+            return m_protectSystem;
+        }
+        public void SetProtextSystem(ProtectSystem protectSystem)
+        {
+            m_protectSystem = protectSystem;
+        }
     }
 }

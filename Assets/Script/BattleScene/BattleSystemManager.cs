@@ -75,7 +75,6 @@ public class BattleSystemManager : MonoBehaviour
         //  ランダムに1～3体生成
         enemies.Clear();
         int enemyCount = Random.Range(1, 4);
-        enemyCount = 3;
 
         Debug.Log("EnemyCount: " + enemyCount);
 
@@ -248,6 +247,7 @@ public class BattleSystemManager : MonoBehaviour
         }
     }
 
+    //  ヘイトに基づくターゲット選択
     UnitController SelectTargetByHate()
     {
         var alivePlayers = players.Where(p => !p.isDead).ToList();
@@ -255,7 +255,11 @@ public class BattleSystemManager : MonoBehaviour
 
         // ヘイト100のキャラがいれば確定
         var maxHateUnit = alivePlayers.Find(p => p.currentHate >= 100);
-        if (maxHateUnit != null) return maxHateUnit;
+        if (maxHateUnit != null) 
+        {
+            maxHateUnit.currentHate = 0; // ヘイトリセット
+            return maxHateUnit;
+        }
 
         // ヘイトによる重みづけ抽選
         int totalHate = alivePlayers.Sum(p => p.currentHate + 10); // +10はヘイト0でも狙われる確率を残すため
@@ -301,10 +305,15 @@ public class BattleSystemManager : MonoBehaviour
                 UnitController coverUnit = players.FirstOrDefault(p => p.isCovering && !p.hasCoveredThisTurn && !p.isDead && p != action.target);
                 if (coverUnit != null)
                 {
-                    // 庇う発動
                     //  ターゲット変更しか発動していないので、特有処理を入れてない
                     Debug.Log(coverUnit.GetUnitName() + "が庇った！");
-                    action.target = coverUnit;
+
+                    // 庇う発動
+                    coverUnit.GetProtectSystem().
+                        ExecuteProtect(coverUnit.GetUnitData(),
+                        action.target.GetUnitData(),action.actor.GetUnitData());
+
+                //    action.target = coverUnit;
                     coverUnit.hasCoveredThisTurn = true; // 1回のみ
                     // エフェクトなど入れるならここ
                 }
