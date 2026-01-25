@@ -14,7 +14,7 @@ public class MenuButton : MonoBehaviour
     /// <summary>
     /// エスケープでメニューからフィールドに戻るボタン
     /// </summary>
-    private void OnClickReturnField()
+    public void OnClickReturnField()
     {
         FadeManager.FadeChangeScene("FieldScene", 1.0f);
     }

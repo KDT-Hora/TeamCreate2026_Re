@@ -12,6 +12,7 @@ public class CharaButton : MonoBehaviour
     [SerializeField] private GameObject button3;
     [SerializeField] private GameObject button4;
     [SerializeField] private GameObject button5;
+    [SerializeField] private GameObject button6;
 
     public void OnClick()
     {
@@ -28,6 +29,7 @@ public class CharaButton : MonoBehaviour
         button3.SetActive(false);
         button4.SetActive(false);
         button5.SetActive(true);
+        button6.SetActive(false);
     }
 
     void Update()

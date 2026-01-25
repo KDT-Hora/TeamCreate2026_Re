@@ -12,6 +12,7 @@ public class CancelButton : MonoBehaviour
     [SerializeField] private GameObject button3;
     [SerializeField] private GameObject button4;
     [SerializeField] private GameObject button5;
+    [SerializeField] private GameObject button6;
 
     public void OnClick()
     {
@@ -28,6 +29,7 @@ public class CancelButton : MonoBehaviour
         button3.SetActive(true);
         button4.SetActive(true);
         button5.SetActive(false);
+        button6.SetActive(true);
     }
 
     // Update is called once per frame
