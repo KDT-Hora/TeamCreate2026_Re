@@ -15,6 +15,9 @@ public class BattleSystemManager : MonoBehaviour
     [Header("UI Manager")]
     public BattleUIManager uiManager;
 
+    [Header("Enemy Unit Factory")]
+    public EnemyUnitFactory enemyFactory;
+
     [Header("Settings")]
     public List<SkillData> commonSkills; // 攻撃、防御など
 
@@ -37,7 +40,9 @@ public class BattleSystemManager : MonoBehaviour
         //  キャラクターステータス設定
         CharactorStateSet();
         //  敵の生成
-        EnemyCreate();
+     //   EnemyCreate();
+
+        //  開始処理
         StartCoroutine(SetupBattle());
     }
 
@@ -62,11 +67,32 @@ public class BattleSystemManager : MonoBehaviour
 
     }
 
+    //  敵の生成処理
     void EnemyCreate()
     {
-        //  敵の生成
+        Debug.Log("EnemyCreate Start");
 
-        //  敵のステータス初期化
+        //  今がボス線か判定
+        if (DataManager.Instance.isBossBattle)
+        {
+            Debug.Log("BossUnit Create");
+
+            DataManager.Instance.isBossBattle = false; // フラグリセット
+            int id = DataManager.Instance.currentBossID;
+
+            // ボス戦の場合の生成処理
+            enemyFactory.SpownBossEnemies(id);
+        }
+        else
+        {
+            Debug.Log("NormalEnemy Create");
+
+            // 通常戦闘の場合の生成処理
+            enemyFactory.SpownNormalEnemies();
+
+        }
+
+        Debug.Log("EnemyCreate End");
     }
 
     IEnumerator SetupBattle()
@@ -286,7 +312,7 @@ public class BattleSystemManager : MonoBehaviour
         }
         else // 戦闘終了
         {
-            System.FadeManager.FadeChangeScene("FieldScene", 1.0f);
+        //    System.FadeManager.FadeChangeScene("FieldScene", 1.0f);
         }
     }
 
@@ -363,6 +389,7 @@ public class BattleSystemManager : MonoBehaviour
         {
             state = BattleState.Win;
             uiManager.ShowResult("Victory!", true);
+            
             return true;
         }
         if (allPlayersDead)
