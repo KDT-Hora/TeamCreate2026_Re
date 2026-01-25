@@ -10,6 +10,7 @@ public class SelectButton : MonoBehaviour
     }
     public void Ittan()
     {
+        if(System.FadeManager.Instance.GetFadeState()) return;
         Debug.Log("Ittan button pressed");
         SelectData.Instance.SetBoss(SelectData.Boss.Ittan);
         System.FadeManager.FadeChangeScene("FieldScene", 1.0f);
@@ -17,6 +18,7 @@ public class SelectButton : MonoBehaviour
     }
     public void Syuten()
     {
+        if (System.FadeManager.Instance.GetFadeState()) return;
         Debug.Log("Syuten button pressed");
         SelectData.Instance.SetBoss(SelectData.Boss.Syuten);
         System.FadeManager.FadeChangeScene("FieldScene", 1.0f);
@@ -24,6 +26,7 @@ public class SelectButton : MonoBehaviour
     }
     public void Karasu()
     {
+        if (System.FadeManager.Instance.GetFadeState()) return;
         Debug.Log("Karasu button pressed");
         SelectData.Instance.SetBoss(SelectData.Boss.Karasu);
         System.FadeManager.FadeChangeScene("FieldScene", 1.0f);
