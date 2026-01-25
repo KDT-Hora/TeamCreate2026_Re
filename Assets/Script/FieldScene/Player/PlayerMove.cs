@@ -1,4 +1,5 @@
 using System;
+using JetBrains.Annotations;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -13,11 +14,20 @@ public class PlayerMove : MonoBehaviour
     string next_anim;
     string now_anim;
 
+    // ボスと当たっているかどうかを保持する内部変数
+    private bool isTouchingBoss = false;
+
     void Start()
     {
         SoundManager.Instance.PlayBGM("BGM_Field");
         //rb = GetComponent<Rigidbody>();
-       //m_anim = GetComponentInChildren<Animator>();
+        //m_anim = GetComponentInChildren<Animator>();
+
+        // シーン開始時、保存された座標があればそこに移動する
+        if (FieldData.Instance != null && FieldData.Instance.playerPosition != Vector3.zero)
+        {
+            transform.position = FieldData.Instance.playerPosition;
+        }
     }
 
     void Awake()
@@ -80,11 +90,31 @@ public class PlayerMove : MonoBehaviour
         // 移動処理
         Vector3 movement = new Vector3(x, 0f, z).normalized * speed * Time.fixedDeltaTime;
         rb.MovePosition(rb.position + movement);
+
+        // 常に現在の座標をFieldDataに送る
+        if (FieldData.Instance != null)
+        {
+            FieldData.Instance.SetPlayerPos(transform.position);
+        }
+
     }
+
+    // 外部から「今ボスと当たってる？」と聞かれたときに結果を返す関数
+    public bool IsTouchingBoss()
+    {
+        return isTouchingBoss;
+    }
+
 
     // ===== 敵との当たり判定 =====
     void OnCollisionEnter(Collision collision)
     {
+        if (collision.gameObject.CompareTag("BOSS"))
+        {
+            isTouchingBoss = true;
+            Debug.Log("BOSSに接触！");
+        }
+
         // 衝突した相手のタグが Enemy の場合
         if (collision.gameObject.CompareTag("Enemy"))
         {
@@ -94,4 +124,5 @@ public class PlayerMove : MonoBehaviour
             FadeManager.FadeChangeScene("BattleScene", 1.0f);
         }
     }
+
 }

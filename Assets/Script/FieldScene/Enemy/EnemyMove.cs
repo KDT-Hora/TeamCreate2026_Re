@@ -33,6 +33,14 @@ public class EnemyMove : MonoBehaviour
         pointB = startPosition + Vector3.right * patrolRange;
 
         patrolTarget = pointA;
+
+        if (FieldData.Instance != null && FieldData.Instance.enemyDic.ContainsKey(gameObject.name))
+        {
+            if (FieldData.Instance.enemyDic[gameObject.name].isAlive == false)
+            {
+                gameObject.SetActive(false);
+            }
+        }
     }
 
     void Update()
@@ -95,8 +103,11 @@ public class EnemyMove : MonoBehaviour
         if (collision.gameObject.CompareTag("Player"))
         {
             Debug.Log("プレイヤーに当たった → 敵を初期位置へ戻す");
+            if (FieldData.Instance != null)
+            {
+                FieldData.Instance.SetEnemyStatus(gameObject.name, transform.position, false);
+            }
             Destroy(this.gameObject);
-            //ResetEnemy();
         }
     }
 
