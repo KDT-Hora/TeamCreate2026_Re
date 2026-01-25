@@ -171,6 +171,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1064025819}
+    - target: {fileID: 7479702988090845415, guid: 3f1cd6eac52e2454fab73c33284c2f22, type: 3}
+      propertyPath: m_Name
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8069292330469387016, guid: 3f1cd6eac52e2454fab73c33284c2f22, type: 3}
       propertyPath: m_Name
       value: hitodama (2)
@@ -232,6 +236,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1064025819}
+    - target: {fileID: 7479702988090845415, guid: 3f1cd6eac52e2454fab73c33284c2f22, type: 3}
+      propertyPath: m_Name
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 8069292330469387016, guid: 3f1cd6eac52e2454fab73c33284c2f22, type: 3}
       propertyPath: m_Name
       value: hitodama (5)
@@ -362,6 +370,51 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
+--- !u!1 &552477086
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 552477088}
+  - component: {fileID: 552477087}
+  m_Layer: 0
+  m_Name: FieldDataManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &552477087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 552477086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e49c693411e65534e83d02027db836cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerPosition: {x: 0, y: 0, z: 0}
+--- !u!4 &552477088
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 552477086}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -7.710766, y: -10.353415, z: -13.857756}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &659492570
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -414,6 +467,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1064025819}
+    - target: {fileID: 7479702988090845415, guid: 3f1cd6eac52e2454fab73c33284c2f22, type: 3}
+      propertyPath: m_Name
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8069292330469387016, guid: 3f1cd6eac52e2454fab73c33284c2f22, type: 3}
       propertyPath: m_Name
       value: hitodama (1)
@@ -475,6 +532,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1064025819}
+    - target: {fileID: 7479702988090845415, guid: 3f1cd6eac52e2454fab73c33284c2f22, type: 3}
+      propertyPath: m_Name
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 8069292330469387016, guid: 3f1cd6eac52e2454fab73c33284c2f22, type: 3}
       propertyPath: m_Name
       value: hitodama (4)
@@ -712,6 +773,10 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 1064025819}
+    - target: {fileID: 7479702988090845415, guid: 3f1cd6eac52e2454fab73c33284c2f22, type: 3}
+      propertyPath: m_Name
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 8069292330469387016, guid: 3f1cd6eac52e2454fab73c33284c2f22, type: 3}
       propertyPath: m_Name
       value: hitodama (3)
@@ -1007,12 +1072,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1064025819}
     - target: {fileID: 7479702988090845415, guid: 3f1cd6eac52e2454fab73c33284c2f22, type: 3}
+      propertyPath: m_Name
+      value: BOSS
+      objectReference: {fileID: 0}
+    - target: {fileID: 7479702988090845415, guid: 3f1cd6eac52e2454fab73c33284c2f22, type: 3}
       propertyPath: m_TagString
       value: BOSS
       objectReference: {fileID: 0}
     - target: {fileID: 8069292330469387016, guid: 3f1cd6eac52e2454fab73c33284c2f22, type: 3}
       propertyPath: m_Name
-      value: hitodama
+      value: BOSS
       objectReference: {fileID: 0}
     - target: {fileID: 8069292330469387016, guid: 3f1cd6eac52e2454fab73c33284c2f22, type: 3}
       propertyPath: m_TagString
@@ -1037,3 +1106,4 @@ SceneRoots:
   - {fileID: 88342754}
   - {fileID: 1064025819}
   - {fileID: 1372262403}
+  - {fileID: 552477088}

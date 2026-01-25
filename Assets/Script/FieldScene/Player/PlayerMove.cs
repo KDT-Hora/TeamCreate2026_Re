@@ -26,7 +26,9 @@ public class PlayerMove : MonoBehaviour
         // シーン開始時、保存された座標があればそこに移動する
         if (FieldData.Instance != null && FieldData.Instance.playerPosition != Vector3.zero)
         {
+            // 物理演算(Rigidbody)を使っている場合、positionを直接書き換える
             transform.position = FieldData.Instance.playerPosition;
+            Debug.Log("保存された座標に復帰しました: " + FieldData.Instance.playerPosition);
         }
     }
 
@@ -91,12 +93,16 @@ public class PlayerMove : MonoBehaviour
         Vector3 movement = new Vector3(x, 0f, z).normalized * speed * Time.fixedDeltaTime;
         rb.MovePosition(rb.position + movement);
 
-        // 常に現在の座標をFieldDataに送る
-        if (FieldData.Instance != null)
+    }
+
+    // シーンが切り替わる直前や、アプリを閉じる直前に呼ばれる
+    private void OnDisable()
+    {
+        //if (FieldData.Instance != null)
         {
             FieldData.Instance.SetPlayerPos(transform.position);
+            Debug.Log("シーン切り替えのため座標を保存しました: " + transform.position);
         }
-
     }
 
     // 外部から「今ボスと当たってる？」と聞かれたときに結果を返す関数

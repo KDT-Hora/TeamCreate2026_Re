@@ -563,6 +563,8 @@ MonoBehaviour:
   height: 1
   nextEnemyID: 0
   nextEnemyLevel: 1
+  isBossBattle: 0
+  currentBossID: -1
   bossIDs: 0200000004000000
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

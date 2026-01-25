@@ -34,11 +34,15 @@ public class EnemyMove : MonoBehaviour
 
         patrolTarget = pointA;
 
-        if (FieldData.Instance != null && FieldData.Instance.enemyDic.ContainsKey(gameObject.name))
+        // 重要：辞書に「自分の名前」の記録があるかチェック
+        if (FieldData.Instance.enemyDic.ContainsKey(gameObject.name))
         {
+            // 記録がある場合、その内容（生存フラグ）を見る
             if (FieldData.Instance.enemyDic[gameObject.name].isAlive == false)
             {
+                // 倒された記録があるなら、自分を消す
                 gameObject.SetActive(false);
+                Debug.Log(gameObject.name + "は倒されているので消去します");
             }
         }
     }
