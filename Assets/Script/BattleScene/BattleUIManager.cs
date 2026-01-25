@@ -60,7 +60,7 @@ public class BattleUIManager : MonoBehaviour
     {
         HideAllMenus();
         actionMenuPanel.SetActive(true);
-        phaseText.text = $"{unit.unitName} の行動";
+        phaseText.text = $"{unit.GetUnitName()} の行動";
 
         // 既存ボタン削除
         //    foreach (Transform child in actionButtonContainer) Destroy(child.gameObject);
@@ -100,7 +100,7 @@ public class BattleUIManager : MonoBehaviour
             if (target.isDead) continue;
 
             GameObject btnObj = Instantiate(buttonPrefab, targetContainer);
-            btnObj.GetComponentInChildren<TextMeshProUGUI>().text = target.unitName;
+            btnObj.GetComponentInChildren<TextMeshProUGUI>().text = target.GetUnitName();
             btnObj.GetComponent<Button>().onClick.AddListener(() => onSelect(target));
         }
     }

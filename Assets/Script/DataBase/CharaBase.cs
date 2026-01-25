@@ -94,7 +94,7 @@ namespace Data
         // ------------------------ バトル用アクション ------------------------
         /// <summary>
         /// ダメージを受ける
-        /// </summary>
+        /// </summ, ary>
         /// <param name="damage">ダメージの数</param>
         public void TakeDamage(int damage)
         {

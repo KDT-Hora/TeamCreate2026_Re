@@ -24,7 +24,7 @@ namespace Data
         {
             base.Initialize(playerStatus, level);
             m_protectSystem = protectSystem;
-            Debug.Log("Player‰Šú‰»");
+            Debug.Log("‰Šú‰»");
         }
     }
 }

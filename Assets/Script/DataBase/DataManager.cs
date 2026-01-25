@@ -22,27 +22,39 @@ public class DataManager : MonoBehaviour
     public int nextEnemyLevel = 1;
     public bool isBossBattle = false;   //  ボス戦かどうかの判定フラグ
     public int currentBossID = -1;      //  現在のボスのID
-    [Header("ボスのID設定")]
-    public List<int> bossIDs;
 
     private void Awake()
     {
+        Debug.Log("DataManager Awake");
+
+        //  シングルトンパターン
         if (Instance != null)
         {
             Destroy(gameObject);
             return;
         }
-
+        //  自身の参照を設定
         Instance = this;
+        //  シーン切り替え時に破棄しない
         DontDestroyOnLoad(gameObject);
 
+        Debug.Log("DataManager Awake Initialized");
+
+        //  パーティーデータに初期値を設定
         if (currentParty == null) currentParty = new PartyData();
+
+        //  
+        
     }
 
     void Start()
     {
+        Debug.Log("DataManager Start");
+
+        // パーティが空なら生成しておく
         if (currentParty.members.Count == 0 && PlayerPrefab != null)
         {
+            Debug.Log("パーティが空なので生成します");
             SetupParty(3, PlayerPrefab);
         }
         // いったん全員非表示にしとく
@@ -63,11 +75,16 @@ public class DataManager : MonoBehaviour
         SetupParty(3, PlayerPrefab);
         SpawnEnemies(targetEnemyID, enemyLevel);
     }*/
+
+    //  バトル開始用
+    //  キャラクターの
+    //  もう読んでないよー( ´∀｀ 
     public void StartBattle(int targetEnemyID, int enemyLevel)
     {
+
         ArrangeUnits(currentParty.members, true);
 
-        SpawnEnemies(targetEnemyID, enemyLevel);
+   //     SpawnEnemies(targetEnemyID, enemyLevel);
     }
 
     // パーティ生成
@@ -129,45 +146,46 @@ public class DataManager : MonoBehaviour
     }*/
 
     // 敵生成
-    public void SpawnEnemies(int targetID, int baseLevel)
-    {
-        List<Enemy> enemiesToSpawn = new List<Enemy>();
+    //public void SpawnEnemies(int targetID, int baseLevel)
+    //{
+    //    List<Enemy> enemiesToSpawn = new List<Enemy>();
         
-        Enemy mainEnemy = EnemyFactory.CreateEnemy(targetID, baseLevel, EnemyPrefab);
-        if (mainEnemy != null)
-        {
-            mainEnemy.name += $" Lv.{baseLevel}";
-            enemiesToSpawn.Add(mainEnemy);
-        }
+    //    Enemy mainEnemy = EnemyFactory.CreateEnemy(targetID, baseLevel, EnemyPrefab);
+    //    if (mainEnemy != null)
+    //    {
+    //        mainEnemy.name += $" Lv.{baseLevel}";
+    //        enemiesToSpawn.Add(mainEnemy);
+    //    }
 
-        bool isBoss = bossIDs.Contains(targetID);
+    //    bool isBoss = bossIDs.Contains(targetID);
 
-        if (!isBoss)
-        {
-            // いったんランダムやけどあとで調整してね
-            int additionalCount = Random.Range(0, 3);
-            for (int i = 0; i < additionalCount; i++)
-            {
-                int randomID = Random.Range(0, 3);
+    //    if (!isBoss)
+    //    {
+    //        // いったんランダムやけどあとで調整してね
+    //        int additionalCount = Random.Range(0, 3);
+    //        for (int i = 0; i < additionalCount; i++)
+    //        {
+    //            int randomID = Random.Range(0, 3);
 
-                int minionLevel = Mathf.Max(1, baseLevel - Random.Range(0, 2));
+    //            int minionLevel = Mathf.Max(1, baseLevel - Random.Range(0, 2));
 
-                Enemy mob = EnemyFactory.CreateEnemy(randomID, minionLevel, EnemyPrefab);
-                if (mob != null)
-                {
-                    mob.name += $" Lv.{minionLevel}";
-                    enemiesToSpawn.Add(mob);
-                }
-            }
-        }
+    //            Enemy mob = EnemyFactory.CreateEnemy(randomID, minionLevel, EnemyPrefab);
+    //            if (mob != null)
+    //            {
+    //                mob.name += $" Lv.{minionLevel}";
+    //                enemiesToSpawn.Add(mob);
+    //            }
+    //        }
+    //    }
 
-        foreach (var enemy in enemiesToSpawn)
-        {
-            enemy.transform.SetParent(transform);
-        }
+    //    foreach (var enemy in enemiesToSpawn)
+    //    {
+    //        enemy.transform.SetParent(transform);
+    //    }
 
-        ArrangeUnits(enemiesToSpawn, false);
-    }
+    //    ArrangeUnits(enemiesToSpawn, false);
+    //}
+    // ユニット配置共通処理
     private void ArrangeUnits<T>(List<T> units, bool isPlayerSide) where T : MonoBehaviour
     {
         List<T> activeUnits = new List<T>();

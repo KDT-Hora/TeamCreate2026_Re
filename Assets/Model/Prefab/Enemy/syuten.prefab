@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4660947941807582533}
   - component: {fileID: 575565909135255854}
+  - component: {fileID: 9053601172863498034}
   m_Layer: 0
   m_Name: syuten
   m_TagString: Untagged
@@ -25,14 +26,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5225149175710786150}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0.95476085, z: 0, w: 0.297375}
   m_LocalPosition: {x: 0, y: -0.59, z: -9.38}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1333164676566260582}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 145.4, z: 0}
 --- !u!114 &575565909135255854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -45,6 +46,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d93c2271aeae462429329ed9a819dffa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &9053601172863498034
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5225149175710786150}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12485d1645e2bb0439e6dae8d0f0a4bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isPlayer: 0
+  isDead: 0
+  currentHate: 0
+  maxHate: 100
+  nameText: {fileID: 0}
+  hpSlider: {fileID: 0}
+  hpFillImage: {fileID: 0}
+  hateSlider: {fileID: 0}
+  hateFillImage: {fileID: 0}
+  hpValueText: {fileID: 0}
+  hateValueText: {fileID: 0}
+  isDefending: 0
+  isCovering: 0
+  hasCoveredThisTurn: 0
+  animationLength: 0
 --- !u!1001 &1516274126219246733
 PrefabInstance:
   m_ObjectHideFlags: 0
