@@ -1,5 +1,7 @@
+using Data;
+using System.Collections.Generic;
 using UnityEngine;
-using System.Collections.Generic; 
+using static SelectData;
 
 public class EnemyUnitFactory : MonoBehaviour
 {
@@ -8,7 +10,7 @@ public class EnemyUnitFactory : MonoBehaviour
     public List<GameObject> BossUnitPrefubs;
     public Transform spownPos;
     public float offsetX;
-    public float offsetY;
+    public float offsetZ;
 
     [Header("EnemyUI")]
     public Transform enemyUIParent;
@@ -29,41 +31,107 @@ public class EnemyUnitFactory : MonoBehaviour
     }
 
     //  ボスの生成処理
-    public void SpownBossEnemies(int bossID)
+    public UnitController SpownBossEnemies(int bossID,int count)
     {
+        Debug.Log("ボス生成処理開始");
 
+        UnitController bossController = null;
+
+        //  ボスIDに応じたボスのプレハブを選択して生成
+        int id = DataManager.Instance.currentBossID;
+        if (id >= 0 && id < BossUnitPrefubs.Count)
+        {
+            //  リストからステータス取得
+            EnemyData listData = Resources.Load<EnemyData>("EnemyData");
+            if(listData == null)
+            {
+                Debug.LogError("EnemyDataの読み込みに失敗");
+                return null;
+            }
+            //  ID検索
+            StatusBase chara = listData.enemyDatas.Find(c => c.id == bossID);
+            if (chara == null)
+            {
+                Debug.LogError("指定されたIDのボスデータが存在しません: " + bossID);
+                return null;
+            }
+            //  ボスのプレハブを生成
+            GameObject bossPrefab = BossUnitPrefubs[id];
+            //  生成位置の計算
+            Vector3 spawnPosition = spownPos.position + 
+                new Vector3(offsetX * count, 0, offsetZ * count);
+            var rotate = bossPrefab.transform.rotation;
+            bossPrefab = Instantiate(bossPrefab, spawnPosition, rotate);
+
+            Player status = new Player();
+            status.Initialize(chara, 1, null);
+
+            //  ボスのプレハブから、UnitControllerの取得
+            bossController = bossPrefab.GetComponent<UnitController>();
+            bossController.UnitInit(status);
+
+            Debug.Log("ボス生成処理完了: " + bossPrefab.name);
+        }
+
+        return bossController;
     }
 
     //  通常敵の生成処理
-    public void SpownNormalEnemies()         
+    public UnitController SpownNormalEnemies(int count)         
     {
         Debug.Log("敵生成処理開始");
 
-        int enemyCount = Random.Range(1, 4); // 1～3体の敵を生成
-        Debug.Log($"生成する敵の数: {enemyCount}");
+        UnitController enemyController = null;
 
-        for (int i = 0; i < enemyCount; i++)
+        //  敵のIDをランダムで決定
+        int enemyid = Random.Range(0, enemyUnitPrefubs.Count);
+
+        //  IDに応じたボスのプレハブを選択して生成
+        if (enemyid >= 0 && enemyid < enemyUnitPrefubs.Count)
         {
-            Debug.Log($"敵生成処理: {i + 1}体目");
+            //  プレハブを生成
+            GameObject enemyPrefab = enemyUnitPrefubs[enemyid];
 
-            // ランダムに敵のプレハブを選択
-            int randomIndex = Random.Range(0, enemyUnitPrefubs.Count);
-            Debug.Log($"選択された敵のインデックス: {randomIndex}");
-            GameObject enemyPrefab = enemyUnitPrefubs[randomIndex];
-            // 敵の生成位置を計算
-            Vector3 spawnPosition = spownPos.position + new Vector3(i * offsetX, 0, i * offsetY);
-            // 敵を生成
-            GameObject enemyInstance = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
-            // 敵UIの生成
-            GameObject enemyUIInstance = Instantiate(enemyUIPrefub, enemyUIParent);
+            //  IDがズレているので調整
+            enemyid += 3;
 
-            // 敵UIの初期化（例: 名前やHPの設定）
-            UnitController enemyController = enemyInstance.GetComponent<UnitController>();
-            if (enemyController != null)
+            Debug.Log("選択された敵ID: " + enemyid);
+
+            //  リストからステータス取得
+            EnemyData listData = Resources.Load<EnemyData>("EnemyData");
+            Debug.Log("生成するキャラクター名：" + listData.enemyDatas[enemyid].name);
+            if (listData == null)
             {
-                enemyController.unitName = enemyPrefab.name; // 敵の名前を設定
-                //  ステータスの初期化
+                Debug.LogError("EnemyDataの読み込みに失敗");
+                return null;
             }
+            //  ID検索
+            StatusBase chara = listData.enemyDatas.Find(c => c.id == enemyid);
+            if (chara == null)
+            {
+                Debug.LogError("指定されたIDのボスデータが存在しません: " + enemyid);
+                return null;
+            }
+
+            //  生成位置の計算
+            Vector3 spawnPosition = spownPos.position +
+                new Vector3(offsetX * count, 0.3f, offsetZ * count);
+            var rotate = enemyPrefab.transform.rotation;
+            enemyPrefab = Instantiate(enemyPrefab, spawnPosition, rotate);
+
+            Player status = new Player();
+            status.Initialize(chara, 1, null);
+
+            //  ボスのプレハブから、UnitControllerの取得
+            Debug.Log("プレハブ取得");
+            enemyController = enemyPrefab.GetComponent<UnitController>();
+            Debug.Log("UnitInit開始");
+            enemyController.UnitInit(status);
+
+            Debug.Log("敵生成処理完了: " + enemyPrefab.name);
         }
+
+        return enemyController;
+
     }
 }
