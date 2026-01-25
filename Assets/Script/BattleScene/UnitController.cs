@@ -71,6 +71,8 @@ public class UnitController : MonoBehaviour
     //  戦闘開始時に呼び出し
     public void UnitInit(Player aUnitData)
     {
+        Debug.Log($"UnitInit called for {aUnitData.GetName()}");
+
         unitData = aUnitData;
 
         //  ステータス初期化

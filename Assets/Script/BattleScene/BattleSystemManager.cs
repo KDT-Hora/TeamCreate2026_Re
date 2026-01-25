@@ -75,7 +75,6 @@ public class BattleSystemManager : MonoBehaviour
         //  ƒ‰ƒ“ƒ_ƒ€‚É1`3‘Ì¶¬
         enemies.Clear();
         int enemyCount = Random.Range(1, 4);
-        enemyCount = 3;
 
         Debug.Log("EnemyCount: " + enemyCount);
 
