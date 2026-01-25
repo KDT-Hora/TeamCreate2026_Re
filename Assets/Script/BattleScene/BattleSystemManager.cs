@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Mono.Cecil.Cil;
+//using System;
 
 public enum BattleState { Start, PlayerMenu, ActionSelect, TargetSelect, EnemyPhase, ExecutePhase, Win, Lose }
 
@@ -40,7 +41,7 @@ public class BattleSystemManager : MonoBehaviour
         //  キャラクターステータス設定
         CharactorStateSet();
         //  敵の生成
-     //   EnemyCreate();
+        EnemyCreate();
 
         //  開始処理
         StartCoroutine(SetupBattle());
@@ -49,19 +50,17 @@ public class BattleSystemManager : MonoBehaviour
     void DebugInit()
     {
         //　データマネージャーの初期化
-        DataManager.Instance.SetupParty(3, DataManager.Instance.PlayerPrefab);
+    //    DataManager.Instance.SetupParty(3, DataManager.Instance.PlayerPrefab);
 
     }
 
     //  キャラクターのステータス設定
     void CharactorStateSet()
     {
-        var plaerDataList = DataManager.Instance.currentParty.members;
+        var playerDataList = DataManager.Instance.currentParty.members;
         for (int i = 0; i < players.Count; i++)
         {
-            var playerConstData = plaerDataList[i].GetStatusCalculated().maxHp;
-            var playerData = plaerDataList[i].GetStatusRuntime();
-            players[i].UnitInit(playerConstData,playerData);
+            players[i].UnitInit(playerDataList[i]);
 
         }
 
@@ -72,6 +71,14 @@ public class BattleSystemManager : MonoBehaviour
     {
         Debug.Log("EnemyCreate Start");
 
+        //  生成数決定
+        //  ランダムに1～3体生成
+        enemies.Clear();
+        int enemyCount = Random.Range(1, 4);
+        enemyCount = 3;
+
+        Debug.Log("EnemyCount: " + enemyCount);
+
         //  今がボス線か判定
         if (DataManager.Instance.isBossBattle)
         {
@@ -80,17 +87,21 @@ public class BattleSystemManager : MonoBehaviour
             DataManager.Instance.isBossBattle = false; // フラグリセット
             int id = DataManager.Instance.currentBossID;
 
+            Debug.Log("BossID: " + id);
+
             // ボス戦の場合の生成処理
-            enemyFactory.SpownBossEnemies(id);
+            enemies.Add(enemyFactory.SpownBossEnemies(id,enemies.Count));
+
+            enemyCount--;
         }
-        else
+    
+
+        //  残りのenemycount分生成
+        for (int i = 0; i < enemyCount; i++)
         {
             Debug.Log("NormalEnemy Create");
-
-            // 通常戦闘の場合の生成処理
-            enemyFactory.SpownNormalEnemies();
-
-        }
+            enemies.Add(enemyFactory.SpownNormalEnemies(enemies.Count));
+        }        
 
         Debug.Log("EnemyCreate End");
     }
@@ -145,6 +156,7 @@ public class BattleSystemManager : MonoBehaviour
     {
         // 逃走処理（今回は省略、終了など）
         Debug.Log("逃げた！");
+        System.FadeManager.FadeChangeScene("FieldScene", 1.0f);
     }
 
     // キャラクターごとの行動選択開始
@@ -200,7 +212,7 @@ public class BattleSystemManager : MonoBehaviour
         action.actor = user;
         action.target = target;
         action.skill = skill;
-        action.speedPriority = user.speed;
+        action.speedPriority = user.GetSpeed();
         turnActions.Add(action);
     }
 
@@ -291,7 +303,7 @@ public class BattleSystemManager : MonoBehaviour
                 {
                     // 庇う発動
                     //  ターゲット変更しか発動していないので、特有処理を入れてない
-                    Debug.Log(coverUnit.unitName + "が庇った！");
+                    Debug.Log(coverUnit.GetUnitName() + "が庇った！");
                     action.target = coverUnit;
                     coverUnit.hasCoveredThisTurn = true; // 1回のみ
                     // エフェクトなど入れるならここ
@@ -350,7 +362,7 @@ public class BattleSystemManager : MonoBehaviour
         //yield return new WaitForSeconds(target.animationLength);
 
         // 実際の効果処理
-        string msg = $"{actor.unitName}の{action.skill.skillName}！";
+        string msg = $"{actor.GetUnitName()}の{action.skill.skillName}！";
         uiManager.ShowLog(msg);
         Debug.Log(msg);
 

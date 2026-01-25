@@ -14,24 +14,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyDatas:
   - id: 0
-    name: kamaitati
-    baseHp: 300
-    baseMp: 200
-    baseAtk: 50
-    baseDef: 50
-    baseMatk: 60
-    baseMdef: 60
-    baseSpeed: 50
+    name: ittannmomenn
+    baseHp: 1500
+    baseMp: 600
+    baseAtk: 130
+    baseDef: 100
+    baseMatk: 80
+    baseMdef: 80
+    baseSpeed: 45
     element: 0
   - id: 1
-    name: zashikiwarashi
-    baseHp: 350
-    baseMp: 60
-    baseAtk: 60
-    baseDef: 40
-    baseMatk: 30
-    baseMdef: 100
-    baseSpeed: 40
+    name: syutendouzi
+    baseHp: 1500
+    baseMp: 600
+    baseAtk: 130
+    baseDef: 100
+    baseMatk: 80
+    baseMdef: 80
+    baseSpeed: 45
     element: 0
   - id: 2
     name: karasutengu
@@ -44,6 +44,26 @@ MonoBehaviour:
     baseSpeed: 40
     element: 0
   - id: 3
+    name: kamaitati
+    baseHp: 300
+    baseMp: 200
+    baseAtk: 50
+    baseDef: 50
+    baseMatk: 60
+    baseMdef: 60
+    baseSpeed: 50
+    element: 0
+  - id: 4
+    name: zashikiwarashi
+    baseHp: 350
+    baseMp: 60
+    baseAtk: 60
+    baseDef: 40
+    baseMatk: 30
+    baseMdef: 100
+    baseSpeed: 40
+    element: 0
+  - id: 5
     name: nekomata
     baseHp: 400
     baseMp: 300
@@ -53,17 +73,7 @@ MonoBehaviour:
     baseMdef: 40
     baseSpeed: 60
     element: 0
-  - id: 4
-    name: syutendouzi
-    baseHp: 1500
-    baseMp: 600
-    baseAtk: 130
-    baseDef: 100
-    baseMatk: 80
-    baseMdef: 80
-    baseSpeed: 45
-    element: 0
-  - id: 5
+  - id: 3
     name: hitodama
     baseHp: 200
     baseMp: 100
