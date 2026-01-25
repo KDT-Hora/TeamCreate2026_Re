@@ -7,7 +7,7 @@ public class SoundManager : MonoBehaviour
     public static SoundManager Instance { get; private set; }
 
     [Header("音量設定")]
-    [Range(0, 1)] public float bgmVolume = 0.5f;
+    [Range(0, 1)] public float bgmVolume = 0.2f;
     [Range(0, 1)] public float seVolume = 1.0f;
 
     // 音を鳴らすコンポーネント
