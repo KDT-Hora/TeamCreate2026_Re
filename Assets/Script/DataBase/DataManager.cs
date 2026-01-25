@@ -20,6 +20,8 @@ public class DataManager : MonoBehaviour
     [Header("次回のバトル設定（シーン遷移用）")]
     public int nextEnemyID = 0;
     public int nextEnemyLevel = 1;
+    public bool isBossBattle = false;   //  ボス戦かどうかの判定フラグ
+    public int currentBossID = -1;      //  現在のボスのID
     [Header("ボスのID設定")]
     public List<int> bossIDs;
 

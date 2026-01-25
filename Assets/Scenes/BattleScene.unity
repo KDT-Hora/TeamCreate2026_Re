@@ -550,6 +550,59 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &374545833
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 374545834}
+  - component: {fileID: 374545835}
+  m_Layer: 0
+  m_Name: EnemyFactory
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &374545834
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 374545833}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.9106832, y: -0.35896236, z: -3.8083634}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 811830984}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &374545835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 374545833}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f79658c3387d0b4faa4c0d939e05be3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyUnitPrefubs:
+  - {fileID: 4377006023809172116, guid: fa7a23fd04ae9514bb5202bd613c1a68, type: 3}
+  BossUnitPrefubs: []
+  spownPos: {fileID: 811830984}
+  offsetX: 1.3
+  offsetY: 1.3
+  enemyUIParent: {fileID: 876657819}
+  enemyUIPrefub: {fileID: 0}
 --- !u!224 &381191359 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6375537276228402983, guid: 29abb6f7fb1591a45bee500615619e35, type: 3}
@@ -642,6 +695,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 187523797}
     m_Modifications:
+    - target: {fileID: 514973908845637837, guid: 29abb6f7fb1591a45bee500615619e35, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 514973908845637837, guid: 29abb6f7fb1591a45bee500615619e35, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 514973908845637837, guid: 29abb6f7fb1591a45bee500615619e35, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1155043790189412574, guid: 29abb6f7fb1591a45bee500615619e35, type: 3}
       propertyPath: m_SizeDelta.x
       value: -12.120098
@@ -693,6 +758,10 @@ PrefabInstance:
     - target: {fileID: 4037924436983543054, guid: 29abb6f7fb1591a45bee500615619e35, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4640501120442233232, guid: 29abb6f7fb1591a45bee500615619e35, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5497068550784210354, guid: 29abb6f7fb1591a45bee500615619e35, type: 3}
       propertyPath: m_Sprite
@@ -1231,6 +1300,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &811830983
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 811830984}
+  m_Layer: 0
+  m_Name: EnemySpownPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &811830984
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 811830983}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.87, y: 0.3, z: -2.05}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 374545834}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &829427816
 GameObject:
   m_ObjectHideFlags: 0
@@ -1442,7 +1542,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -436, y: 150}
+  m_AnchoredPosition: {x: 117, y: 169}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &876657820
@@ -1482,42 +1582,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &907619134 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6103737004888771392, guid: b0a7522ce9c1b8a4892b379e4b23ce81, type: 3}
-  m_PrefabInstance: {fileID: 1869001644}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &907619137
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 907619134}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12485d1645e2bb0439e6dae8d0f0a4bc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  unitName: Kama
-  maxHp: 10
-  currentHp: 10
-  speed: 60
-  isPlayer: 0
-  isDead: 0
-  currentHate: 0
-  maxHate: 100
-  nameText: {fileID: 0}
-  hpSlider: {fileID: 0}
-  hpFillImage: {fileID: 0}
-  hateSlider: {fileID: 0}
-  hateFillImage: {fileID: 0}
-  hpValueText: {fileID: 0}
-  hateValueText: {fileID: 0}
-  isDefending: 0
-  isCovering: 0
-  hasCoveredThisTurn: 0
-  animationLength: 0
 --- !u!114 &997008857 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2916141474424894274, guid: 29abb6f7fb1591a45bee500615619e35, type: 3}
@@ -1537,6 +1601,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 187523797}
     m_Modifications:
+    - target: {fileID: 514973908845637837, guid: 29abb6f7fb1591a45bee500615619e35, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2314065507520850458, guid: 29abb6f7fb1591a45bee500615619e35, type: 3}
       propertyPath: m_Name
       value: HiroinUI
@@ -1556,6 +1624,10 @@ PrefabInstance:
     - target: {fileID: 4037924436983543054, guid: 29abb6f7fb1591a45bee500615619e35, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4640501120442233232, guid: 29abb6f7fb1591a45bee500615619e35, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5497068550784210354, guid: 29abb6f7fb1591a45bee500615619e35, type: 3}
       propertyPath: m_Sprite
@@ -1683,6 +1755,42 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 29abb6f7fb1591a45bee500615619e35, type: 3}
+--- !u!1 &1013215951 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2055074113070766282, guid: b0a7522ce9c1b8a4892b379e4b23ce81, type: 3}
+  m_PrefabInstance: {fileID: 1869001644}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1013215954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1013215951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12485d1645e2bb0439e6dae8d0f0a4bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitName: Kamaitati
+  maxHp: 20
+  currentHp: 20
+  speed: 0
+  isPlayer: 0
+  isDead: 0
+  currentHate: 0
+  maxHate: 100
+  nameText: {fileID: 0}
+  hpSlider: {fileID: 0}
+  hpFillImage: {fileID: 0}
+  hateSlider: {fileID: 0}
+  hateFillImage: {fileID: 0}
+  hpValueText: {fileID: 0}
+  hateValueText: {fileID: 0}
+  isDefending: 0
+  isCovering: 0
+  hasCoveredThisTurn: 0
+  animationLength: 0
 --- !u!1 &1025049705
 GameObject:
   m_ObjectHideFlags: 0
@@ -1890,7 +1998,9 @@ MonoBehaviour:
   height: 1
   nextEnemyID: 0
   nextEnemyLevel: 1
-  bossID: 5
+  isBossBattle: 0
+  currentBossID: -1
+  bossIDs: 
 --- !u!1 &1106518191
 GameObject:
   m_ObjectHideFlags: 0
@@ -2505,9 +2615,10 @@ MonoBehaviour:
   - {fileID: 1285243746}
   enemies:
   - {fileID: 695430614}
+  - {fileID: 1013215954}
   - {fileID: 1210191424}
-  - {fileID: 907619137}
   uiManager: {fileID: 1378014606}
+  enemyFactory: {fileID: 374545835}
   commonSkills:
   - skillName: DefAtk
     power: 20
@@ -2912,6 +3023,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3997202529527034824, guid: b0a7522ce9c1b8a4892b379e4b23ce81, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2.38
+      objectReference: {fileID: 0}
+    - target: {fileID: 3997202529527034824, guid: b0a7522ce9c1b8a4892b379e4b23ce81, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.92
+      objectReference: {fileID: 0}
+    - target: {fileID: 3997202529527034824, guid: b0a7522ce9c1b8a4892b379e4b23ce81, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.41
+      objectReference: {fileID: 0}
+    - target: {fileID: 4618267820630355898, guid: b0a7522ce9c1b8a4892b379e4b23ce81, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -3.22
+      objectReference: {fileID: 0}
+    - target: {fileID: 4618267820630355898, guid: b0a7522ce9c1b8a4892b379e4b23ce81, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -5.19
+      objectReference: {fileID: 0}
     - target: {fileID: 5481203922445539528, guid: b0a7522ce9c1b8a4892b379e4b23ce81, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.57
@@ -2960,9 +3091,9 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6103737004888771392, guid: b0a7522ce9c1b8a4892b379e4b23ce81, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 2055074113070766282, guid: b0a7522ce9c1b8a4892b379e4b23ce81, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 907619137}
+      addedObject: {fileID: 1013215954}
   m_SourcePrefab: {fileID: 100100000, guid: b0a7522ce9c1b8a4892b379e4b23ce81, type: 3}
 --- !u!114 &1910917238 stripped
 MonoBehaviour:
@@ -3384,6 +3515,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 187523797}
     m_Modifications:
+    - target: {fileID: 514973908845637837, guid: 29abb6f7fb1591a45bee500615619e35, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2314065507520850458, guid: 29abb6f7fb1591a45bee500615619e35, type: 3}
       propertyPath: m_Name
       value: EkiinUI
@@ -3407,6 +3542,10 @@ PrefabInstance:
     - target: {fileID: 4037924436983543054, guid: 29abb6f7fb1591a45bee500615619e35, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4640501120442233232, guid: 29abb6f7fb1591a45bee500615619e35, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5497068550784210354, guid: 29abb6f7fb1591a45bee500615619e35, type: 3}
       propertyPath: m_Sprite
@@ -3852,8 +3991,9 @@ SceneRoots:
   - {fileID: 528373527}
   - {fileID: 1916579630}
   - {fileID: 1668012132}
-  - {fileID: 2311811826636860887}
   - {fileID: 1869001644}
+  - {fileID: 2311811826636860887}
   - {fileID: 291543863}
   - {fileID: 2008063477}
   - {fileID: 1788451856}
+  - {fileID: 374545834}
