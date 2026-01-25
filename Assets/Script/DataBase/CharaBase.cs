@@ -68,8 +68,11 @@ namespace Data
             m_statusRuntime.speed = m_statusCalculated.speed;
         }
         // ------------------------ Žæ“¾—p ------------------------
+        public StatusBase GetStatusBase() { return m_statusBase; }
         public StatusCalculated GetStatusCalculated() { return m_statusCalculated; }
         public StatusRuntime GetStatusRuntime() { return m_statusRuntime; }
+
+        public int GetLevel() { return m_level; }
 
         /// <summary>
         /// –¼‘O‚ÌŽæ“¾

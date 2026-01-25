@@ -8,6 +8,7 @@ public class FieldButton : MonoBehaviour
 {
     public void ClickToMenu()
     {
+        if (System.FadeManager.Instance.GetFadeState()) return;
         SoundManager.Instance.PlaySE("SE_Confirm");
         FadeManager.FadeChangeScene("MenuScene", 1.0f);
     }
