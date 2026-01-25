@@ -6,7 +6,6 @@ public class MenuController : MonoBehaviour
 {
     public Sprite defoSprite;
     public Sprite nextSprite;
-    public RectTransform targetImageRect;
     private Image image;
 
     void Start()
@@ -35,7 +34,7 @@ public class MenuController : MonoBehaviour
         }
         else
         {
-            image.sprite=nextSprite;
+            image.sprite=defoSprite;
         }
 
     }
