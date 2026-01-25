@@ -312,7 +312,7 @@ public class BattleSystemManager : MonoBehaviour
         }
         else // êÌì¨èIóπ
         {
-            System.FadeManager.FadeChangeScene("FieldScene", 1.0f);
+        //    System.FadeManager.FadeChangeScene("FieldScene", 1.0f);
         }
     }
 
@@ -389,6 +389,7 @@ public class BattleSystemManager : MonoBehaviour
         {
             state = BattleState.Win;
             uiManager.ShowResult("Victory!", true);
+            
             return true;
         }
         if (allPlayersDead)

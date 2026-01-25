@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using TMPro;
+using System;
 
 public class BattleUIManager : MonoBehaviour
 {
@@ -26,6 +27,7 @@ public class BattleUIManager : MonoBehaviour
     public TextMeshProUGUI logText;
     public TextMeshProUGUI resultText;
     public TextMeshProUGUI phaseText;
+    public Button returnButton;
 
     private BattleSystemManager battleManager;
 
@@ -121,6 +123,14 @@ public class BattleUIManager : MonoBehaviour
         resultPanel.SetActive(true);
         resultText.text = message;
         resultText.color = isWin ? Color.yellow : Color.red;
+        // リザルト後のボタン表示などもここで設定可能
+        returnButton.onClick.AddListener(OnReturnToFieldButton);
+    }
+
+    // フィールドシーンに戻るボタン
+    public void OnReturnToFieldButton()
+    {
+        FadeManager.FadeChangeScene("FieldScene",1.0f);
     }
 }
 
