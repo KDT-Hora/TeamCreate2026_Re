@@ -930,7 +930,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyUnitPrefubs:
   - {fileID: 2055074113070766282, guid: b0a7522ce9c1b8a4892b379e4b23ce81, type: 3}
-  - {fileID: 778523962403310729, guid: c6bf1a0e016ae37458541be970dbb6af, type: 3}
+  - {fileID: 778523962403310729, guid: c7577e7708e02c24b83c4240387b7a15, type: 3}
   - {fileID: 4377006023809172116, guid: fa7a23fd04ae9514bb5202bd613c1a68, type: 3}
   BossUnitPrefubs:
   - {fileID: 1100667319031844780, guid: 01325428b3e84e54a8b5267a2222b850, type: 3}
