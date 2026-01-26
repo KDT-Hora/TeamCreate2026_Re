@@ -68,8 +68,11 @@ public class BattleSystemManager : MonoBehaviour
     void CharactorStateSet()
     {
         var playerDataList = DataManager.Instance.currentParty.members;
+        Debug.Log("CharactorStateSet Start");
+        Debug.Log("Player Count: " + players.Count);
         for (int i = 0; i < players.Count; i++)
         {
+            Debug.Log("Setting up player " + i + ": " + playerDataList[i].GetName());
             players[i].UnitInit(playerDataList[i]);
 
         }
@@ -155,6 +158,8 @@ public class BattleSystemManager : MonoBehaviour
     // UIボタン: 「戦う」選択
     public void OnFightButton()
     {
+        SoundManager.Instance.PlaySE("SE_Confirm");
+
         state = BattleState.ActionSelect;
         currentPlayerIndex = 0;
         SelectActionForCharacter(currentPlayerIndex);
@@ -163,6 +168,8 @@ public class BattleSystemManager : MonoBehaviour
     // UIボタン: 「逃げる」選択
     public void OnRunButton()
     {
+        SoundManager.Instance.PlaySE("SE_Cancel");
+
         // 逃走処理（今回は省略、終了など）
         Debug.Log("逃げた！");
         System.FadeManager.FadeChangeScene("FieldScene", 1.0f);
@@ -185,6 +192,8 @@ public class BattleSystemManager : MonoBehaviour
     public void OnSkillSelected(SkillData skill)
     {
         currentSelectedSkill = skill;
+
+        SoundManager.Instance.PlaySE("SE_Confirm");
 
         // 対象選択が不要なもの（防御など）は即決定
         if (skill.type == ActionType.Defend)
@@ -212,11 +221,14 @@ public class BattleSystemManager : MonoBehaviour
     //  スキル選択へ
     public void OnAviritySkillSelected()
     {
- //       currentSelectedSkill = skill;
- //       state = BattleState.TargetSelect;
- //       // ターゲットリスト作成
- //       List<UnitController> targets = skill.isTargetEnemy ? enemies : players;
- //       uiManager.ShowTargetMenu(targets, OnTargetSelected);
+
+        SoundManager.Instance.PlaySE("SE_Confirm");
+
+        //       currentSelectedSkill = skill;
+        //       state = BattleState.TargetSelect;
+        //       // ターゲットリスト作成
+        //       List<UnitController> targets = skill.isTargetEnemy ? enemies : players;
+        //       uiManager.ShowTargetMenu(targets, OnTargetSelected);
         state = BattleState.AviritySelect;
         //  選択中のキャラクターを取得
         UnitController currentChar = players[currentPlayerIndex];
@@ -226,6 +238,9 @@ public class BattleSystemManager : MonoBehaviour
     // UIボタン: ターゲット選択時
     public void OnTargetSelected(UnitController target)
     {
+        SoundManager.Instance.PlaySE("SE_Confirm");
+
+
         // 庇うを選択した場合のフラグ管理
         if (currentSelectedSkill.type == ActionType.Cover)
         {
@@ -239,6 +254,8 @@ public class BattleSystemManager : MonoBehaviour
     // UIボタン: キャラのスキル選択時
     public void OnSkillFromCharSelected(SkillData skill)
     {
+        SoundManager.Instance.PlaySE("SE_Confirm");
+
         currentSelectedSkill = skill;
         state = BattleState.TargetSelect;
         // ターゲットリスト作成
@@ -349,6 +366,8 @@ public class BattleSystemManager : MonoBehaviour
                 {
                     //  ターゲット変更しか発動していないので、特有処理を入れてない
                     Debug.Log(coverUnit.GetUnitName() + "が庇った！");
+
+                    SoundManager.Instance.PlaySE("SE_Kabau");
 
                     // 庇う発動
                     coverUnit.GetProtectSystem().
@@ -515,6 +534,36 @@ public class BattleSystemManager : MonoBehaviour
             dmg = 1; // 最低1ダメージは与える
             Debug.Log("最低ダメージ適用");
         }
+
+        //  属性補正
+        //    if (action.skill.element != ElementType.None)
+        //    {
+        //        //  属性補正処理
+        //        float elementModifier = 
+        //            action.target.GetUnitData().GetStatusRuntime().
+        //            GetElementModifier(action.skill.element);
+        //        dmg = Mathf.RoundToInt(dmg * elementModifier);
+        //        Debug.Log("属性補正後ダメージ: " + dmg);
+        //    }
+
+        //  効果音再生
+        if (action.skill.element == Element.Fire)
+        {
+            SoundManager.Instance.PlaySE("SE_Fire_Atk");
+        }
+        else if(action.skill.element == Element.Water)
+        {
+            SoundManager.Instance.PlaySE("SE_Water_Atk");
+        }
+        else if(action.skill.element == Element.Grass)
+        {
+            SoundManager.Instance.PlaySE("SE_Flower_Atk");
+        }
+        else
+        {
+            SoundManager.Instance.PlaySE("SE_Player_atk");
+        }
+
         action.target.TakeDamage(dmg);
     }
 

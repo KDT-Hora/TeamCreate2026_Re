@@ -897,7 +897,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyUnitPrefubs:
   - {fileID: 2055074113070766282, guid: b0a7522ce9c1b8a4892b379e4b23ce81, type: 3}
-  - {fileID: 778523962403310729, guid: c7577e7708e02c24b83c4240387b7a15, type: 3}
+  - {fileID: 778523962403310729, guid: c6bf1a0e016ae37458541be970dbb6af, type: 3}
   - {fileID: 4377006023809172116, guid: fa7a23fd04ae9514bb5202bd613c1a68, type: 3}
   BossUnitPrefubs:
   - {fileID: 1100667319031844780, guid: 01325428b3e84e54a8b5267a2222b850, type: 3}
@@ -2138,7 +2138,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1079347455
 Transform:
   m_ObjectHideFlags: 0
@@ -3223,8 +3223,8 @@ MonoBehaviour:
   resultPanel: {fileID: 2061800113}
   PlayerUIBox: {fileID: 187523796}
   EnemyUIBox: {fileID: 876657818}
-  PlayerUI: {fileID: 2314065507520850458, guid: 29abb6f7fb1591a45bee500615619e35, type: 3}
-  EnemyUI: {fileID: 0}
+  PlayerUI: {fileID: 4741459918078741019, guid: 2050f8028bdb9c941b1d133e0e3c8e86, type: 3}
+  EnemyUI: {fileID: 7556508907934344026, guid: d497abadaf935f7499b37854082b28e7, type: 3}
   fightButton: {fileID: 2000889055}
   runButton: {fileID: 1131306750}
   actionButtonContainer: {fileID: 5835524287096385757}
@@ -3255,10 +3255,7 @@ MonoBehaviour:
   - {fileID: 1124001458}
   - {fileID: 841611806}
   - {fileID: 1285243746}
-  enemies:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  enemies: []
   uiManager: {fileID: 1378014606}
   enemyFactory: {fileID: 374545835}
   commonSkills:

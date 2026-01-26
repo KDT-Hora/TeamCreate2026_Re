@@ -199,6 +199,7 @@ public class BattleUIManager : MonoBehaviour
     // フィールドシーンに戻るボタン
     public void OnReturnToFieldButton()
     {
+        SoundManager.Instance.PlaySE("SE_Confirm");
         FadeManager.FadeChangeScene("FieldScene",1.0f);
     }
 }

@@ -121,6 +121,13 @@ public class UnitController : MonoBehaviour
             gameObject.SetActive(false);
         }
         UpdateHPBar();
+
+        // ダメージ音再生
+        //  防御をしていたら
+        if(isDefending)
+        {
+            SoundManager.Instance.PlaySE("SE_Guard");
+        }
     }
     //  回復処理
     public void HealDamage(int healAmount)
@@ -131,6 +138,8 @@ public class UnitController : MonoBehaviour
             unitData.GetStatusRuntime().hp = unitData.GetStatusCalculated().maxHp;
         }
         UpdateHPBar();
+
+        SoundManager.Instance.PlaySE("SE_Heel");
     }
     //  ヘイト追加処理
     public void AddHate(int amount)

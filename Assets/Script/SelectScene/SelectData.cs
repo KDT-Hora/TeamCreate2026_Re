@@ -30,6 +30,7 @@ public class SelectData : MonoBehaviour
     public void SetBoss(Boss boss)
     {
         Debug.Log("‘I‘ð‚µ‚½ƒ{ƒX: " + boss);
+    //    DataManager.Instance.currentBossID = (int)boss;
         selectBoss = boss;
     }
 
