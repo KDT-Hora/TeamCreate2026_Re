@@ -131,12 +131,14 @@ public class PlayerMove : MonoBehaviour
         if (collision.gameObject.CompareTag("BOSS"))
         {
             isTouchingBoss = true;
+            DataManager.Instance.isBossBattle = true;
             Debug.Log("BOSSに接触！");
         }
 
         // 衝突した相手のタグが Enemy の場合
         if (collision.gameObject.CompareTag("Enemy"))
         {
+            DataManager.Instance.isBossBattle = false;
             Debug.Log("敵に当たった！");
             SoundManager.Instance.PlaySE("SE_Enemy_Hit");
             SoundManager.Instance.PlayBGM("BGM_Battle");
