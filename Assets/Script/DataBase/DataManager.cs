@@ -239,4 +239,35 @@ public class DataManager : MonoBehaviour
     {
         currentParty = new PartyData();
     }
+
+    // 初期化
+    public void ResetAllData()
+    {
+        Debug.Log("DataManager reset start");
+
+        // プレイヤーGameObjectを全破棄
+        if (currentParty != null)
+        {
+            foreach (var member in currentParty.members)
+            {
+                if (member != null)
+                {
+                    Destroy(member.gameObject);
+                }
+            }
+            currentParty.members.Clear();
+        }
+
+        // パーティデータを作り直す
+        currentParty = new PartyData();
+
+        // バトル関連フラグ初期化
+        nextEnemyID = 0;
+        nextEnemyLevel = 1;
+        isBossBattle = false;
+        currentBossID = -1;
+
+        Debug.Log("DataManager Reset completion");
+    }
+
 }

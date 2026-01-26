@@ -6,7 +6,17 @@ using UnityEngine.SceneManagement; // ‚±‚ê‚ª•K—v
 
 public class TitleButton : MonoBehaviour
 {
-
+    void Awake()
+    {
+        if (DataManager.Instance != null)
+        {
+            DataManager.Instance.ResetAllData();
+        }
+        if (FieldData.Instance != null)
+        {
+            FieldData.Instance.Initialize();
+        }
+    }
     void Start()
     {
         SoundManager.Instance.PlayBGM("BGM_Title");

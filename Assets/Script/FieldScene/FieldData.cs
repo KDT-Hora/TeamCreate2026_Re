@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -78,4 +77,19 @@ public class FieldData : MonoBehaviour
             enemyDic.Add(name, new EnemyStatus(name, pos, alive));
         }
     }
+
+    public void Initialize()
+    {
+        playerPosition = Vector3.zero;
+        enemyDic.Clear();
+
+        Debug.Log("[FieldData] Initialize Š®—¹");
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+
 }
