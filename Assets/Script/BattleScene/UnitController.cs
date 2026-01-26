@@ -15,6 +15,7 @@ public class UnitController : MonoBehaviour
 //    public int speed;
     public bool isPlayer;
     public bool isDead;
+    public SkillHolder skills;
 
     Player unitData;        //  ユニットのデータ共有部への参照
 
@@ -90,7 +91,7 @@ public class UnitController : MonoBehaviour
         AddHate(0);
 
     }
-
+    //  HPバー更新
     public void UpdateHPBar()
     {
         if (hpSlider)
@@ -105,7 +106,7 @@ public class UnitController : MonoBehaviour
                 $"{unitData.GetStatusCalculated().maxHp}";
         }
     }
-
+    //  ダメージ処理
     public void TakeDamage(int damage)
     {
         unitData.GetStatusRuntime().hp -= damage;
@@ -121,7 +122,17 @@ public class UnitController : MonoBehaviour
         }
         UpdateHPBar();
     }
-
+    //  回復処理
+    public void HealDamage(int healAmount)
+    {
+        unitData.GetStatusRuntime().hp += healAmount;
+        if (unitData.GetStatusRuntime().hp > unitData.GetStatusCalculated().maxHp)
+        {
+            unitData.GetStatusRuntime().hp = unitData.GetStatusCalculated().maxHp;
+        }
+        UpdateHPBar();
+    }
+    //  ヘイト追加処理
     public void AddHate(int amount)
     {
         if (!isPlayer) return; // 敵はヘイトを持たない想定
@@ -144,20 +155,26 @@ public class UnitController : MonoBehaviour
 
     }
 
+    //  デバフ処理
+
+    //  バフ処理
+
+    //  庇い処理の取得
     public ProtectSystem GetProtectSystem()
     {
         return unitData.GetProtectSystem();
     }
-
+    //  速度取得
     public int GetSpeed()
     {
         return unitData.GetStatusCalculated().speed;
     }
+    //  名前取得
     public string GetUnitName()
     {
         return unitData.GetName();
     }
-
+    //  ユニットデータ取得
     public Player GetUnitData()
     {
         return unitData;

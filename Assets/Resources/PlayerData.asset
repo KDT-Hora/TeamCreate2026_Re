@@ -24,16 +24,6 @@ MonoBehaviour:
     baseSpeed: 65
     element: 0
   - id: 1
-    name: heroine
-    baseHp: 500
-    baseMp: 200
-    baseAtk: 100
-    baseDef: 70
-    baseMatk: 90
-    baseMdef: 10
-    baseSpeed: 55
-    element: 1
-  - id: 2
     name: fellow
     baseHp: 500
     baseMp: 300
@@ -43,3 +33,13 @@ MonoBehaviour:
     baseMdef: 90
     baseSpeed: 45
     element: 2
+  - id: 2
+    name: heroine
+    baseHp: 500
+    baseMp: 200
+    baseAtk: 100
+    baseDef: 70
+    baseMatk: 90
+    baseMdef: 10
+    baseSpeed: 55
+    element: 1
