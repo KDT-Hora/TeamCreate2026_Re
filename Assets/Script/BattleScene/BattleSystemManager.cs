@@ -1,11 +1,21 @@
-using UnityEngine;
+using Mono.Cecil.Cil;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Mono.Cecil.Cil;
+using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 //using System;
 
-public enum BattleState { Start, PlayerMenu, ActionSelect, TargetSelect, EnemyPhase, ExecutePhase, Win, Lose }
+public enum BattleState
+{
+    Start, 
+    PlayerMenu, 
+    ActionSelect, 
+    AviritySelect,
+    TargetSelect, 
+    EnemyPhase, 
+    ExecutePhase, 
+    Win, Lose }
 
 public class BattleSystemManager : MonoBehaviour
 {
@@ -182,6 +192,14 @@ public class BattleSystemManager : MonoBehaviour
             RegisterAction(players[currentPlayerIndex], players[currentPlayerIndex], skill); // 自分対象
             NextCharSelection();
         }
+//        else if(skill.type == ActionType.Avirity)
+//        {
+//            state = BattleState.AviritySelect;
+//
+//            //  選択中のキャラクターを取得
+//            UnitController currentChar = players[currentPlayerIndex];
+//            uiManager.ShowSkillMenu(currentChar);
+//        }
         else
         {
             state = BattleState.TargetSelect;
@@ -189,6 +207,20 @@ public class BattleSystemManager : MonoBehaviour
             List<UnitController> targets = skill.isTargetEnemy ? enemies : players;
             uiManager.ShowTargetMenu(targets, OnTargetSelected);
         }
+    }
+
+    //  スキル選択へ
+    public void OnAviritySkillSelected()
+    {
+ //       currentSelectedSkill = skill;
+ //       state = BattleState.TargetSelect;
+ //       // ターゲットリスト作成
+ //       List<UnitController> targets = skill.isTargetEnemy ? enemies : players;
+ //       uiManager.ShowTargetMenu(targets, OnTargetSelected);
+        state = BattleState.AviritySelect;
+        //  選択中のキャラクターを取得
+        UnitController currentChar = players[currentPlayerIndex];
+        uiManager.ShowSkillMenu(currentChar);
     }
 
     // UIボタン: ターゲット選択時
@@ -202,6 +234,16 @@ public class BattleSystemManager : MonoBehaviour
 
         RegisterAction(players[currentPlayerIndex], target, currentSelectedSkill);
         NextCharSelection();
+    }
+
+    // UIボタン: キャラのスキル選択時
+    public void OnSkillFromCharSelected(SkillData skill)
+    {
+        currentSelectedSkill = skill;
+        state = BattleState.TargetSelect;
+        // ターゲットリスト作成
+        List<UnitController> targets = skill.isTargetEnemy ? enemies : players;
+        uiManager.ShowTargetMenu(targets, OnTargetSelected);
     }
 
     //  アクションレジスター
@@ -356,7 +398,7 @@ public class BattleSystemManager : MonoBehaviour
         return null; // 全滅
     }
 
-    //  
+    //  行動の実行処理
     IEnumerator PerformAction(BattleAction action)
     {
 
@@ -384,20 +426,104 @@ public class BattleSystemManager : MonoBehaviour
             actor.AddHate(action.skill.hateIncrease);
         }
 
-        // 攻撃・スキル・アイテムの場合
-        if (action.skill.type == ActionType.Attack || action.skill.type == ActionType.Skill)
+        //  対象の数取得
+        targetType targetCount = action.skill.targetType; 
+
+
+        if(targetCount == targetType.All)
         {
-            // 対象のアニメーション（点滅）
-            yield return StartCoroutine(target.AnimateBlink(0.5f));
+            // 全体対象の場合
+            List<UnitController> targets = action.skill.isTargetEnemy ? enemies : players;
+            foreach (var t in targets)
+            {
+                if (t.isDead) continue;
+                // 対象のアニメーション（点滅）
+                yield return StartCoroutine(t.AnimateBlink(0.5f));
+                //  ダメージ計算
+                if (action.skill.type == ActionType.Attack ||
+                    action.skill.type == ActionType.Avirity)
+                {
+                    Attack(new BattleAction
+                    {
+                        actor = action.actor,
+                        target = t,
+                        skill = action.skill,
+                        speedPriority = action.speedPriority
+                    });
+                }
+                //  回復スキルの場合
+                else if (action.skill.type == ActionType.Heal)
+                {
+                    Heal(new BattleAction
+                    {
+                        actor = action.actor,
+                        target = t,
+                        skill = action.skill,
+                        speedPriority = action.speedPriority
+                    });
+                }
+                else if(action.skill.type == ActionType.Debuff)
+                {
+                    //  ステータスデバフ処理
+                //    t.GetUnitData().GetStatusRuntime().ApplyDebuff(action.skill);
+                }
+                else if (action.skill.type == ActionType.Buff)
+                {
+                    //  ステータスバフ処理
+                //    t.GetUnitData().GetStatusRuntime().ApplyBuff(action.skill);
+                }
+            }
+        }
+        else 
+        {
+            // 攻撃・スキル・アイテムの場合
+            if (action.skill.type == ActionType.Attack ||
+                action.skill.type == ActionType.Avirity)
+            {
+                // 対象のアニメーション（点滅）
+                yield return StartCoroutine(target.AnimateBlink(0.5f));
 
-            int dmg = action.skill.power;
-            // 防御などの計算
-            if (target.isDefending) dmg /= 2;
-
-            target.TakeDamage(dmg);
+                //  ダメージ計算
+                Attack(action);
+            }
+            //  回復スキルの場合
+            else if (action.skill.type == ActionType.Heal)
+            {
+                Heal(action);
+            }
         }
 
+
+
         yield return new WaitForSeconds(1.0f); // 余韻
+    }
+
+    void Attack(BattleAction action)
+    {
+        // 基本ダメージ計算（単純化のため）
+        //  スキルの威力 × 攻撃者の攻撃力
+        int dmg = (action.skill.power *
+            action.actor.GetUnitData().GetStatusRuntime().atk) / 100;
+        Debug.Log("基本ダメージ計算: " + dmg);
+        // 防御などの計算
+        if (action.target.isDefending) dmg /= 2;
+        //  防御力に応じて実数値で減少
+        dmg = dmg - (action.target.GetUnitData().GetStatusRuntime().def / 4);
+        Debug.Log("防御力考慮後ダメージ: " + dmg);
+        if (dmg < 1)
+        {
+            dmg = 1; // 最低1ダメージは与える
+            Debug.Log("最低ダメージ適用");
+        }
+        action.target.TakeDamage(dmg);
+    }
+
+    void Heal(BattleAction action)
+    {
+        // 回復量計算など
+        int healAmount = (action.skill.power +
+            action.actor.GetUnitData().GetStatusRuntime().atk / 2) / 100;
+        action.target.HealDamage(healAmount);
     }
 
     //  戦闘終了判定

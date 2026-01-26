@@ -1,7 +1,31 @@
 using UnityEngine;
 
-public enum ActionType { Attack, Defend, Skill, Cover, Item }
+public enum ActionType 
+{
+    Attack, 
+    Defend, 
+    Avirity, 
+    Heal,
+    Buff,
+    Debuff,
+    Cover, 
+    Item 
+}
 public enum TargetSide { Player, Enemy }
+public enum  Element
+{
+    None,       //  無
+    Fire,       //  炎
+    Water,      //  水
+    Grass,      //  草
+}
+
+public enum targetType
+{
+    Single,
+    All,
+    Random,
+}
 
 [System.Serializable]
 public class SkillData
@@ -10,6 +34,8 @@ public class SkillData
     public int power;               // ダメージや回復量
     public int hateIncrease;        // 使用時のヘイト上昇量
     public ActionType type;         // Skill, Cover, Item等の分類
+    public Element element;         // 属性
+    public targetType targetType;   // 単体、全体、ランダム
     public bool isTargetEnemy;      // 敵対象ならtrue
 }
 
