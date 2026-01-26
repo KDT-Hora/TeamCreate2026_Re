@@ -135,7 +135,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &237787021
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,8 +150,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentParty:
     members: []
-  PlayerPrefab: {fileID: 0}
-  EnemyPrefab: {fileID: 0}
+  PlayerPrefab: {fileID: 1100667319031844780, guid: 01325428b3e84e54a8b5267a2222b850, type: 3}
+  EnemyPrefab: {fileID: 1100667319031844780, guid: 01325428b3e84e54a8b5267a2222b850, type: 3}
   spacing: 2
   teamDistance: 5
   height: 1
