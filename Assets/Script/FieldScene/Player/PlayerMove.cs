@@ -17,7 +17,7 @@ public class PlayerMove : MonoBehaviour
     public float minX = -100f;
     public float maxX = 100f;
     public float minZ = -50f;
-    public float maxZ = 10f;
+    public float maxZ = 50f;
 
     // ボスと当たっているかどうかを保持する内部変数
     private bool isTouchingBoss = false;
@@ -100,7 +100,7 @@ public class PlayerMove : MonoBehaviour
         Vector3 nextPosition = rb.position + movement;
 
         // 3. XとZの値を制限（Clamp）する
-        nextPosition.x = Mathf.Clamp(nextPosition.x, minX / 10, maxX / 100 * 40);
+        nextPosition.x = Mathf.Clamp(nextPosition.x, minX / 10, maxX / 10);
         nextPosition.z = Mathf.Clamp(nextPosition.z, minZ, maxZ);
 
         // 4. 制限された座標へ移動
