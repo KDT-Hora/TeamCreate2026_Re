@@ -133,6 +133,10 @@ public class PlayerMove : MonoBehaviour
             isTouchingBoss = true;
             DataManager.Instance.isBossBattle = true;
             Debug.Log("BOSSに接触！");
+            SoundManager.Instance.PlaySE("SE_Enemy_Hit");
+            SoundManager.Instance.PlayBGM("BGM_Battle");
+            FadeManager.FadeChangeScene("BattleScene", 1.0f);
+
         }
 
         // 衝突した相手のタグが Enemy の場合

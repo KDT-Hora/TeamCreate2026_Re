@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using System;
 using Unity.VisualScripting;
+using UnityEngine.EventSystems;
 
 public class BattleUIManager : MonoBehaviour
 {
@@ -41,6 +42,8 @@ public class BattleUIManager : MonoBehaviour
 
     private BattleSystemManager battleManager;
 
+    bool onButton = false;
+
     void Start()
     {
         battleManager = FindObjectOfType<BattleSystemManager>();
@@ -48,6 +51,7 @@ public class BattleUIManager : MonoBehaviour
         runButton.onClick.AddListener(battleManager.OnRunButton);
         HideAllMenus();
     }
+      
 
     //  全メニュー非表示へ
     public void HideAllMenus()
