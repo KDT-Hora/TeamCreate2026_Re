@@ -9,8 +9,8 @@ public class SelectData : MonoBehaviour
     public enum Boss
     {
         Ittan,
+        Syuten,
         Karasu,
-        Syuten
     }
     // 選択したボスだけ保持する
     public Boss selectBoss;
@@ -35,8 +35,9 @@ public class SelectData : MonoBehaviour
     }
 
     // Getter
-    public Boss GetBoss()
+    public int GetBoss()
     {
-        return selectBoss;    
+        Debug.Log("取得したボス: " + selectBoss.ToString());
+        return (int)selectBoss;    
     }
 }

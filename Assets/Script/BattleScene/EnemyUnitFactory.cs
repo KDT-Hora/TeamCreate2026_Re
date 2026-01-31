@@ -1,5 +1,6 @@
 using Data;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using static SelectData;
 
@@ -38,7 +39,8 @@ public class EnemyUnitFactory : MonoBehaviour
         UnitController bossController = null;
 
         //  ボスIDに応じたボスのプレハブを選択して生成
-        int id = DataManager.Instance.currentBossID;
+//        int id = DataManager.Instance.currentBossID;
+        int id = SelectData.Instance.GetBoss();
         if (id >= 0 && id < BossUnitPrefubs.Count)
         {
             //  リストからステータス取得
