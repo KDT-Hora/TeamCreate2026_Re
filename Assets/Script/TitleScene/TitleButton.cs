@@ -8,6 +8,9 @@ public class TitleButton : MonoBehaviour
 {
     void Awake()
     {
+        // ‰æ–Ê”ä—¦
+        Screen.SetResolution(1920, 1080, FullScreenMode.Windowed);
+
         if (DataManager.Instance != null)
         {
             DataManager.Instance.ResetAllData();
