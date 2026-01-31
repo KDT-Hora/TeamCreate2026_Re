@@ -28,7 +28,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.95476085, z: 0, w: 0.297375}
   m_LocalPosition: {x: 0, y: -0.59, z: -9.38}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1333164676566260582}
@@ -122,6 +122,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -4025723627706516683, guid: 0767863e4af7a524a85921652e1b0198, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 8d9958c2de5451640bf84cce64aab048, type: 2}
+    - target: {fileID: -4025723627706516683, guid: 0767863e4af7a524a85921652e1b0198, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 624b408857eac694cacf752909c9ba6b, type: 2}
     - target: {fileID: 919132149155446097, guid: 0767863e4af7a524a85921652e1b0198, type: 3}
       propertyPath: m_Name
       value: syutendouzi_idle
