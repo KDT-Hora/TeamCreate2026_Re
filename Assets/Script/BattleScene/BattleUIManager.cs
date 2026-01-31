@@ -33,6 +33,8 @@ public class BattleUIManager : MonoBehaviour
     public TextMeshProUGUI resultText;
     public TextMeshProUGUI phaseText;
     public Button returnButton;
+    public GameObject backButton;          //  設定Cancelボタン
+
 
     [Header("選択コマンド")]
     public Button AttackButton;
@@ -42,13 +44,14 @@ public class BattleUIManager : MonoBehaviour
 
     private BattleSystemManager battleManager;
 
-    bool onButton = false;
-
     void Start()
     {
         battleManager = FindObjectOfType<BattleSystemManager>();
         fightButton.onClick.AddListener(battleManager.OnFightButton);
         runButton.onClick.AddListener(battleManager.OnRunButton);
+        backButton.GetComponent<Button>().onClick.AddListener(()
+            => battleManager.OnBackButton());
+
         HideAllMenus();
     }
       
@@ -61,6 +64,9 @@ public class BattleUIManager : MonoBehaviour
         skillmenuPanel.SetActive(false);
         targetMenuPanel.SetActive(false);
         resultPanel.SetActive(false);
+
+        backButton.SetActive(false);
+
     }
 
     //  メイン切り替えウィンドウ
@@ -68,6 +74,8 @@ public class BattleUIManager : MonoBehaviour
     {
         HideAllMenus();
         rootMenuPanel.SetActive(true);
+
+        backButton.SetActive(false);
     }
 
     // コマンドボタン生成
@@ -115,16 +123,19 @@ public class BattleUIManager : MonoBehaviour
             => battleManager.OnAviritySkillSelected());
 
         //  ふるい処理
-     //   foreach (var skill in skillsToShow)
-     //   {
-     //       // 庇う制限
-     //       if (skill.type == ActionType.Cover && isCoverUsed) continue;
-     //
-     //       GameObject btnObj = Instantiate(buttonPrefab, actionButtonContainer);
-     //       btnObj.GetComponentInChildren<TextMeshProUGUI>().text = skill.skillName;
-     //       btnObj.GetComponent<Button>().onClick.AddListener(() 
-     //           => battleManager.OnSkillSelected(skill));
-     //   }
+        //   foreach (var skill in skillsToShow)
+        //   {
+        //       // 庇う制限
+        //       if (skill.type == ActionType.Cover && isCoverUsed) continue;
+        //
+        //       GameObject btnObj = Instantiate(buttonPrefab, actionButtonContainer);
+        //       btnObj.GetComponentInChildren<TextMeshProUGUI>().text = skill.skillName;
+        //       btnObj.GetComponent<Button>().onClick.AddListener(() 
+        //           => battleManager.OnSkillSelected(skill));
+        //   }
+
+        backButton.SetActive(true);
+
     }
 
     //  スキル選択
@@ -154,7 +165,7 @@ public class BattleUIManager : MonoBehaviour
                 => battleManager.OnSkillSelected(skill));
         }
 
-
+        backButton.SetActive(true);
     }
 
     // ターゲットボタン生成
@@ -176,6 +187,8 @@ public class BattleUIManager : MonoBehaviour
             btnObj.GetComponentInChildren<TextMeshProUGUI>().text = target.GetUnitName();
             btnObj.GetComponent<Button>().onClick.AddListener(() => onSelect(target));
         }
+
+        backButton.SetActive(true);
     }
 
     //  logのテキスト変更

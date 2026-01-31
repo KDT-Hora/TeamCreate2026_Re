@@ -1,4 +1,3 @@
-using Mono.Cecil.Cil;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -595,6 +594,53 @@ public class BattleSystemManager : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public void OnBackButton()
+    {
+        SoundManager.Instance.PlaySE("SE_Cancel");
+
+        switch (state)
+        {
+            case BattleState.TargetSelect:
+            case BattleState.AviritySelect:
+                BackToActionSelect();
+                break;
+            case BattleState.ActionSelect:
+                BackToPlayerMenu();
+                break;
+            case BattleState.PlayerMenu:
+                // ここでは何もしない or キャンセル不可
+                break;
+        }
+    }
+
+
+    void BackToActionSelect()
+    {
+        currentSelectedSkill = null;
+
+        UnitController currentChar = players[currentPlayerIndex];
+
+        state = BattleState.ActionSelect;
+        uiManager.ShowActionMenu(currentChar, isCoverSelectedThisTurn);
+    }
+
+    void BackToPlayerMenu()
+    {
+        //  現在選択中のキャラクターが０番の場合ルートメニューへ
+        //  そうでない場合は前のキャラクター選択へ戻る
+        if(currentPlayerIndex == 0)
+        {
+            state = BattleState.PlayerMenu;
+            uiManager.ShowRootMenu();
+            return;
+        }
+        currentPlayerIndex--;
+        SelectActionForCharacter(currentPlayerIndex);
+        //  登録済みのアクションを削除
+        turnActions.RemoveAll(a => a.actor == players[currentPlayerIndex]);
+
     }
 }
 

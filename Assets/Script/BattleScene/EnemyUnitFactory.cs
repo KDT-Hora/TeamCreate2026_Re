@@ -2,6 +2,7 @@ using Data;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 using static SelectData;
 
 public class EnemyUnitFactory : MonoBehaviour
@@ -16,8 +17,9 @@ public class EnemyUnitFactory : MonoBehaviour
     [Header("EnemyUI")]
     public Transform enemyUIParent;
     public GameObject enemyUIPrefub;
-    
 
+    //  敵UIの管理
+    private List<GameObject> enemyUIList = new List<GameObject>();
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -28,7 +30,16 @@ public class EnemyUnitFactory : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        for(int i = enemyUIList.Count - 1; i >= 0; i--)
+        {
+            //  敵UIのスライダーの数値が0以下なら削除
+            EnemyUI enemyUI = enemyUIList[i].GetComponent<EnemyUI>();
+            if (enemyUI.hpSlider.value <= 0f)
+            {
+                Destroy(enemyUIList[i]);
+                enemyUIList.RemoveAt(i);
+            }
+        }
     }
 
     //  ボスの生成処理
@@ -158,10 +169,14 @@ public class EnemyUnitFactory : MonoBehaviour
 
         //  敵UI生成
         GameObject enemyUIObj = Instantiate(enemyUIPrefub, enemyUIParent);
+
+        //  UIをリストに追加
+        enemyUIList.Add(enemyUIObj);
+
         //  敵UIとユニットの紐付け
         Debug.Log("敵UIとユニットの紐付け");
         unit.hpSlider = enemyUIObj.GetComponent<EnemyUI>().hpSlider;
-        //    enemyUIObj.GetComponent<EnemyUI>().hpSlider = unit.hpSlider;
+
         //  敵UIの名前設定
         Debug.Log("敵UIの名前設定");
         enemyUIObj.GetComponent<EnemyUI>().nameText.text = unit.GetUnitName();
