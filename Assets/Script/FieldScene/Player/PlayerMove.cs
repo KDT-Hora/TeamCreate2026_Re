@@ -100,7 +100,7 @@ public class PlayerMove : MonoBehaviour
         Vector3 nextPosition = rb.position + movement;
 
         // 3. XとZの値を制限（Clamp）する
-        nextPosition.x = Mathf.Clamp(nextPosition.x, minX / 10, maxX / 100 * 15);
+        nextPosition.x = Mathf.Clamp(nextPosition.x, minX / 10, maxX / 100 * 40);
         nextPosition.z = Mathf.Clamp(nextPosition.z, minZ, maxZ);
 
         // 4. 制限された座標へ移動

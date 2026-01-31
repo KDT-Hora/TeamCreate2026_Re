@@ -87,7 +87,7 @@ public class EnemyMove : MonoBehaviour
 
         if (Vector3.Distance(transform.position, patrolTarget) < 0.1f)
         {
-            patrolTarget = (patrolTarget == pointA) ? pointB : pointA;
+            //patrolTarget = (patrolTarget == pointA) ? pointB : pointA;
         }
     }
 
