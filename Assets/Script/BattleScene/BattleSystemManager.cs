@@ -34,41 +34,45 @@ public class BattleSystemManager : MonoBehaviour
     public EnemyUnitFactory enemyFactory;
 
     [Header("Settings")]
-    public List<SkillData> commonSkills; // 攻撃、防御など
+    public List<SkillData> commonSkills; // 謾ｻ謦��亟蠕｡縺ｪ縺ｩ
 
-    // 内部ステート
+    // 蜀�Κ繧ｹ繝��繝
     private BattleState state;
     private int currentPlayerIndex = 0; // 現在コマンド選択中のキャラ
     private SkillData currentSelectedSkill; // 現在選択中のスキル
     private bool isCoverSelectedThisTurn = false; // チーム全体で「庇う」が選択されたか
+    private UnitController protectTarget;
+    private UnitController protectActor;
+    private bool hasCoverThisTurn = false;
 
-    // 行動リスト
+
+    // 陦悟虚繝ｪ繧ｹ繝
     private List<BattleAction> turnActions = new List<BattleAction>();
 
     void Start()
     {
-        //  デバッグ用の初期化
+        //  繝�ヰ繝�げ逕ｨ縺ｮ蛻晄悄蛹
         DebugInit();
 
 
         state = BattleState.Start;
-        //  キャラクターステータス設定
+        //  繧ｭ繝｣繝ｩ繧ｯ繧ｿ繝ｼ繧ｹ繝��繧ｿ繧ｹ險ｭ螳
         CharactorStateSet();
-        //  敵の生成
+        //  謨ｵ縺ｮ逕滓�
         EnemyCreate();
 
-        //  開始処理
+        //  髢句ｧ句�逅
         StartCoroutine(SetupBattle());
     }
 
     void DebugInit()
     {
-        //　データマネージャーの初期化
+        //縲繝��繧ｿ繝槭ロ繝ｼ繧ｸ繝｣繝ｼ縺ｮ蛻晄悄蛹
         //    DataManager.Instance.SetupParty(3, DataManager.Instance.PlayerPrefab);
 
     }
 
-    //  キャラクターのステータス設定
+    //  繧ｭ繝｣繝ｩ繧ｯ繧ｿ繝ｼ縺ｮ繧ｹ繝��繧ｿ繧ｹ險ｭ螳
     void CharactorStateSet()
     {
         var playerDataList = DataManager.Instance.currentParty.members;
@@ -83,36 +87,36 @@ public class BattleSystemManager : MonoBehaviour
 
     }
 
-    //  敵の生成処理
+    //  謨ｵ縺ｮ逕滓�蜃ｦ逅
     void EnemyCreate()
     {
         Debug.Log("EnemyCreate Start");
 
-        //  生成数決定
-        //  ランダムに1～3体生成
+        //  逕滓�謨ｰ豎ｺ螳
+        //  繝ｩ繝ｳ繝繝縺ｫ1�3菴鍋函謌
         enemies.Clear();
         int enemyCount = Random.Range(1, 4);
 
         Debug.Log("EnemyCount: " + enemyCount);
 
-        //  今がボス線か判定
+        //  莉翫′繝懊せ邱壹°蛻､螳
         if (DataManager.Instance.isBossBattle)
         {
             Debug.Log("BossUnit Create");
 
-            DataManager.Instance.isBossBattle = false; // フラグリセット
+            DataManager.Instance.isBossBattle = false; // 繝輔Λ繧ｰ繝ｪ繧ｻ繝�ヨ
             int id = DataManager.Instance.currentBossID;
 
             Debug.Log("BossID: " + id);
 
-            // ボス戦の場合の生成処理
+            // 繝懊せ謌ｦ縺ｮ蝣ｴ蜷医�逕滓�蜃ｦ逅
             enemies.Add(enemyFactory.SpownBossEnemies(id, enemies.Count));
 
             enemyCount--;
         }
 
 
-        //  残りのenemycount分生成
+        //  谿九ｊ縺ｮenemycount蛻�函謌
         for (int i = 0; i < enemyCount; i++)
         {
             Debug.Log("NormalEnemy Create");
@@ -124,12 +128,12 @@ public class BattleSystemManager : MonoBehaviour
 
     IEnumerator SetupBattle()
     {
-        // 初期化待ちなどあればここ
+        // 蛻晄悄蛹門ｾ�■縺ｪ縺ｩ縺ゅｌ縺ｰ縺薙％
         yield return new WaitForSeconds(0.5f);
         StartPlayerTurn();
     }
 
-    // --- ターン進行フロー ---
+    // --- 繧ｿ繝ｼ繝ｳ騾ｲ陦後ヵ繝ｭ繝ｼ ---
 
     public void Update()
     {
@@ -137,10 +141,10 @@ public class BattleSystemManager : MonoBehaviour
 
     }
 
-    //  ターン開始時のリセット処理
+    //  繧ｿ繝ｼ繝ｳ髢句ｧ区凾縺ｮ繝ｪ繧ｻ繝�ヨ蜃ｦ逅
     void StartPlayerTurn()
     {
-        // ターン開始処理
+        // 繧ｿ繝ｼ繝ｳ髢句ｧ句�逅
         isCoverSelectedThisTurn = false;
         turnActions.Clear();
         foreach (var p in players)
@@ -154,12 +158,12 @@ public class BattleSystemManager : MonoBehaviour
 
         uiManager.ShowPhaseText("Player Turn");
 
-        // 戦う or 逃げる の選択へ
+        // 謌ｦ縺 or 騾�￡繧 縺ｮ驕ｸ謚槭∈
         state = BattleState.PlayerMenu;
         uiManager.ShowRootMenu();
     }
 
-    // UIボタン: 「戦う」選択
+    // UI繝懊ち繝ｳ: 縲梧姶縺�埼∈謚
     public void OnFightButton()
     {
         SoundManager.Instance.PlaySE("SE_Confirm");
@@ -169,20 +173,20 @@ public class BattleSystemManager : MonoBehaviour
         SelectActionForCharacter(currentPlayerIndex);
     }
 
-    // UIボタン: 「逃げる」選択
+    // UI繝懊ち繝ｳ: 縲碁�￡繧九埼∈謚
     public void OnRunButton()
     {
         SoundManager.Instance.PlaySE("SE_Cancel");
 
-        // 逃走処理（今回は省略、終了など）
-        Debug.Log("逃げた！");
+        // 騾�ｵｰ蜃ｦ逅�ｼ井ｻ雁屓縺ｯ逵∫払縲∫ｵゆｺ�↑縺ｩ�
+        Debug.Log("騾�￡縺滂ｼ");
         System.FadeManager.FadeChangeScene("FieldScene", 1.0f);
     }
 
-    // キャラクターごとの行動選択開始
+    // 繧ｭ繝｣繝ｩ繧ｯ繧ｿ繝ｼ縺斐→縺ｮ陦悟虚驕ｸ謚樣幕蟋
     void SelectActionForCharacter(int index)
     {
-        // 死亡しているキャラはスキップ
+        // 豁ｻ莠｡縺励※縺�ｋ繧ｭ繝｣繝ｩ縺ｯ繧ｹ繧ｭ繝��
         if (players[index].isDead)
         {
             NextCharSelection();
@@ -192,37 +196,44 @@ public class BattleSystemManager : MonoBehaviour
         uiManager.ShowActionMenu(players[index], isCoverSelectedThisTurn);
     }
 
-    // UIボタン: スキル/コマンド選択時
+    // UI繝懊ち繝ｳ: 繧ｹ繧ｭ繝ｫ/繧ｳ繝槭Φ繝蛾∈謚樊凾
     public void OnSkillSelected(SkillData skill)
     {
         currentSelectedSkill = skill;
 
         SoundManager.Instance.PlaySE("SE_Confirm");
 
+
+        //  かばいを選択していたら
+        if(skill.type == ActionType.Cover)
+        {
+     //       isCoverSelectedThisTurn = true;
+        }
+
         // 対象選択が不要なもの（防御など）は即決定
         if (skill.type == ActionType.Defend)
         {
-            RegisterAction(players[currentPlayerIndex], players[currentPlayerIndex], skill); // 自分対象
+            RegisterAction(players[currentPlayerIndex], players[currentPlayerIndex], skill); // 閾ｪ蛻�ｯｾ雎｡
             NextCharSelection();
         }
         //        else if(skill.type == ActionType.Avirity)
         //        {
         //            state = BattleState.AviritySelect;
         //
-        //            //  選択中のキャラクターを取得
+        //            //  驕ｸ謚樔ｸｭ縺ｮ繧ｭ繝｣繝ｩ繧ｯ繧ｿ繝ｼ繧貞叙蠕
         //            UnitController currentChar = players[currentPlayerIndex];
         //            uiManager.ShowSkillMenu(currentChar);
         //        }
         else
         {
             state = BattleState.TargetSelect;
-            // ターゲットリスト作成
+            // 繧ｿ繝ｼ繧ｲ繝�ヨ繝ｪ繧ｹ繝井ｽ懈�
             List<UnitController> targets = skill.isTargetEnemy ? enemies : players;
             uiManager.ShowTargetMenu(targets, OnTargetSelected);
         }
     }
 
-    //  スキル選択へ
+    //  繧ｹ繧ｭ繝ｫ驕ｸ謚槭∈
     public void OnAviritySkillSelected()
     {
 
@@ -230,22 +241,22 @@ public class BattleSystemManager : MonoBehaviour
 
         //       currentSelectedSkill = skill;
         //       state = BattleState.TargetSelect;
-        //       // ターゲットリスト作成
+        //       // 繧ｿ繝ｼ繧ｲ繝�ヨ繝ｪ繧ｹ繝井ｽ懈�
         //       List<UnitController> targets = skill.isTargetEnemy ? enemies : players;
         //       uiManager.ShowTargetMenu(targets, OnTargetSelected);
         state = BattleState.AviritySelect;
-        //  選択中のキャラクターを取得
+        //  驕ｸ謚樔ｸｭ縺ｮ繧ｭ繝｣繝ｩ繧ｯ繧ｿ繝ｼ繧貞叙蠕
         UnitController currentChar = players[currentPlayerIndex];
         uiManager.ShowSkillMenu(currentChar);
     }
 
-    // UIボタン: ターゲット選択時
+    // UI繝懊ち繝ｳ: 繧ｿ繝ｼ繧ｲ繝�ヨ驕ｸ謚樊凾
     public void OnTargetSelected(UnitController target)
     {
         SoundManager.Instance.PlaySE("SE_Confirm");
 
 
-        // 庇うを選択した場合のフラグ管理
+        // 蠎�≧繧帝∈謚槭＠縺溷ｴ蜷医�繝輔Λ繧ｰ邂｡逅
         if (currentSelectedSkill.type == ActionType.Cover)
         {
             isCoverSelectedThisTurn = true;
@@ -255,19 +266,19 @@ public class BattleSystemManager : MonoBehaviour
         NextCharSelection();
     }
 
-    // UIボタン: キャラのスキル選択時
+    // UI繝懊ち繝ｳ: 繧ｭ繝｣繝ｩ縺ｮ繧ｹ繧ｭ繝ｫ驕ｸ謚樊凾
     public void OnSkillFromCharSelected(SkillData skill)
     {
         SoundManager.Instance.PlaySE("SE_Confirm");
 
         currentSelectedSkill = skill;
         state = BattleState.TargetSelect;
-        // ターゲットリスト作成
+        // 繧ｿ繝ｼ繧ｲ繝�ヨ繝ｪ繧ｹ繝井ｽ懈�
         List<UnitController> targets = skill.isTargetEnemy ? enemies : players;
         uiManager.ShowTargetMenu(targets, OnTargetSelected);
     }
 
-    //  アクションレジスター
+    //  繧｢繧ｯ繧ｷ繝ｧ繝ｳ繝ｬ繧ｸ繧ｹ繧ｿ繝ｼ
     void RegisterAction(UnitController user, UnitController target, SkillData skill)
     {
         BattleAction action = new BattleAction();
@@ -287,13 +298,13 @@ public class BattleSystemManager : MonoBehaviour
         }
         else
         {
-            // 全員選択終了 -> 敵の思考 -> 実行フェーズ
+            // 蜈ｨ蜩｡驕ｸ謚樒ｵゆｺ -> 謨ｵ縺ｮ諤晁 -> 螳溯｡後ヵ繧ｧ繝ｼ繧ｺ
             CalculateEnemyActions();
             StartCoroutine(ExecutePhase());
         }
     }
 
-    // --- 敵AI ---
+    // --- 謨ｵAI ---
 
     void CalculateEnemyActions()
     {
@@ -301,8 +312,8 @@ public class BattleSystemManager : MonoBehaviour
         {
             if (enemy.isDead) continue;
 
-            // 簡易AI: 基本攻撃
-            SkillData enemySkill = commonSkills.Find(s => s.type == ActionType.Attack); // Inspectorで設定しておく
+            // 邁｡譏鄭I: 蝓ｺ譛ｬ謾ｻ謦
+            SkillData enemySkill = commonSkills.Find(s => s.type == ActionType.Attack); // Inspector縺ｧ險ｭ螳壹＠縺ｦ縺翫￥
 
             UnitController target = SelectTargetByHate();
 
@@ -310,22 +321,22 @@ public class BattleSystemManager : MonoBehaviour
         }
     }
 
-    //  ヘイトに基づくターゲット選択
+    //  繝倥う繝医↓蝓ｺ縺･縺上ち繝ｼ繧ｲ繝�ヨ驕ｸ謚
     UnitController SelectTargetByHate()
     {
         var alivePlayers = players.Where(p => !p.isDead).ToList();
         if (alivePlayers.Count == 0) return null;
 
-        // ヘイト100のキャラがいれば確定
+        // 繝倥う繝100縺ｮ繧ｭ繝｣繝ｩ縺後＞繧後�遒ｺ螳
         var maxHateUnit = alivePlayers.Find(p => p.currentHate >= 100);
         if (maxHateUnit != null)
         {
-            maxHateUnit.currentHate = 0; // ヘイトリセット
+            maxHateUnit.currentHate = 0; // 繝倥う繝医Μ繧ｻ繝�ヨ
             return maxHateUnit;
         }
 
-        // ヘイトによる重みづけ抽選
-        int totalHate = alivePlayers.Sum(p => p.currentHate + 10); // +10はヘイト0でも狙われる確率を残すため
+        // 繝倥う繝医↓繧医ｋ驥阪∩縺･縺第歓驕ｸ
+        int totalHate = alivePlayers.Sum(p => p.currentHate + 10); // +10縺ｯ繝倥う繝0縺ｧ繧ら漁繧上ｌ繧狗｢ｺ邇�ｒ谿九☆縺溘ａ
         int randomValue = Random.Range(0, totalHate);
         int currentWeight = 0;
 
@@ -339,77 +350,93 @@ public class BattleSystemManager : MonoBehaviour
     }
 
 
-    // --- 実行フェーズ ---
+    // --- 螳溯｡後ヵ繧ｧ繝ｼ繧ｺ ---
 
     IEnumerator ExecutePhase()
     {
         state = BattleState.ExecutePhase;
         uiManager.HideAllMenus();
 
-        // 速度順にソート
+        // 騾溷ｺｦ鬆�↓繧ｽ繝ｼ繝
         turnActions = turnActions.OrderByDescending(a => a.speedPriority).ToList();
 
         foreach (var action in turnActions)
         {
-            if (action.actor.isDead) continue; // 死んでたら行動できない
+            if (action.actor.isDead) continue; // 豁ｻ繧薙〒縺溘ｉ陦悟虚縺ｧ縺阪↑縺
             if (CheckBattleEnd()) yield break;
 
-            // ターゲット生存確認とリターゲット
+            // 繧ｿ繝ｼ繧ｲ繝�ヨ逕溷ｭ倡｢ｺ隱阪→繝ｪ繧ｿ繝ｼ繧ｲ繝�ヨ
             if (action.target.isDead)
             {
                 action.target = Retarget(action.target, action.skill.isTargetEnemy);
-                if (action.target == null) continue; // 相手全滅時は処理不要
+                if (action.target == null) continue; // 逶ｸ謇句�貊�凾縺ｯ蜃ｦ逅�ｸ崎ｦ
+            }
+
+
+            //  かばいセット
+            if(action.skill.type == ActionType.Cover) {
+                protectTarget = action.target;
+                protectActor = action.actor;
+                hasCoverThisTurn = true;
             }
 
             // 「庇う」処理のチェック (攻撃行動かつターゲットが味方)
             // 敵の攻撃(Action) -> プレイヤー(Target) -> 誰か庇ってる？
-            if (action.skill.isTargetEnemy && action.target.isPlayer)
+            if(action.target == protectTarget && isCoverSelectedThisTurn&&
+                !action.actor.isPlayer)
             {
-                UnitController coverUnit = players.FirstOrDefault(p => p.isCovering && !p.hasCoveredThisTurn && !p.isDead && p != action.target);
-                if (coverUnit != null)
-                {
-                    //  ターゲット変更しか発動していないので、特有処理を入れてない
-                    Debug.Log(coverUnit.GetUnitName() + "が庇った！");
+             //   UnitController coverUnit = 
+             //       players.FirstOrDefault(p => p.isCovering && !p.hasCoveredThisTurn && !p.isDead && p != action.target);
 
+                //  かばい者が生きていたら
+                if (!protectActor.isDead)
+                {
+
+                    Debug.Log(protectActor.GetUnitName() + "が庇った！");
+                    uiManager.AddLogText(protectActor.GetUnitName() + "が庇った！");
+
+                    //  SE
                     SoundManager.Instance.PlaySE("SE_Kabau");
 
                     // 庇う発動
-                    coverUnit.GetProtectSystem().
-                        ExecuteProtect(coverUnit.GetUnitData(),
-                        action.target.GetUnitData(), action.actor.GetUnitData());
+                    protectActor.GetProtectSystem().
+                        ExecuteProtect(
+                        protectActor,
+                        action);
 
-                    //    action.target = coverUnit;
-                    coverUnit.hasCoveredThisTurn = true; // 1回のみ
+
+
+                    hasCoverThisTurn = true; // 1回のみ
                     // エフェクトなど入れるならここ
                 }
             }
 
-            // 行動実行
+            // 陦悟虚螳溯｡
             yield return StartCoroutine(PerformAction(action));
         }
 
-        // 全行動終了後の処理
+        // 蜈ｨ陦悟虚邨ゆｺ�ｾ後�蜃ｦ逅
         yield return new WaitForSeconds(1f);
 
-        // ターン終了判定
+        // 繧ｿ繝ｼ繝ｳ邨ゆｺ�愛螳
         if (!CheckBattleEnd())
         {
-            StartPlayerTurn(); // 最初に戻る
+            StartPlayerTurn(); // 譛蛻昴↓謌ｻ繧
         }
-        else // 戦闘終了
+        else // 謌ｦ髣倡ｵゆｺ
         {
             //    System.FadeManager.FadeChangeScene("FieldScene", 1.0f);
         }
     }
 
-    // リターゲットロジック（リストの次、最後なら最初）
+    // 繝ｪ繧ｿ繝ｼ繧ｲ繝�ヨ繝ｭ繧ｸ繝�け�医Μ繧ｹ繝医�谺｡縲∵怙蠕後↑繧画怙蛻晢ｼ
     UnitController Retarget(UnitController deadTarget, bool isTargetEnemy)
     {
         List<UnitController> group = isTargetEnemy ? enemies : players;
         int originalIndex = group.IndexOf(deadTarget);
-        if (originalIndex == -1) return null; // ありえないはずだが念のため
+        if (originalIndex == -1) return null; // 縺ゅｊ縺医↑縺��縺壹□縺悟ｿｵ縺ｮ縺溘ａ
 
-        // リストを走査して生きているキャラを探す
+        // 繝ｪ繧ｹ繝医ｒ襍ｰ譟ｻ縺励※逕溘″縺ｦ縺�ｋ繧ｭ繝｣繝ｩ繧呈爾縺
         for (int i = 1; i <= group.Count; i++)
         {
             int nextIndex = (originalIndex + i) % group.Count;
@@ -418,51 +445,51 @@ public class BattleSystemManager : MonoBehaviour
                 return group[nextIndex];
             }
         }
-        return null; // 全滅
+        return null; // 蜈ｨ貊
     }
 
-    //  行動の実行処理
+    //  陦悟虚縺ｮ螳溯｡悟�逅
     IEnumerator PerformAction(BattleAction action)
     {
 
         UnitController actor = action.actor;
         UnitController target = action.target;
 
-        // 行動者アニメーション（ジャンプ）
+        // 陦悟虚閠�い繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ�医ず繝｣繝ｳ繝暦ｼ
         //    yield return StartCoroutine(actor.AnimateActionJump());
-        //  攻撃・スキルエフェクトなど
+        //  謾ｻ謦��繧ｹ繧ｭ繝ｫ繧ｨ繝輔ぉ繧ｯ繝医↑縺ｩ
         yield return StartCoroutine(actor.AnimateActionAttack());
 
         //yield return new WaitForSeconds(target.animationLength);
 
-        // 実際の効果処理
-        string msg = $"{actor.GetUnitName()}の{action.skill.skillName}！";
+        // 螳滄圀縺ｮ蜉ｹ譫懷�逅
+        string msg = $"{actor.GetUnitName()}縺ｮ{action.skill.skillName}�";
         uiManager.ShowLog(msg);
         Debug.Log(msg);
 
-        // 特殊行動のステートセット
+        // 迚ｹ谿願｡悟虚縺ｮ繧ｹ繝��繝医そ繝�ヨ
         if (action.skill.type == ActionType.Defend) actor.isDefending = true;
         if (action.skill.type == ActionType.Cover) actor.isCovering = true;
 
-        if (actor.isPlayer) // プレイヤーのみ
+        if (actor.isPlayer) // 繝励Ξ繧､繝､繝ｼ縺ｮ縺ｿ
         {
             actor.AddHate(action.skill.hateIncrease);
         }
 
-        //  対象の数取得
+        //  蟇ｾ雎｡縺ｮ謨ｰ蜿門ｾ
         targetType targetCount = action.skill.targetType;
 
 
         if (targetCount == targetType.All)
         {
-            // 全体対象の場合
+            // 蜈ｨ菴灘ｯｾ雎｡縺ｮ蝣ｴ蜷
             List<UnitController> targets = action.skill.isTargetEnemy ? enemies : players;
             foreach (var t in targets)
             {
                 if (t.isDead) continue;
-                // 対象のアニメーション（点滅）
+                // 蟇ｾ雎｡縺ｮ繧｢繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ�育せ貊�ｼ
                 yield return StartCoroutine(t.AnimateBlink(0.5f));
-                //  ダメージ計算
+                //  繝繝｡繝ｼ繧ｸ險育ｮ
                 if (action.skill.type == ActionType.Attack ||
                     action.skill.type == ActionType.Avirity)
                 {
@@ -474,7 +501,7 @@ public class BattleSystemManager : MonoBehaviour
                         speedPriority = action.speedPriority
                     });
                 }
-                //  回復スキルの場合
+                //  蝗槫ｾｩ繧ｹ繧ｭ繝ｫ縺ｮ蝣ｴ蜷
                 else if (action.skill.type == ActionType.Heal)
                 {
                     Heal(new BattleAction
@@ -488,69 +515,81 @@ public class BattleSystemManager : MonoBehaviour
                 else if (action.skill.type == ActionType.Debuff)
                 {
                     //  ステータスデバフ処理
-                    //    t.GetUnitData().GetStatusRuntime().ApplyDebuff(action.skill);
+                    DeBuff(action,t);
+                    
                 }
                 else if (action.skill.type == ActionType.Buff)
                 {
                     //  ステータスバフ処理
-                    //    t.GetUnitData().GetStatusRuntime().ApplyBuff(action.skill);
+                    Buff(action, t);
                 }
             }
         }
         else
         {
-            // 攻撃・スキル・アイテムの場合
+            // 謾ｻ謦��繧ｹ繧ｭ繝ｫ繝ｻ繧｢繧､繝�Β縺ｮ蝣ｴ蜷
             if (action.skill.type == ActionType.Attack ||
                 action.skill.type == ActionType.Avirity)
             {
-                // 対象のアニメーション（点滅）
+                // 蟇ｾ雎｡縺ｮ繧｢繝九Γ繝ｼ繧ｷ繝ｧ繝ｳ�育せ貊�ｼ
                 yield return StartCoroutine(target.AnimateBlink(0.5f));
 
-                //  ダメージ計算
+                //  繝繝｡繝ｼ繧ｸ險育ｮ
                 Attack(action);
             }
-            //  回復スキルの場合
+            //  蝗槫ｾｩ繧ｹ繧ｭ繝ｫ縺ｮ蝣ｴ蜷
             else if (action.skill.type == ActionType.Heal)
             {
                 Heal(action);
             }
+            else if (action.skill.type == ActionType.Debuff)
+            {
+                //  ステータスデバフ処理
+                DeBuff(action,action.target);
+
+            }
+            else if (action.skill.type == ActionType.Buff)
+            {
+                //  ステータスバフ処理
+                Buff(action, action.target);
+            }
         }
 
 
 
-        yield return new WaitForSeconds(1.0f); // 余韻
+        yield return new WaitForSeconds(1.0f); // 菴咎渊
     }
 
     void Attack(BattleAction action)
     {
-        // 基本ダメージ計算（単純化のため）
-        //  スキルの威力 × 攻撃者の攻撃力
+        // 蝓ｺ譛ｬ繝繝｡繝ｼ繧ｸ險育ｮ暦ｼ亥腰邏泌喧縺ｮ縺溘ａ�
+        //  繧ｹ繧ｭ繝ｫ縺ｮ螽∝鴨 ﾃ 謾ｻ謦���謾ｻ謦�鴨
         int dmg = (action.skill.power *
             action.actor.GetUnitData().GetStatusRuntime().atk) / 100;
-        Debug.Log("基本ダメージ計算: " + dmg);
-        // 防御などの計算
+        Debug.Log("蝓ｺ譛ｬ繝繝｡繝ｼ繧ｸ險育ｮ: " + dmg);
+        // 髦ｲ蠕｡縺ｪ縺ｩ縺ｮ險育ｮ
         if (action.target.isDefending) dmg /= 2;
-        //  防御力に応じて実数値で減少
+        //  髦ｲ蠕｡蜉帙↓蠢懊§縺ｦ螳滓焚蛟､縺ｧ貂帛ｰ
         dmg = dmg - (action.target.GetUnitData().GetStatusRuntime().def / 4);
-        Debug.Log("防御力考慮後ダメージ: " + dmg);
+        Debug.Log("髦ｲ蠕｡蜉幄��蠕後ム繝｡繝ｼ繧ｸ: " + dmg);
         if (dmg < 1)
         {
-            dmg = 1; // 最低1ダメージは与える
-            Debug.Log("最低ダメージ適用");
+            dmg = 1; // 譛菴1繝繝｡繝ｼ繧ｸ縺ｯ荳弱∴繧
+            Debug.Log("譛菴弱ム繝｡繝ｼ繧ｸ驕ｩ逕ｨ");
         }
 
-        //  属性補正
+        //  螻樊ｧ陬懈ｭ｣
         //    if (action.skill.element != ElementType.None)
         //    {
-        //        //  属性補正処理
+        //        //  螻樊ｧ陬懈ｭ｣蜃ｦ逅
         //        float elementModifier = 
         //            action.target.GetUnitData().GetStatusRuntime().
         //            GetElementModifier(action.skill.element);
         //        dmg = Mathf.RoundToInt(dmg * elementModifier);
-        //        Debug.Log("属性補正後ダメージ: " + dmg);
+        //        Debug.Log("螻樊ｧ陬懈ｭ｣蠕後ム繝｡繝ｼ繧ｸ: " + dmg);
         //    }
 
-        //  効果音再生
+        //  蜉ｹ譫憺浹蜀咲函
         if (action.skill.element == Element.Fire)
         {
             SoundManager.Instance.PlaySE("SE_Fire_Atk");
@@ -580,7 +619,7 @@ public class BattleSystemManager : MonoBehaviour
 
     void Heal(BattleAction action)
     {
-        // 回復量計算など
+        // 蝗槫ｾｩ驥剰ｨ育ｮ励↑縺ｩ
         int healAmount = (action.skill.power +
             action.actor.GetUnitData().GetStatusRuntime().atk / 2) / 100;
         if (effectPlayer != null)
@@ -588,6 +627,25 @@ public class BattleSystemManager : MonoBehaviour
             effectPlayer.SpawnEffect(PlayEffect.EffectType.Heal, action.target.transform.position);
         }
         action.target.HealDamage(healAmount);
+    }
+
+    void Buff(BattleAction action,UnitController target)
+    {
+        target.GetUnitData().GetStatusRuntime().AddBuff(action);
+
+        Debug.Log(action.target.nameText + "のステータスが上昇");
+
+        uiManager.AddLogText(action.target.nameText + "のステータスが上昇");
+    }
+
+    void DeBuff(BattleAction action, UnitController target) 
+    {
+        target.GetUnitData().GetStatusRuntime().AddDeBuff(action);
+
+        Debug.Log(action.target.nameText + "のステータスが減少");
+
+        uiManager.AddLogText(action.target.nameText + "のステータスが上昇");
+
     }
 
     //  戦闘終了判定
@@ -626,7 +684,7 @@ public class BattleSystemManager : MonoBehaviour
                 BackToPlayerMenu();
                 break;
             case BattleState.PlayerMenu:
-                // ここでは何もしない or キャンセル不可
+                // 縺薙％縺ｧ縺ｯ菴輔ｂ縺励↑縺 or 繧ｭ繝｣繝ｳ繧ｻ繝ｫ荳榊庄
                 break;
         }
     }
@@ -644,8 +702,8 @@ public class BattleSystemManager : MonoBehaviour
 
     void BackToPlayerMenu()
     {
-        //  現在選択中のキャラクターが０番の場合ルートメニューへ
-        //  そうでない場合は前のキャラクター選択へ戻る
+        //  迴ｾ蝨ｨ驕ｸ謚樔ｸｭ縺ｮ繧ｭ繝｣繝ｩ繧ｯ繧ｿ繝ｼ縺鯉ｼ千分縺ｮ蝣ｴ蜷医Ν繝ｼ繝医Γ繝九Η繝ｼ縺ｸ
+        //  縺昴≧縺ｧ縺ｪ縺�ｴ蜷医�蜑阪�繧ｭ繝｣繝ｩ繧ｯ繧ｿ繝ｼ驕ｸ謚槭∈謌ｻ繧
         if (currentPlayerIndex == 0)
         {
             state = BattleState.PlayerMenu;
@@ -653,7 +711,16 @@ public class BattleSystemManager : MonoBehaviour
             return;
         }
         currentPlayerIndex--;
+
+        //  キャラクターの行動がかばうなら
+        if (turnActions[currentPlayerIndex].skill.type == ActionType.Cover) {
+            isCoverSelectedThisTurn = false;
+        }
+
         SelectActionForCharacter(currentPlayerIndex);
+
+
+
         //  登録済みのアクションを削除
         turnActions.RemoveAll(a => a.actor == players[currentPlayerIndex]);
 
