@@ -132,6 +132,7 @@ GameObject:
   - component: {fileID: 4618267820630355898}
   - component: {fileID: 739472426165994122}
   - component: {fileID: -7277768428302123529}
+  - component: {fileID: 2011938550363520796}
   m_Layer: 0
   m_Name: kamaitati2
   m_TagString: Untagged
@@ -195,6 +196,33 @@ MonoBehaviour:
   isCovering: 0
   hasCoveredThisTurn: 0
   animationLength: 0
+--- !u!114 &2011938550363520796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2055074113070766282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4017ae5f1b08f045a5fd385ca138d19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SkillHolder
+  skillDatas:
+  - skillName: "\u938C\u98A8\u65AC\u308A"
+    power: 30
+    hateIncrease: 0
+    type: 0
+    element: 3
+    targetType: 0
+    isTargetEnemy: 0
+  - skillName: "\u88C2\u98A8"
+    power: 45
+    hateIncrease: 0
+    type: 0
+    element: 2
+    targetType: 0
+    isTargetEnemy: 0
 --- !u!1 &2300146387814476588
 GameObject:
   m_ObjectHideFlags: 0

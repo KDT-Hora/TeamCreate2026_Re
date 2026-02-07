@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerDatas:
   - id: 0
-    name: main
+    name: "\u671D\u5009\u5F8B"
     baseHp: 500
     baseMp: 100
     baseAtk: 120
@@ -24,7 +24,7 @@ MonoBehaviour:
     baseSpeed: 65
     element: 0
   - id: 1
-    name: fellow
+    name: "\u98A8\u9593\u5F25\u5E02"
     baseHp: 500
     baseMp: 300
     baseAtk: 90
@@ -34,7 +34,7 @@ MonoBehaviour:
     baseSpeed: 45
     element: 2
   - id: 2
-    name: heroine
+    name: "\u9DF9\u5BAE\u6C99\u591C"
     baseHp: 500
     baseMp: 200
     baseAtk: 100

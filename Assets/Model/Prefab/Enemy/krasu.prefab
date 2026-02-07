@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6510465117506197881}
   - component: {fileID: 7415202329172455140}
   - component: {fileID: -4902817968283375486}
+  - component: {fileID: 555155356453994782}
   m_Layer: 0
   m_Name: krasu
   m_TagString: Untagged
@@ -74,6 +75,40 @@ MonoBehaviour:
   isCovering: 0
   hasCoveredThisTurn: 0
   animationLength: 0
+--- !u!114 &555155356453994782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5814056578546050399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4017ae5f1b08f045a5fd385ca138d19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SkillHolder
+  skillDatas:
+  - skillName: "\u98A8\u5207\u7FBD"
+    power: 55
+    hateIncrease: 0
+    type: 0
+    element: 3
+    targetType: 0
+    isTargetEnemy: 0
+  - skillName: "\u5929\u72D7\u70C8\u98A8"
+    power: 75
+    hateIncrease: 0
+    type: 0
+    element: 3
+    targetType: 0
+    isTargetEnemy: 0
+  - skillName: "\u65CB\u7A7A\u843D\u3068\u3057"
+    power: 90
+    hateIncrease: 0
+    type: 0
+    element: 3
+    targetType: 0
+    isTargetEnemy: 0
 --- !u!1001 &4958950801839977870
 PrefabInstance:
   m_ObjectHideFlags: 0
