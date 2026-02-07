@@ -3659,7 +3659,7 @@ MonoBehaviour:
   - skillName: Cover
     power: 0
     hateIncrease: 0
-    type: 3
+    type: 6
     element: 0
     targetType: 0
     isTargetEnemy: 0

@@ -37,6 +37,9 @@ public class BattleSystemManager : MonoBehaviour
     private int currentPlayerIndex = 0; // 現在コマンド選択中のキャラ
     private SkillData currentSelectedSkill; // 現在選択中のスキル
     private bool isCoverSelectedThisTurn = false; // チーム全体で「庇う」が選択されたか
+    private UnitController protectTarget;
+    private UnitController protectActor;
+    private bool hasCoverThisTurn = false;
 
     // 行動リスト
     private List<BattleAction> turnActions = new List<BattleAction>();
@@ -194,6 +197,12 @@ public class BattleSystemManager : MonoBehaviour
         currentSelectedSkill = skill;
 
         SoundManager.Instance.PlaySE("SE_Confirm");
+
+        //  かばいを選択していたら
+        if(skill.type == ActionType.Cover)
+        {
+     //       isCoverSelectedThisTurn = true;
+        }
 
         // 対象選択が不要なもの（防御など）は即決定
         if (skill.type == ActionType.Defend)
@@ -357,25 +366,39 @@ public class BattleSystemManager : MonoBehaviour
                 if (action.target == null) continue; // 相手全滅時は処理不要
             }
 
+            //  かばいセット
+            if(action.skill.type == ActionType.Cover) {
+                protectTarget = action.target;
+                protectActor = action.actor;
+                hasCoverThisTurn = true;
+            }
+
             // 「庇う」処理のチェック (攻撃行動かつターゲットが味方)
             // 敵の攻撃(Action) -> プレイヤー(Target) -> 誰か庇ってる？
-            if (action.skill.isTargetEnemy && action.target.isPlayer)
+            if(action.target == protectTarget && isCoverSelectedThisTurn&&
+                !action.actor.isPlayer)
             {
-                UnitController coverUnit = players.FirstOrDefault(p => p.isCovering && !p.hasCoveredThisTurn && !p.isDead && p != action.target);
-                if (coverUnit != null)
-                {
-                    //  ターゲット変更しか発動していないので、特有処理を入れてない
-                    Debug.Log(coverUnit.GetUnitName() + "が庇った！");
+             //   UnitController coverUnit = 
+             //       players.FirstOrDefault(p => p.isCovering && !p.hasCoveredThisTurn && !p.isDead && p != action.target);
 
+                //  かばい者が生きていたら
+                if (!protectActor.isDead)
+                {
+                    Debug.Log(protectActor.GetUnitName() + "が庇った！");
+                    uiManager.AddLogText(protectActor.GetUnitName() + "が庇った！");
+
+                    //  SE
                     SoundManager.Instance.PlaySE("SE_Kabau");
 
                     // 庇う発動
-                    coverUnit.GetProtectSystem().
-                        ExecuteProtect(coverUnit.GetUnitData(),
-                        action.target.GetUnitData(),action.actor.GetUnitData());
+                    protectActor.GetProtectSystem().
+                        ExecuteProtect(
+                        protectActor,
+                        action);
 
-                //    action.target = coverUnit;
-                    coverUnit.hasCoveredThisTurn = true; // 1回のみ
+
+
+                    hasCoverThisTurn = true; // 1回のみ
                     // エフェクトなど入れるならここ
                 }
             }
@@ -484,12 +507,13 @@ public class BattleSystemManager : MonoBehaviour
                 else if(action.skill.type == ActionType.Debuff)
                 {
                     //  ステータスデバフ処理
-                //    t.GetUnitData().GetStatusRuntime().ApplyDebuff(action.skill);
+                    DeBuff(action,t);
+                    
                 }
                 else if (action.skill.type == ActionType.Buff)
                 {
                     //  ステータスバフ処理
-                //    t.GetUnitData().GetStatusRuntime().ApplyBuff(action.skill);
+                    Buff(action, t);
                 }
             }
         }
@@ -509,6 +533,17 @@ public class BattleSystemManager : MonoBehaviour
             else if (action.skill.type == ActionType.Heal)
             {
                 Heal(action);
+            }
+            else if (action.skill.type == ActionType.Debuff)
+            {
+                //  ステータスデバフ処理
+                DeBuff(action,action.target);
+
+            }
+            else if (action.skill.type == ActionType.Buff)
+            {
+                //  ステータスバフ処理
+                Buff(action, action.target);
             }
         }
 
@@ -575,6 +610,25 @@ public class BattleSystemManager : MonoBehaviour
         action.target.HealDamage(healAmount);
     }
 
+    void Buff(BattleAction action,UnitController target)
+    {
+        target.GetUnitData().GetStatusRuntime().AddBuff(action);
+
+        Debug.Log(action.target.nameText + "のステータスが上昇");
+
+        uiManager.AddLogText(action.target.nameText + "のステータスが上昇");
+    }
+
+    void DeBuff(BattleAction action, UnitController target) 
+    {
+        target.GetUnitData().GetStatusRuntime().AddDeBuff(action);
+
+        Debug.Log(action.target.nameText + "のステータスが減少");
+
+        uiManager.AddLogText(action.target.nameText + "のステータスが上昇");
+
+    }
+
     //  戦闘終了判定
     bool CheckBattleEnd()
     {
@@ -638,7 +692,15 @@ public class BattleSystemManager : MonoBehaviour
             return;
         }
         currentPlayerIndex--;
+
+        //  キャラクターの行動がかばうなら
+        if (turnActions[currentPlayerIndex].skill.type == ActionType.Cover) {
+            isCoverSelectedThisTurn = false;
+        }
+
         SelectActionForCharacter(currentPlayerIndex);
+
+
         //  登録済みのアクションを削除
         turnActions.RemoveAll(a => a.actor == players[currentPlayerIndex]);
 

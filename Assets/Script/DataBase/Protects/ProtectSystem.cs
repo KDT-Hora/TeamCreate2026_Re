@@ -12,9 +12,12 @@ namespace Protect
         /// <param name="target">庇われている人</param>
         /// <param name="Attacker">攻撃してきた相手</param>
         public virtual void ExecuteProtect(
-            CharaBase protector,
-            CharaBase target,
-            CharaBase attacker
-        ) {}
+            UnitController protector,
+            BattleAction action
+        ) 
+        {
+            //  攻撃対象を変更をデフォルトの仕組みに
+            action.target = protector;
+        }
     }
 }
