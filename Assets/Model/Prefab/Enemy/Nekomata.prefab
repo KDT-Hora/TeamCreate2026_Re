@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4687708889076589151}
   - component: {fileID: 3086312759349513846}
   - component: {fileID: 6283860555849826372}
+  - component: {fileID: -1674958064795186120}
   m_Layer: 0
   m_Name: Nekomata
   m_TagString: Untagged
@@ -74,6 +75,33 @@ MonoBehaviour:
   isCovering: 0
   hasCoveredThisTurn: 0
   animationLength: 0
+--- !u!114 &-1674958064795186120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4377006023809172116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4017ae5f1b08f045a5fd385ca138d19, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SkillHolder
+  skillDatas:
+  - skillName: "\u5996\u722A"
+    power: 35
+    hateIncrease: 0
+    type: 0
+    element: 3
+    targetType: 0
+    isTargetEnemy: 0
+  - skillName: "\u602A\u706B"
+    power: 45
+    hateIncrease: 0
+    type: 0
+    element: 1
+    targetType: 0
+    isTargetEnemy: 0
 --- !u!1001 &6543560550952743854
 PrefabInstance:
   m_ObjectHideFlags: 0
