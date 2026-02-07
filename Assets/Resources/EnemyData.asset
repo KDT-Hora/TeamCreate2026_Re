@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyDatas:
   - id: 0
-    name: ittannmomenn
+    name: "\u4E00\u53CD\u6728\u7DBF"
     baseHp: 1500
     baseMp: 600
     baseAtk: 130
@@ -24,7 +24,7 @@ MonoBehaviour:
     baseSpeed: 45
     element: 0
   - id: 1
-    name: syutendouzi
+    name: "\u9152\u541E\u7AE5\u5B50"
     baseHp: 1500
     baseMp: 600
     baseAtk: 130
@@ -34,7 +34,7 @@ MonoBehaviour:
     baseSpeed: 45
     element: 0
   - id: 2
-    name: karasutengu
+    name: "\u70CF\u5929\u72D7"
     baseHp: 1000
     baseMp: 200
     baseAtk: 100
@@ -44,7 +44,7 @@ MonoBehaviour:
     baseSpeed: 40
     element: 0
   - id: 3
-    name: kamaitati
+    name: "\u938C\u9F2C"
     baseHp: 300
     baseMp: 200
     baseAtk: 50
@@ -54,7 +54,7 @@ MonoBehaviour:
     baseSpeed: 50
     element: 0
   - id: 4
-    name: zashikiwarashi
+    name: "\u5EA7\u6577\u7AE5"
     baseHp: 350
     baseMp: 60
     baseAtk: 60
@@ -64,7 +64,7 @@ MonoBehaviour:
     baseSpeed: 40
     element: 0
   - id: 5
-    name: nekomata
+    name: "\u732B\u53C8"
     baseHp: 400
     baseMp: 300
     baseAtk: 50
@@ -74,7 +74,7 @@ MonoBehaviour:
     baseSpeed: 60
     element: 0
   - id: 3
-    name: hitodama
+    name: "\u4EBA\u7389"
     baseHp: 200
     baseMp: 100
     baseAtk: 20
