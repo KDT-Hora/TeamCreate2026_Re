@@ -61,7 +61,7 @@ namespace Data
         public int speed;   // 速度
 
         //  デバフ処理
-        public void AddDebug(BattleAction action)
+        public void AddDeBuff(BattleAction action)
         {
             var debuff = action.skill.power;
             atk -= debuff;

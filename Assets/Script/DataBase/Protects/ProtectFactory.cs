@@ -7,9 +7,9 @@ namespace Protect
         {
             switch (protectId)
             {
-                case 1: return new ProtectCounter();
-                case 2: return new ProtectCounter();
-                case 3: return new ProtectCounter();
+                case 0: return new ProtectSystem();     //  主人公     デフォルト
+                case 1: return new ProtectCounter();    //  駅員      カウンター
+                case 2: return new ProtectSystem();     //  ヒロイン    まだデフォルトを実装
             }
     
             return null; // デフォルトなし

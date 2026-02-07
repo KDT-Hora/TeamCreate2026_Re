@@ -49,7 +49,7 @@ public class BattleUIManager : MonoBehaviour
     class LogText
     {
         public string text;
-        public int frame;   
+        public int frame = 6000;   
     }
 
     private List<LogText> logTextList = new List<LogText>();
@@ -123,6 +123,7 @@ public class BattleUIManager : MonoBehaviour
         if(isCoverUsed)
         {
             CoverButton.gameObject.SetActive(false);
+
         }
         else
         { 
@@ -205,17 +206,17 @@ public class BattleUIManager : MonoBehaviour
 
         backButton.SetActive(true);
     }
-
+    
     //  logのテキスト変更
     public void ShowLog(string text)
     {
         // logText.text = text;
         LogText log = new LogText();
         log.text = text;
-        log.frame = 1000;
         logTextList.Add(log);
     }
 
+    //  ログ更新
     private void logUpdate()
     {
         foreach(var log in logTextList) {
@@ -258,6 +259,15 @@ public class BattleUIManager : MonoBehaviour
         SoundManager.Instance.PlaySE("SE_Confirm");
         FadeManager.FadeChangeScene("FieldScene",1.0f);
     }
+
+    public void AddLogText(string text)
+    {
+        LogText log = new LogText();
+        log.text = text;
+        logTextList.Add(log);
+    }
 }
+
+
 
 
