@@ -636,6 +636,11 @@ public class BattleSystemManager : MonoBehaviour
         Debug.Log(action.target.nameText + "のステータスが上昇");
 
         uiManager.AddLogText(action.target.nameText + "のステータスが上昇");
+
+        if (effectPlayer != null)
+        {
+            effectPlayer.SpawnEffect(PlayEffect.EffectType.Buff, action.target.transform.position);
+        }
     }
 
     void DeBuff(BattleAction action, UnitController target) 
@@ -646,6 +651,10 @@ public class BattleSystemManager : MonoBehaviour
 
         uiManager.AddLogText(action.target.nameText + "のステータスが上昇");
 
+        if (effectPlayer != null)
+        {
+            effectPlayer.SpawnEffect(PlayEffect.EffectType.Debuff, action.target.transform.position);
+        }
     }
 
     //  戦闘終了判定
