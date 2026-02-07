@@ -14,7 +14,8 @@ public enum BattleState
     TargetSelect, 
     EnemyPhase, 
     ExecutePhase, 
-    Win, Lose }
+    Win, Lose 
+ }
 
 public class BattleSystemManager : MonoBehaviour
 {

@@ -53,6 +53,7 @@ public class BattleUIManager : MonoBehaviour
     }
 
     private List<LogText> logTextList = new List<LogText>();
+    private System.Text.StringBuilder sb = new System.Text.StringBuilder();
 
     void Start()
     {
@@ -211,7 +212,7 @@ public class BattleUIManager : MonoBehaviour
         // logText.text = text;
         LogText log = new LogText();
         log.text = text;
-        log.frame = 200;
+        log.frame = 1000;
         logTextList.Add(log);
     }
 
@@ -219,19 +220,21 @@ public class BattleUIManager : MonoBehaviour
     {
         foreach(var log in logTextList) {
             log.frame--;
-            if(log.frame < 0) {
-                log.frame = 0;
-            }
         }
         logTextList.RemoveAll(log => log.frame <= 0);
 
-        logTextList.Clear();
+        logText.text = "";
+        sb.Clear();
 
         for(int i = 0; i < logTextList.Count; i++)
         {
-            var log = logTextList[i];
-            logText.text += log.text;
+//            var log = logTextList[i];
+//            logText.text += log.text + "\n";
+            sb.AppendLine(logTextList[i].text);
         }
+
+       // logText.text = sb.ToString();
+        logText.SetText(sb.ToString());
     }
 
     public void ShowPhaseText(string text)
