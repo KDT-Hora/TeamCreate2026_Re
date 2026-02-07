@@ -49,7 +49,7 @@ public class BattleUIManager : MonoBehaviour
     class LogText
     {
         public string text;
-        public int frame = 6000;   
+        public int frame = 500;   
     }
 
     private List<LogText> logTextList = new List<LogText>();

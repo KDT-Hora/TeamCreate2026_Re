@@ -463,7 +463,7 @@ public class BattleSystemManager : MonoBehaviour
         //yield return new WaitForSeconds(target.animationLength);
 
         // 螳滄圀縺ｮ蜉ｹ譫懷�逅
-        string msg = $"{actor.GetUnitName()}縺ｮ{action.skill.skillName}�";
+        string msg = $"{actor.GetUnitName()}の{action.skill.skillName}";
         uiManager.ShowLog(msg);
         Debug.Log(msg);
 
