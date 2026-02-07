@@ -2,22 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+
 using static UnityEngine.GraphicsBuffer;
 //using System;
 
 public enum BattleState
 {
-    Start, 
-    PlayerMenu, 
-    ActionSelect, 
+    Start,
+    PlayerMenu,
+    ActionSelect,
     AviritySelect,
-    TargetSelect, 
-    EnemyPhase, 
-    ExecutePhase, 
-    Win, Lose }
+    TargetSelect,
+    EnemyPhase,
+    ExecutePhase,
+    Win, Lose
+}
 
 public class BattleSystemManager : MonoBehaviour
 {
+
+    [SerializeField] private PlayEffect effectPlayer;
+
     [Header("Units")]
     public List<UnitController> players;
     public List<UnitController> enemies;
@@ -59,7 +64,7 @@ public class BattleSystemManager : MonoBehaviour
     void DebugInit()
     {
         //　データマネージャーの初期化
-    //    DataManager.Instance.SetupParty(3, DataManager.Instance.PlayerPrefab);
+        //    DataManager.Instance.SetupParty(3, DataManager.Instance.PlayerPrefab);
 
     }
 
@@ -101,18 +106,18 @@ public class BattleSystemManager : MonoBehaviour
             Debug.Log("BossID: " + id);
 
             // ボス戦の場合の生成処理
-            enemies.Add(enemyFactory.SpownBossEnemies(id,enemies.Count));
+            enemies.Add(enemyFactory.SpownBossEnemies(id, enemies.Count));
 
             enemyCount--;
         }
-    
+
 
         //  残りのenemycount分生成
         for (int i = 0; i < enemyCount; i++)
         {
             Debug.Log("NormalEnemy Create");
             enemies.Add(enemyFactory.SpownNormalEnemies(enemies.Count));
-        }        
+        }
 
         Debug.Log("EnemyCreate End");
     }
@@ -200,14 +205,14 @@ public class BattleSystemManager : MonoBehaviour
             RegisterAction(players[currentPlayerIndex], players[currentPlayerIndex], skill); // 自分対象
             NextCharSelection();
         }
-//        else if(skill.type == ActionType.Avirity)
-//        {
-//            state = BattleState.AviritySelect;
-//
-//            //  選択中のキャラクターを取得
-//            UnitController currentChar = players[currentPlayerIndex];
-//            uiManager.ShowSkillMenu(currentChar);
-//        }
+        //        else if(skill.type == ActionType.Avirity)
+        //        {
+        //            state = BattleState.AviritySelect;
+        //
+        //            //  選択中のキャラクターを取得
+        //            UnitController currentChar = players[currentPlayerIndex];
+        //            uiManager.ShowSkillMenu(currentChar);
+        //        }
         else
         {
             state = BattleState.TargetSelect;
@@ -313,7 +318,7 @@ public class BattleSystemManager : MonoBehaviour
 
         // ヘイト100のキャラがいれば確定
         var maxHateUnit = alivePlayers.Find(p => p.currentHate >= 100);
-        if (maxHateUnit != null) 
+        if (maxHateUnit != null)
         {
             maxHateUnit.currentHate = 0; // ヘイトリセット
             return maxHateUnit;
@@ -371,9 +376,9 @@ public class BattleSystemManager : MonoBehaviour
                     // 庇う発動
                     coverUnit.GetProtectSystem().
                         ExecuteProtect(coverUnit.GetUnitData(),
-                        action.target.GetUnitData(),action.actor.GetUnitData());
+                        action.target.GetUnitData(), action.actor.GetUnitData());
 
-                //    action.target = coverUnit;
+                    //    action.target = coverUnit;
                     coverUnit.hasCoveredThisTurn = true; // 1回のみ
                     // エフェクトなど入れるならここ
                 }
@@ -393,7 +398,7 @@ public class BattleSystemManager : MonoBehaviour
         }
         else // 戦闘終了
         {
-        //    System.FadeManager.FadeChangeScene("FieldScene", 1.0f);
+            //    System.FadeManager.FadeChangeScene("FieldScene", 1.0f);
         }
     }
 
@@ -445,10 +450,10 @@ public class BattleSystemManager : MonoBehaviour
         }
 
         //  対象の数取得
-        targetType targetCount = action.skill.targetType; 
+        targetType targetCount = action.skill.targetType;
 
 
-        if(targetCount == targetType.All)
+        if (targetCount == targetType.All)
         {
             // 全体対象の場合
             List<UnitController> targets = action.skill.isTargetEnemy ? enemies : players;
@@ -480,19 +485,19 @@ public class BattleSystemManager : MonoBehaviour
                         speedPriority = action.speedPriority
                     });
                 }
-                else if(action.skill.type == ActionType.Debuff)
+                else if (action.skill.type == ActionType.Debuff)
                 {
                     //  ステータスデバフ処理
-                //    t.GetUnitData().GetStatusRuntime().ApplyDebuff(action.skill);
+                    //    t.GetUnitData().GetStatusRuntime().ApplyDebuff(action.skill);
                 }
                 else if (action.skill.type == ActionType.Buff)
                 {
                     //  ステータスバフ処理
-                //    t.GetUnitData().GetStatusRuntime().ApplyBuff(action.skill);
+                    //    t.GetUnitData().GetStatusRuntime().ApplyBuff(action.skill);
                 }
             }
         }
-        else 
+        else
         {
             // 攻撃・スキル・アイテムの場合
             if (action.skill.type == ActionType.Attack ||
@@ -550,17 +555,24 @@ public class BattleSystemManager : MonoBehaviour
         {
             SoundManager.Instance.PlaySE("SE_Fire_Atk");
         }
-        else if(action.skill.element == Element.Water)
+        else if (action.skill.element == Element.Water)
         {
             SoundManager.Instance.PlaySE("SE_Water_Atk");
         }
-        else if(action.skill.element == Element.Grass)
+        else if (action.skill.element == Element.Grass)
         {
             SoundManager.Instance.PlaySE("SE_Flower_Atk");
         }
         else
         {
             SoundManager.Instance.PlaySE("SE_Player_atk");
+        }
+
+
+
+        if (effectPlayer != null)
+        {
+            effectPlayer.SpawnEffect(PlayEffect.EffectType.Damage, action.target.transform.position);
         }
 
         action.target.TakeDamage(dmg);
@@ -571,6 +583,10 @@ public class BattleSystemManager : MonoBehaviour
         // 回復量計算など
         int healAmount = (action.skill.power +
             action.actor.GetUnitData().GetStatusRuntime().atk / 2) / 100;
+        if (effectPlayer != null)
+        {
+            effectPlayer.SpawnEffect(PlayEffect.EffectType.Heal, action.target.transform.position);
+        }
         action.target.HealDamage(healAmount);
     }
 
@@ -584,7 +600,7 @@ public class BattleSystemManager : MonoBehaviour
         {
             state = BattleState.Win;
             uiManager.ShowResult("Victory!", true);
-            
+
             return true;
         }
         if (allPlayersDead)
@@ -630,7 +646,7 @@ public class BattleSystemManager : MonoBehaviour
     {
         //  現在選択中のキャラクターが０番の場合ルートメニューへ
         //  そうでない場合は前のキャラクター選択へ戻る
-        if(currentPlayerIndex == 0)
+        if (currentPlayerIndex == 0)
         {
             state = BattleState.PlayerMenu;
             uiManager.ShowRootMenu();
