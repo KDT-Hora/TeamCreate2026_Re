@@ -2,14 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+
 using static UnityEngine.GraphicsBuffer;
 //using System;
 
 public enum BattleState
 {
-    Start, 
-    PlayerMenu, 
-    ActionSelect, 
+    Start,
+    PlayerMenu,
+    ActionSelect,
     AviritySelect,
     TargetSelect, 
     EnemyPhase, 
@@ -19,6 +20,9 @@ public enum BattleState
 
 public class BattleSystemManager : MonoBehaviour
 {
+
+    [SerializeField] private PlayEffect effectPlayer;
+
     [Header("Units")]
     public List<UnitController> players;
     public List<UnitController> enemies;
@@ -30,44 +34,45 @@ public class BattleSystemManager : MonoBehaviour
     public EnemyUnitFactory enemyFactory;
 
     [Header("Settings")]
-    public List<SkillData> commonSkills; // UŒ‚A–hŒä‚È‚Ç
+    public List<SkillData> commonSkills; // è¬¾ï½»è¬¦ï¿½ï¿½äºŸè •ï½¡ç¸ºï½ªç¸ºï½©
 
-    // “à•”ƒXƒe[ƒg
+    // èœ€ï¿½Îšç¹§ï½¹ç¹ï¿½ï¿½ç¹
     private BattleState state;
-    private int currentPlayerIndex = 0; // Œ»İƒRƒ}ƒ“ƒh‘I‘ğ’†‚ÌƒLƒƒƒ‰
-    private SkillData currentSelectedSkill; // Œ»İ‘I‘ğ’†‚ÌƒXƒLƒ‹
-    private bool isCoverSelectedThisTurn = false; // ƒ`[ƒ€‘S‘Ì‚Åu”İ‚¤v‚ª‘I‘ğ‚³‚ê‚½‚©
+    private int currentPlayerIndex = 0; // ç¾åœ¨ã‚³ãƒãƒ³ãƒ‰é¸æŠä¸­ã®ã‚­ãƒ£ãƒ©
+    private SkillData currentSelectedSkill; // ç¾åœ¨é¸æŠä¸­ã®ã‚¹ã‚­ãƒ«
+    private bool isCoverSelectedThisTurn = false; // ãƒãƒ¼ãƒ å…¨ä½“ã§ã€Œåº‡ã†ã€ãŒé¸æŠã•ã‚ŒãŸã‹
     private UnitController protectTarget;
     private UnitController protectActor;
     private bool hasCoverThisTurn = false;
 
-    // s“®ƒŠƒXƒg
+
+    // é™¦æ‚Ÿè™šç¹ï½ªç¹§ï½¹ç¹
     private List<BattleAction> turnActions = new List<BattleAction>();
 
     void Start()
     {
-        //  ƒfƒoƒbƒO—p‚Ì‰Šú‰»
+        //  ç¹ï¿½ãƒ°ç¹ï¿½ã’é€•ï½¨ç¸ºï½®è›»æ™„æ‚„è›¹
         DebugInit();
 
 
         state = BattleState.Start;
-        //  ƒLƒƒƒ‰ƒNƒ^[ƒXƒe[ƒ^ƒXİ’è
+        //  ç¹§ï½­ç¹ï½£ç¹ï½©ç¹§ï½¯ç¹§ï½¿ç¹ï½¼ç¹§ï½¹ç¹ï¿½ï¿½ç¹§ï½¿ç¹§ï½¹éšªï½­è³
         CharactorStateSet();
-        //  “G‚Ì¶¬
+        //  è¬¨ï½µç¸ºï½®é€•æ»“ï¿½
         EnemyCreate();
 
-        //  ŠJnˆ—
+        //  é«¢å¥ï½§å¥ï¿½é€…
         StartCoroutine(SetupBattle());
     }
 
     void DebugInit()
     {
-        //@ƒf[ƒ^ƒ}ƒl[ƒWƒƒ[‚Ì‰Šú‰»
-    //    DataManager.Instance.SetupParty(3, DataManager.Instance.PlayerPrefab);
+        //ç¸²ç¹ï¿½ï¿½ç¹§ï½¿ç¹æ§­ãƒ­ç¹ï½¼ç¹§ï½¸ç¹ï½£ç¹ï½¼ç¸ºï½®è›»æ™„æ‚„è›¹
+        //    DataManager.Instance.SetupParty(3, DataManager.Instance.PlayerPrefab);
 
     }
 
-    //  ƒLƒƒƒ‰ƒNƒ^[‚ÌƒXƒe[ƒ^ƒXİ’è
+    //  ç¹§ï½­ç¹ï½£ç¹ï½©ç¹§ï½¯ç¹§ï½¿ç¹ï½¼ç¸ºï½®ç¹§ï½¹ç¹ï¿½ï¿½ç¹§ï½¿ç¹§ï½¹éšªï½­è³
     void CharactorStateSet()
     {
         var playerDataList = DataManager.Instance.currentParty.members;
@@ -82,53 +87,53 @@ public class BattleSystemManager : MonoBehaviour
 
     }
 
-    //  “G‚Ì¶¬ˆ—
+    //  è¬¨ï½µç¸ºï½®é€•æ»“ï¿½èœƒï½¦é€…
     void EnemyCreate()
     {
         Debug.Log("EnemyCreate Start");
 
-        //  ¶¬”Œˆ’è
-        //  ƒ‰ƒ“ƒ_ƒ€‚É1`3‘Ì¶¬
+        //  é€•æ»“ï¿½è¬¨ï½°è±ï½ºè³
+        //  ç¹ï½©ç¹ï½³ç¹ç¹ç¸ºï½«1ï¿½3è´é‹å‡½è¬Œ
         enemies.Clear();
         int enemyCount = Random.Range(1, 4);
 
         Debug.Log("EnemyCount: " + enemyCount);
 
-        //  ¡‚ªƒ{ƒXü‚©”»’è
+        //  è‰ç¿«â€²ç¹æ‡Šã›é‚±å£¹Â°è›»ï½¤è³
         if (DataManager.Instance.isBossBattle)
         {
             Debug.Log("BossUnit Create");
 
-            DataManager.Instance.isBossBattle = false; // ƒtƒ‰ƒOƒŠƒZƒbƒg
+            DataManager.Instance.isBossBattle = false; // ç¹è¼”Î›ç¹§ï½°ç¹ï½ªç¹§ï½»ç¹ï¿½ãƒ¨
             int id = DataManager.Instance.currentBossID;
 
             Debug.Log("BossID: " + id);
 
-            // ƒ{ƒXí‚Ìê‡‚Ì¶¬ˆ—
-            enemies.Add(enemyFactory.SpownBossEnemies(id,enemies.Count));
+            // ç¹æ‡Šã›è¬Œï½¦ç¸ºï½®è£ï½´èœ·åŒ»ï¿½é€•æ»“ï¿½èœƒï½¦é€…
+            enemies.Add(enemyFactory.SpownBossEnemies(id, enemies.Count));
 
             enemyCount--;
         }
-    
 
-        //  c‚è‚Ìenemycount•ª¶¬
+
+        //  è°¿ä¹ï½Šç¸ºï½®enemycountè›»ï¿½å‡½è¬Œ
         for (int i = 0; i < enemyCount; i++)
         {
             Debug.Log("NormalEnemy Create");
             enemies.Add(enemyFactory.SpownNormalEnemies(enemies.Count));
-        }        
+        }
 
         Debug.Log("EnemyCreate End");
     }
 
     IEnumerator SetupBattle()
     {
-        // ‰Šú‰»‘Ò‚¿‚È‚Ç‚ ‚ê‚Î‚±‚±
+        // è›»æ™„æ‚„è›¹é–€ï½¾ï¿½â– ç¸ºï½ªç¸ºï½©ç¸ºã‚…ï½Œç¸ºï½°ç¸ºè–™ï¼…
         yield return new WaitForSeconds(0.5f);
         StartPlayerTurn();
     }
 
-    // --- ƒ^[ƒ“isƒtƒ[ ---
+    // --- ç¹§ï½¿ç¹ï½¼ç¹ï½³é¨¾ï½²é™¦å¾Œãƒµç¹ï½­ç¹ï½¼ ---
 
     public void Update()
     {
@@ -136,10 +141,10 @@ public class BattleSystemManager : MonoBehaviour
 
     }
 
-    //  ƒ^[ƒ“ŠJn‚ÌƒŠƒZƒbƒgˆ—
+    //  ç¹§ï½¿ç¹ï½¼ç¹ï½³é«¢å¥ï½§åŒºå‡¾ç¸ºï½®ç¹ï½ªç¹§ï½»ç¹ï¿½ãƒ¨èœƒï½¦é€…
     void StartPlayerTurn()
     {
-        // ƒ^[ƒ“ŠJnˆ—
+        // ç¹§ï½¿ç¹ï½¼ç¹ï½³é«¢å¥ï½§å¥ï¿½é€…
         isCoverSelectedThisTurn = false;
         turnActions.Clear();
         foreach (var p in players)
@@ -153,12 +158,12 @@ public class BattleSystemManager : MonoBehaviour
 
         uiManager.ShowPhaseText("Player Turn");
 
-        // í‚¤ or “¦‚°‚é ‚Ì‘I‘ğ‚Ö
+        // è¬Œï½¦ç¸º or é¨¾ï¿½ï¿¡ç¹§ ç¸ºï½®é©•ï½¸è¬šæ§­âˆˆ
         state = BattleState.PlayerMenu;
         uiManager.ShowRootMenu();
     }
 
-    // UIƒ{ƒ^ƒ“: uí‚¤v‘I‘ğ
+    // UIç¹æ‡Šã¡ç¹ï½³: ç¸²æ¢§å§¶ç¸ºï¿½åŸ¼âˆˆè¬š
     public void OnFightButton()
     {
         SoundManager.Instance.PlaySE("SE_Confirm");
@@ -168,20 +173,20 @@ public class BattleSystemManager : MonoBehaviour
         SelectActionForCharacter(currentPlayerIndex);
     }
 
-    // UIƒ{ƒ^ƒ“: u“¦‚°‚év‘I‘ğ
+    // UIç¹æ‡Šã¡ç¹ï½³: ç¸²ç¢ï¿½ï¿¡ç¹§ä¹åŸ¼âˆˆè¬š
     public void OnRunButton()
     {
         SoundManager.Instance.PlaySE("SE_Cancel");
 
-        // “¦‘–ˆ—i¡‰ñ‚ÍÈ—ªAI—¹‚È‚Çj
-        Debug.Log("“¦‚°‚½I");
+        // é¨¾ï¿½ï½µï½°èœƒï½¦é€…ï¿½ï½¼äº•ï½»é›å±“ç¸ºï½¯é€µâˆ«æ‰•ç¸²âˆ«ï½µã‚†ï½ºï¿½â†‘ç¸ºï½©ï¿½
+        Debug.Log("é¨¾ï¿½ï¿¡ç¸ºæ»‚ï½¼");
         System.FadeManager.FadeChangeScene("FieldScene", 1.0f);
     }
 
-    // ƒLƒƒƒ‰ƒNƒ^[‚²‚Æ‚Ìs“®‘I‘ğŠJn
+    // ç¹§ï½­ç¹ï½£ç¹ï½©ç¹§ï½¯ç¹§ï½¿ç¹ï½¼ç¸ºæ–â†’ç¸ºï½®é™¦æ‚Ÿè™šé©•ï½¸è¬šæ¨£å¹•èŸ‹
     void SelectActionForCharacter(int index)
     {
-        // €–S‚µ‚Ä‚¢‚éƒLƒƒƒ‰‚ÍƒXƒLƒbƒv
+        // è±ï½»è ï½¡ç¸ºåŠ±â€»ç¸ºï¿½ï½‹ç¹§ï½­ç¹ï½£ç¹ï½©ç¸ºï½¯ç¹§ï½¹ç¹§ï½­ç¹ï¿½ï¿½
         if (players[index].isDead)
         {
             NextCharSelection();
@@ -191,43 +196,44 @@ public class BattleSystemManager : MonoBehaviour
         uiManager.ShowActionMenu(players[index], isCoverSelectedThisTurn);
     }
 
-    // UIƒ{ƒ^ƒ“: ƒXƒLƒ‹/ƒRƒ}ƒ“ƒh‘I‘ğ
+    // UIç¹æ‡Šã¡ç¹ï½³: ç¹§ï½¹ç¹§ï½­ç¹ï½«/ç¹§ï½³ç¹æ§­Î¦ç¹è›¾âˆˆè¬šæ¨Šå‡¾
     public void OnSkillSelected(SkillData skill)
     {
         currentSelectedSkill = skill;
 
         SoundManager.Instance.PlaySE("SE_Confirm");
 
-        //  ‚©‚Î‚¢‚ğ‘I‘ğ‚µ‚Ä‚¢‚½‚ç
+
+        //  ã‹ã°ã„ã‚’é¸æŠã—ã¦ã„ãŸã‚‰
         if(skill.type == ActionType.Cover)
         {
      //       isCoverSelectedThisTurn = true;
         }
 
-        // ‘ÎÛ‘I‘ğ‚ª•s—v‚È‚à‚Ìi–hŒä‚È‚Çj‚Í‘¦Œˆ’è
+        // å¯¾è±¡é¸æŠãŒä¸è¦ãªã‚‚ã®ï¼ˆé˜²å¾¡ãªã©ï¼‰ã¯å³æ±ºå®š
         if (skill.type == ActionType.Defend)
         {
-            RegisterAction(players[currentPlayerIndex], players[currentPlayerIndex], skill); // ©•ª‘ÎÛ
+            RegisterAction(players[currentPlayerIndex], players[currentPlayerIndex], skill); // é–¾ï½ªè›»ï¿½ï½¯ï½¾é›ï½¡
             NextCharSelection();
         }
-//        else if(skill.type == ActionType.Avirity)
-//        {
-//            state = BattleState.AviritySelect;
-//
-//            //  ‘I‘ğ’†‚ÌƒLƒƒƒ‰ƒNƒ^[‚ğæ“¾
-//            UnitController currentChar = players[currentPlayerIndex];
-//            uiManager.ShowSkillMenu(currentChar);
-//        }
+        //        else if(skill.type == ActionType.Avirity)
+        //        {
+        //            state = BattleState.AviritySelect;
+        //
+        //            //  é©•ï½¸è¬šæ¨”ï½¸ï½­ç¸ºï½®ç¹§ï½­ç¹ï½£ç¹ï½©ç¹§ï½¯ç¹§ï½¿ç¹ï½¼ç¹§è²å™è •
+        //            UnitController currentChar = players[currentPlayerIndex];
+        //            uiManager.ShowSkillMenu(currentChar);
+        //        }
         else
         {
             state = BattleState.TargetSelect;
-            // ƒ^[ƒQƒbƒgƒŠƒXƒgì¬
+            // ç¹§ï½¿ç¹ï½¼ç¹§ï½²ç¹ï¿½ãƒ¨ç¹ï½ªç¹§ï½¹ç¹äº•ï½½æ‡ˆï¿½
             List<UnitController> targets = skill.isTargetEnemy ? enemies : players;
             uiManager.ShowTargetMenu(targets, OnTargetSelected);
         }
     }
 
-    //  ƒXƒLƒ‹‘I‘ğ‚Ö
+    //  ç¹§ï½¹ç¹§ï½­ç¹ï½«é©•ï½¸è¬šæ§­âˆˆ
     public void OnAviritySkillSelected()
     {
 
@@ -235,22 +241,22 @@ public class BattleSystemManager : MonoBehaviour
 
         //       currentSelectedSkill = skill;
         //       state = BattleState.TargetSelect;
-        //       // ƒ^[ƒQƒbƒgƒŠƒXƒgì¬
+        //       // ç¹§ï½¿ç¹ï½¼ç¹§ï½²ç¹ï¿½ãƒ¨ç¹ï½ªç¹§ï½¹ç¹äº•ï½½æ‡ˆï¿½
         //       List<UnitController> targets = skill.isTargetEnemy ? enemies : players;
         //       uiManager.ShowTargetMenu(targets, OnTargetSelected);
         state = BattleState.AviritySelect;
-        //  ‘I‘ğ’†‚ÌƒLƒƒƒ‰ƒNƒ^[‚ğæ“¾
+        //  é©•ï½¸è¬šæ¨”ï½¸ï½­ç¸ºï½®ç¹§ï½­ç¹ï½£ç¹ï½©ç¹§ï½¯ç¹§ï½¿ç¹ï½¼ç¹§è²å™è •
         UnitController currentChar = players[currentPlayerIndex];
         uiManager.ShowSkillMenu(currentChar);
     }
 
-    // UIƒ{ƒ^ƒ“: ƒ^[ƒQƒbƒg‘I‘ğ
+    // UIç¹æ‡Šã¡ç¹ï½³: ç¹§ï½¿ç¹ï½¼ç¹§ï½²ç¹ï¿½ãƒ¨é©•ï½¸è¬šæ¨Šå‡¾
     public void OnTargetSelected(UnitController target)
     {
         SoundManager.Instance.PlaySE("SE_Confirm");
 
 
-        // ”İ‚¤‚ğ‘I‘ğ‚µ‚½ê‡‚Ìƒtƒ‰ƒOŠÇ—
+        // è ï¿½â‰§ç¹§å¸âˆˆè¬šæ§­ï¼ ç¸ºæº·ï½´èœ·åŒ»ï¿½ç¹è¼”Î›ç¹§ï½°é‚‚ï½¡é€…
         if (currentSelectedSkill.type == ActionType.Cover)
         {
             isCoverSelectedThisTurn = true;
@@ -260,19 +266,19 @@ public class BattleSystemManager : MonoBehaviour
         NextCharSelection();
     }
 
-    // UIƒ{ƒ^ƒ“: ƒLƒƒƒ‰‚ÌƒXƒLƒ‹‘I‘ğ
+    // UIç¹æ‡Šã¡ç¹ï½³: ç¹§ï½­ç¹ï½£ç¹ï½©ç¸ºï½®ç¹§ï½¹ç¹§ï½­ç¹ï½«é©•ï½¸è¬šæ¨Šå‡¾
     public void OnSkillFromCharSelected(SkillData skill)
     {
         SoundManager.Instance.PlaySE("SE_Confirm");
 
         currentSelectedSkill = skill;
         state = BattleState.TargetSelect;
-        // ƒ^[ƒQƒbƒgƒŠƒXƒgì¬
+        // ç¹§ï½¿ç¹ï½¼ç¹§ï½²ç¹ï¿½ãƒ¨ç¹ï½ªç¹§ï½¹ç¹äº•ï½½æ‡ˆï¿½
         List<UnitController> targets = skill.isTargetEnemy ? enemies : players;
         uiManager.ShowTargetMenu(targets, OnTargetSelected);
     }
 
-    //  ƒAƒNƒVƒ‡ƒ“ƒŒƒWƒXƒ^[
+    //  ç¹§ï½¢ç¹§ï½¯ç¹§ï½·ç¹ï½§ç¹ï½³ç¹ï½¬ç¹§ï½¸ç¹§ï½¹ç¹§ï½¿ç¹ï½¼
     void RegisterAction(UnitController user, UnitController target, SkillData skill)
     {
         BattleAction action = new BattleAction();
@@ -292,13 +298,13 @@ public class BattleSystemManager : MonoBehaviour
         }
         else
         {
-            // ‘Sˆõ‘I‘ğI—¹ -> “G‚Ìvl -> ÀsƒtƒF[ƒY
+            // èœˆï½¨èœ©ï½¡é©•ï½¸è¬šæ¨’ï½µã‚†ï½º -> è¬¨ï½µç¸ºï½®è«¤æ™ -> è³æº¯ï½¡å¾Œãƒµç¹§ï½§ç¹ï½¼ç¹§ï½º
             CalculateEnemyActions();
             StartCoroutine(ExecutePhase());
         }
     }
 
-    // --- “GAI ---
+    // --- è¬¨ï½µAI ---
 
     void CalculateEnemyActions()
     {
@@ -306,8 +312,8 @@ public class BattleSystemManager : MonoBehaviour
         {
             if (enemy.isDead) continue;
 
-            // ŠÈˆÕAI: Šî–{UŒ‚
-            SkillData enemySkill = commonSkills.Find(s => s.type == ActionType.Attack); // Inspector‚Åİ’è‚µ‚Ä‚¨‚­
+            // é‚ï½¡è­é„­I: è“ï½ºè­›ï½¬è¬¾ï½»è¬¦
+            SkillData enemySkill = commonSkills.Find(s => s.type == ActionType.Attack); // Inspectorç¸ºï½§éšªï½­è³å£¹ï¼ ç¸ºï½¦ç¸ºç¿«ï¿¥
 
             UnitController target = SelectTargetByHate();
 
@@ -315,22 +321,22 @@ public class BattleSystemManager : MonoBehaviour
         }
     }
 
-    //  ƒwƒCƒg‚ÉŠî‚Ã‚­ƒ^[ƒQƒbƒg‘I‘ğ
+    //  ç¹å€¥ã†ç¹åŒ»â†“è“ï½ºç¸ºï½¥ç¸ºä¸Šã¡ç¹ï½¼ç¹§ï½²ç¹ï¿½ãƒ¨é©•ï½¸è¬š
     UnitController SelectTargetByHate()
     {
         var alivePlayers = players.Where(p => !p.isDead).ToList();
         if (alivePlayers.Count == 0) return null;
 
-        // ƒwƒCƒg100‚ÌƒLƒƒƒ‰‚ª‚¢‚ê‚ÎŠm’è
+        // ç¹å€¥ã†ç¹100ç¸ºï½®ç¹§ï½­ç¹ï½£ç¹ï½©ç¸ºå¾Œï¼ç¹§å¾Œï¿½é’ï½ºè³
         var maxHateUnit = alivePlayers.Find(p => p.currentHate >= 100);
-        if (maxHateUnit != null) 
+        if (maxHateUnit != null)
         {
-            maxHateUnit.currentHate = 0; // ƒwƒCƒgƒŠƒZƒbƒg
+            maxHateUnit.currentHate = 0; // ç¹å€¥ã†ç¹åŒ»Îœç¹§ï½»ç¹ï¿½ãƒ¨
             return maxHateUnit;
         }
 
-        // ƒwƒCƒg‚É‚æ‚éd‚İ‚Ã‚¯’Š‘I
-        int totalHate = alivePlayers.Sum(p => p.currentHate + 10); // +10‚ÍƒwƒCƒg0‚Å‚à‘_‚í‚ê‚éŠm—¦‚ğc‚·‚½‚ß
+        // ç¹å€¥ã†ç¹åŒ»â†“ç¹§åŒ»ï½‹é©¥é˜ªâˆ©ç¸ºï½¥ç¸ºç¬¬æ­“é©•ï½¸
+        int totalHate = alivePlayers.Sum(p => p.currentHate + 10); // +10ç¸ºï½¯ç¹å€¥ã†ç¹0ç¸ºï½§ç¹§ã‚‰æ¼ç¹§ä¸Šï½Œç¹§ç‹—ï½¢ï½ºé‚‡ï¿½ï½’è°¿ä¹â˜†ç¸ºæº˜ï½
         int randomValue = Random.Range(0, totalHate);
         int currentWeight = 0;
 
@@ -344,53 +350,55 @@ public class BattleSystemManager : MonoBehaviour
     }
 
 
-    // --- ÀsƒtƒF[ƒY ---
+    // --- è³æº¯ï½¡å¾Œãƒµç¹§ï½§ç¹ï½¼ç¹§ï½º ---
 
     IEnumerator ExecutePhase()
     {
         state = BattleState.ExecutePhase;
         uiManager.HideAllMenus();
 
-        // ‘¬“x‡‚Éƒ\[ƒg
+        // é¨¾æº·ï½ºï½¦é¬†ï¿½â†“ç¹§ï½½ç¹ï½¼ç¹
         turnActions = turnActions.OrderByDescending(a => a.speedPriority).ToList();
 
         foreach (var action in turnActions)
         {
-            if (action.actor.isDead) continue; // €‚ñ‚Å‚½‚çs“®‚Å‚«‚È‚¢
+            if (action.actor.isDead) continue; // è±ï½»ç¹§è–™ã€’ç¸ºæº˜ï½‰é™¦æ‚Ÿè™šç¸ºï½§ç¸ºé˜ªâ†‘ç¸º
             if (CheckBattleEnd()) yield break;
 
-            // ƒ^[ƒQƒbƒg¶‘¶Šm”F‚ÆƒŠƒ^[ƒQƒbƒg
+            // ç¹§ï½¿ç¹ï½¼ç¹§ï½²ç¹ï¿½ãƒ¨é€•æº·ï½­å€¡ï½¢ï½ºéš±é˜ªâ†’ç¹ï½ªç¹§ï½¿ç¹ï½¼ç¹§ï½²ç¹ï¿½ãƒ¨
             if (action.target.isDead)
             {
                 action.target = Retarget(action.target, action.skill.isTargetEnemy);
-                if (action.target == null) continue; // ‘Šè‘S–Å‚Íˆ—•s—v
+                if (action.target == null) continue; // é€¶ï½¸è¬‡å¥ï¿½è²Šï¿½å‡¾ç¸ºï½¯èœƒï½¦é€…ï¿½ï½¸å´ï½¦
             }
 
-            //  ‚©‚Î‚¢ƒZƒbƒg
+
+            //  ã‹ã°ã„ã‚»ãƒƒãƒˆ
             if(action.skill.type == ActionType.Cover) {
                 protectTarget = action.target;
                 protectActor = action.actor;
                 hasCoverThisTurn = true;
             }
 
-            // u”İ‚¤vˆ—‚Ìƒ`ƒFƒbƒN (UŒ‚s“®‚©‚Âƒ^[ƒQƒbƒg‚ª–¡•û)
-            // “G‚ÌUŒ‚(Action) -> ƒvƒŒƒCƒ„[(Target) -> ’N‚©”İ‚Á‚Ä‚éH
+            // ã€Œåº‡ã†ã€å‡¦ç†ã®ãƒã‚§ãƒƒã‚¯ (æ”»æ’ƒè¡Œå‹•ã‹ã¤ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãŒå‘³æ–¹)
+            // æ•µã®æ”»æ’ƒ(Action) -> ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼(Target) -> èª°ã‹åº‡ã£ã¦ã‚‹ï¼Ÿ
             if(action.target == protectTarget && isCoverSelectedThisTurn&&
                 !action.actor.isPlayer)
             {
              //   UnitController coverUnit = 
              //       players.FirstOrDefault(p => p.isCovering && !p.hasCoveredThisTurn && !p.isDead && p != action.target);
 
-                //  ‚©‚Î‚¢Ò‚ª¶‚«‚Ä‚¢‚½‚ç
+                //  ã‹ã°ã„è€…ãŒç”Ÿãã¦ã„ãŸã‚‰
                 if (!protectActor.isDead)
                 {
-                    Debug.Log(protectActor.GetUnitName() + "‚ª”İ‚Á‚½I");
-                    uiManager.AddLogText(protectActor.GetUnitName() + "‚ª”İ‚Á‚½I");
+
+                    Debug.Log(protectActor.GetUnitName() + "ãŒåº‡ã£ãŸï¼");
+                    uiManager.AddLogText(protectActor.GetUnitName() + "ãŒåº‡ã£ãŸï¼");
 
                     //  SE
                     SoundManager.Instance.PlaySE("SE_Kabau");
 
-                    // ”İ‚¤”­“®
+                    // åº‡ã†ç™ºå‹•
                     protectActor.GetProtectSystem().
                         ExecuteProtect(
                         protectActor,
@@ -398,37 +406,37 @@ public class BattleSystemManager : MonoBehaviour
 
 
 
-                    hasCoverThisTurn = true; // 1‰ñ‚Ì‚İ
-                    // ƒGƒtƒFƒNƒg‚È‚Ç“ü‚ê‚é‚È‚ç‚±‚±
+                    hasCoverThisTurn = true; // 1å›ã®ã¿
+                    // ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãªã©å…¥ã‚Œã‚‹ãªã‚‰ã“ã“
                 }
             }
 
-            // s“®Às
+            // é™¦æ‚Ÿè™šè³æº¯ï½¡
             yield return StartCoroutine(PerformAction(action));
         }
 
-        // ‘Ss“®I—¹Œã‚Ìˆ—
+        // èœˆï½¨é™¦æ‚Ÿè™šé‚¨ã‚†ï½ºï¿½ï½¾å¾Œï¿½èœƒï½¦é€…
         yield return new WaitForSeconds(1f);
 
-        // ƒ^[ƒ“I—¹”»’è
+        // ç¹§ï½¿ç¹ï½¼ç¹ï½³é‚¨ã‚†ï½ºï¿½æ„›è³
         if (!CheckBattleEnd())
         {
-            StartPlayerTurn(); // Å‰‚É–ß‚é
+            StartPlayerTurn(); // è­›è›»æ˜´â†“è¬Œï½»ç¹§
         }
-        else // í“¬I—¹
+        else // è¬Œï½¦é«£å€¡ï½µã‚†ï½º
         {
-        //    System.FadeManager.FadeChangeScene("FieldScene", 1.0f);
+            //    System.FadeManager.FadeChangeScene("FieldScene", 1.0f);
         }
     }
 
-    // ƒŠƒ^[ƒQƒbƒgƒƒWƒbƒNiƒŠƒXƒg‚ÌŸAÅŒã‚È‚çÅ‰j
+    // ç¹ï½ªç¹§ï½¿ç¹ï½¼ç¹§ï½²ç¹ï¿½ãƒ¨ç¹ï½­ç¹§ï½¸ç¹ï¿½ã‘ï¿½åŒ»Îœç¹§ï½¹ç¹åŒ»ï¿½è°ºï½¡ç¸²âˆµæ€™è •å¾Œâ†‘ç¹§ç”»æ€™è›»æ™¢ï½¼
     UnitController Retarget(UnitController deadTarget, bool isTargetEnemy)
     {
         List<UnitController> group = isTargetEnemy ? enemies : players;
         int originalIndex = group.IndexOf(deadTarget);
-        if (originalIndex == -1) return null; // ‚ ‚è‚¦‚È‚¢‚Í‚¸‚¾‚ª”O‚Ì‚½‚ß
+        if (originalIndex == -1) return null; // ç¸ºã‚…ï½Šç¸ºåŒ»â†‘ç¸ºï¿½ï¿½ç¸ºå£¹â–¡ç¸ºæ‚Ÿï½¿ï½µç¸ºï½®ç¸ºæº˜ï½
 
-        // ƒŠƒXƒg‚ğ‘–¸‚µ‚Ä¶‚«‚Ä‚¢‚éƒLƒƒƒ‰‚ğ’T‚·
+        // ç¹ï½ªç¹§ï½¹ç¹åŒ»ï½’è¥ï½°è­Ÿï½»ç¸ºåŠ±â€»é€•æº˜â€³ç¸ºï½¦ç¸ºï¿½ï½‹ç¹§ï½­ç¹ï½£ç¹ï½©ç¹§å‘ˆçˆ¾ç¸º
         for (int i = 1; i <= group.Count; i++)
         {
             int nextIndex = (originalIndex + i) % group.Count;
@@ -437,51 +445,51 @@ public class BattleSystemManager : MonoBehaviour
                 return group[nextIndex];
             }
         }
-        return null; // ‘S–Å
+        return null; // èœˆï½¨è²Š
     }
 
-    //  s“®‚ÌÀsˆ—
+    //  é™¦æ‚Ÿè™šç¸ºï½®è³æº¯ï½¡æ‚Ÿï¿½é€…
     IEnumerator PerformAction(BattleAction action)
     {
 
         UnitController actor = action.actor;
         UnitController target = action.target;
 
-        // s“®ÒƒAƒjƒ[ƒVƒ‡ƒ“iƒWƒƒƒ“ƒvj
+        // é™¦æ‚Ÿè™šé– ï¿½ã„ç¹ä¹Î“ç¹ï½¼ç¹§ï½·ç¹ï½§ç¹ï½³ï¿½åŒ»ãšç¹ï½£ç¹ï½³ç¹æš¦ï½¼
         //    yield return StartCoroutine(actor.AnimateActionJump());
-        //  UŒ‚EƒXƒLƒ‹ƒGƒtƒFƒNƒg‚È‚Ç
+        //  è¬¾ï½»è¬¦ï¿½ï¿½ç¹§ï½¹ç¹§ï½­ç¹ï½«ç¹§ï½¨ç¹è¼”ã‰ç¹§ï½¯ç¹åŒ»â†‘ç¸ºï½©
         yield return StartCoroutine(actor.AnimateActionAttack());
 
         //yield return new WaitForSeconds(target.animationLength);
 
-        // ÀÛ‚ÌŒø‰Êˆ—
-        string msg = $"{actor.GetUnitName()}‚Ì{action.skill.skillName}I";
+        // è³æ»„åœ€ç¸ºï½®èœ‰ï½¹è­«æ‡·ï¿½é€…
+        string msg = $"{actor.GetUnitName()}ç¸ºï½®{action.skill.skillName}ï¿½";
         uiManager.ShowLog(msg);
         Debug.Log(msg);
 
-        // “Áês“®‚ÌƒXƒe[ƒgƒZƒbƒg
+        // è¿šï½¹è°¿é¡˜ï½¡æ‚Ÿè™šç¸ºï½®ç¹§ï½¹ç¹ï¿½ï¿½ç¹åŒ»ãç¹ï¿½ãƒ¨
         if (action.skill.type == ActionType.Defend) actor.isDefending = true;
         if (action.skill.type == ActionType.Cover) actor.isCovering = true;
 
-        if (actor.isPlayer) // ƒvƒŒƒCƒ„[‚Ì‚İ
+        if (actor.isPlayer) // ç¹åŠ±Îç¹§ï½¤ç¹ï½¤ç¹ï½¼ç¸ºï½®ç¸ºï½¿
         {
             actor.AddHate(action.skill.hateIncrease);
         }
 
-        //  ‘ÎÛ‚Ì”æ“¾
-        targetType targetCount = action.skill.targetType; 
+        //  èŸ‡ï½¾é›ï½¡ç¸ºï½®è¬¨ï½°èœ¿é–€ï½¾
+        targetType targetCount = action.skill.targetType;
 
 
-        if(targetCount == targetType.All)
+        if (targetCount == targetType.All)
         {
-            // ‘S‘Ì‘ÎÛ‚Ìê‡
+            // èœˆï½¨è´ç˜ï½¯ï½¾é›ï½¡ç¸ºï½®è£ï½´èœ·
             List<UnitController> targets = action.skill.isTargetEnemy ? enemies : players;
             foreach (var t in targets)
             {
                 if (t.isDead) continue;
-                // ‘ÎÛ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“i“_–Åj
+                // èŸ‡ï½¾é›ï½¡ç¸ºï½®ç¹§ï½¢ç¹ä¹Î“ç¹ï½¼ç¹§ï½·ç¹ï½§ç¹ï½³ï¿½è‚²ã›è²Šï¿½ï½¼
                 yield return StartCoroutine(t.AnimateBlink(0.5f));
-                //  ƒ_ƒ[ƒWŒvZ
+                //  ç¹ç¹ï½¡ç¹ï½¼ç¹§ï½¸éšªè‚²ï½®
                 if (action.skill.type == ActionType.Attack ||
                     action.skill.type == ActionType.Avirity)
                 {
@@ -493,7 +501,7 @@ public class BattleSystemManager : MonoBehaviour
                         speedPriority = action.speedPriority
                     });
                 }
-                //  ‰ñ•œƒXƒLƒ‹‚Ìê‡
+                //  è—æ§«ï½¾ï½©ç¹§ï½¹ç¹§ï½­ç¹ï½«ç¸ºï½®è£ï½´èœ·
                 else if (action.skill.type == ActionType.Heal)
                 {
                     Heal(new BattleAction
@@ -504,93 +512,93 @@ public class BattleSystemManager : MonoBehaviour
                         speedPriority = action.speedPriority
                     });
                 }
-                else if(action.skill.type == ActionType.Debuff)
+                else if (action.skill.type == ActionType.Debuff)
                 {
-                    //  ƒXƒe[ƒ^ƒXƒfƒoƒtˆ—
+                    //  ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãƒ‡ãƒãƒ•å‡¦ç†
                     DeBuff(action,t);
                     
                 }
                 else if (action.skill.type == ActionType.Buff)
                 {
-                    //  ƒXƒe[ƒ^ƒXƒoƒtˆ—
+                    //  ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãƒãƒ•å‡¦ç†
                     Buff(action, t);
                 }
             }
         }
-        else 
+        else
         {
-            // UŒ‚EƒXƒLƒ‹EƒAƒCƒeƒ€‚Ìê‡
+            // è¬¾ï½»è¬¦ï¿½ï¿½ç¹§ï½¹ç¹§ï½­ç¹ï½«ç¹ï½»ç¹§ï½¢ç¹§ï½¤ç¹ï¿½Î’ç¸ºï½®è£ï½´èœ·
             if (action.skill.type == ActionType.Attack ||
                 action.skill.type == ActionType.Avirity)
             {
-                // ‘ÎÛ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“i“_–Åj
+                // èŸ‡ï½¾é›ï½¡ç¸ºï½®ç¹§ï½¢ç¹ä¹Î“ç¹ï½¼ç¹§ï½·ç¹ï½§ç¹ï½³ï¿½è‚²ã›è²Šï¿½ï½¼
                 yield return StartCoroutine(target.AnimateBlink(0.5f));
 
-                //  ƒ_ƒ[ƒWŒvZ
+                //  ç¹ç¹ï½¡ç¹ï½¼ç¹§ï½¸éšªè‚²ï½®
                 Attack(action);
             }
-            //  ‰ñ•œƒXƒLƒ‹‚Ìê‡
+            //  è—æ§«ï½¾ï½©ç¹§ï½¹ç¹§ï½­ç¹ï½«ç¸ºï½®è£ï½´èœ·
             else if (action.skill.type == ActionType.Heal)
             {
                 Heal(action);
             }
             else if (action.skill.type == ActionType.Debuff)
             {
-                //  ƒXƒe[ƒ^ƒXƒfƒoƒtˆ—
+                //  ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãƒ‡ãƒãƒ•å‡¦ç†
                 DeBuff(action,action.target);
 
             }
             else if (action.skill.type == ActionType.Buff)
             {
-                //  ƒXƒe[ƒ^ƒXƒoƒtˆ—
+                //  ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãƒãƒ•å‡¦ç†
                 Buff(action, action.target);
             }
         }
 
 
 
-        yield return new WaitForSeconds(1.0f); // —]‰C
+        yield return new WaitForSeconds(1.0f); // è´å’æ¸Š
     }
 
     void Attack(BattleAction action)
     {
-        // Šî–{ƒ_ƒ[ƒWŒvZi’Pƒ‰»‚Ì‚½‚ßj
-        //  ƒXƒLƒ‹‚ÌˆĞ—Í ~ UŒ‚Ò‚ÌUŒ‚—Í
+        // è“ï½ºè­›ï½¬ç¹ç¹ï½¡ç¹ï½¼ç¹§ï½¸éšªè‚²ï½®æš¦ï½¼äº¥è…°é‚æ³Œå–§ç¸ºï½®ç¸ºæº˜ï½ï¿½
+        //  ç¹§ï½¹ç¹§ï½­ç¹ï½«ç¸ºï½®è½âˆé´¨ ï¾ƒ è¬¾ï½»è¬¦ï¿½ï¿½ï¿½è¬¾ï½»è¬¦ï¿½é´¨
         int dmg = (action.skill.power *
             action.actor.GetUnitData().GetStatusRuntime().atk) / 100;
-        Debug.Log("Šî–{ƒ_ƒ[ƒWŒvZ: " + dmg);
-        // –hŒä‚È‚Ç‚ÌŒvZ
+        Debug.Log("è“ï½ºè­›ï½¬ç¹ç¹ï½¡ç¹ï½¼ç¹§ï½¸éšªè‚²ï½®: " + dmg);
+        // é«¦ï½²è •ï½¡ç¸ºï½ªç¸ºï½©ç¸ºï½®éšªè‚²ï½®
         if (action.target.isDefending) dmg /= 2;
-        //  –hŒä—Í‚É‰‚¶‚ÄÀ”’l‚ÅŒ¸­
+        //  é«¦ï½²è •ï½¡èœ‰å¸™â†“è ¢æ‡ŠÂ§ç¸ºï½¦è³æ»“ç„šè›Ÿï½¤ç¸ºï½§è²‚å¸›ï½°
         dmg = dmg - (action.target.GetUnitData().GetStatusRuntime().def / 4);
-        Debug.Log("–hŒä—Íl—¶Œãƒ_ƒ[ƒW: " + dmg);
+        Debug.Log("é«¦ï½²è •ï½¡èœ‰å¹„ï¿½ï¿½è •å¾Œãƒ ç¹ï½¡ç¹ï½¼ç¹§ï½¸: " + dmg);
         if (dmg < 1)
         {
-            dmg = 1; // Å’á1ƒ_ƒ[ƒW‚Í—^‚¦‚é
-            Debug.Log("Å’áƒ_ƒ[ƒW“K—p");
+            dmg = 1; // è­›è´1ç¹ç¹ï½¡ç¹ï½¼ç¹§ï½¸ç¸ºï½¯è³å¼±âˆ´ç¹§
+            Debug.Log("è­›è´å¼±ãƒ ç¹ï½¡ç¹ï½¼ç¹§ï½¸é©•ï½©é€•ï½¨");
         }
 
-        //  ‘®«•â³
+        //  è»æ¨Šï½§é™¬æ‡ˆï½­ï½£
         //    if (action.skill.element != ElementType.None)
         //    {
-        //        //  ‘®«•â³ˆ—
+        //        //  è»æ¨Šï½§é™¬æ‡ˆï½­ï½£èœƒï½¦é€…
         //        float elementModifier = 
         //            action.target.GetUnitData().GetStatusRuntime().
         //            GetElementModifier(action.skill.element);
         //        dmg = Mathf.RoundToInt(dmg * elementModifier);
-        //        Debug.Log("‘®«•â³Œãƒ_ƒ[ƒW: " + dmg);
+        //        Debug.Log("è»æ¨Šï½§é™¬æ‡ˆï½­ï½£è •å¾Œãƒ ç¹ï½¡ç¹ï½¼ç¹§ï½¸: " + dmg);
         //    }
 
-        //  Œø‰Ê‰¹Ä¶
+        //  èœ‰ï½¹è­«æ†ºæµ¹èœ€å’²å‡½
         if (action.skill.element == Element.Fire)
         {
             SoundManager.Instance.PlaySE("SE_Fire_Atk");
         }
-        else if(action.skill.element == Element.Water)
+        else if (action.skill.element == Element.Water)
         {
             SoundManager.Instance.PlaySE("SE_Water_Atk");
         }
-        else if(action.skill.element == Element.Grass)
+        else if (action.skill.element == Element.Grass)
         {
             SoundManager.Instance.PlaySE("SE_Flower_Atk");
         }
@@ -599,14 +607,25 @@ public class BattleSystemManager : MonoBehaviour
             SoundManager.Instance.PlaySE("SE_Player_atk");
         }
 
+
+
+        if (effectPlayer != null)
+        {
+            effectPlayer.SpawnEffect(PlayEffect.EffectType.Damage, action.target.transform.position);
+        }
+
         action.target.TakeDamage(dmg);
     }
 
     void Heal(BattleAction action)
     {
-        // ‰ñ•œ—ÊŒvZ‚È‚Ç
+        // è—æ§«ï½¾ï½©é©¥å‰°ï½¨è‚²ï½®åŠ±â†‘ç¸ºï½©
         int healAmount = (action.skill.power +
             action.actor.GetUnitData().GetStatusRuntime().atk / 2) / 100;
+        if (effectPlayer != null)
+        {
+            effectPlayer.SpawnEffect(PlayEffect.EffectType.Heal, action.target.transform.position);
+        }
         action.target.HealDamage(healAmount);
     }
 
@@ -614,22 +633,22 @@ public class BattleSystemManager : MonoBehaviour
     {
         target.GetUnitData().GetStatusRuntime().AddBuff(action);
 
-        Debug.Log(action.target.nameText + "‚ÌƒXƒe[ƒ^ƒX‚ªã¸");
+        Debug.Log(action.target.nameText + "ã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãŒä¸Šæ˜‡");
 
-        uiManager.AddLogText(action.target.nameText + "‚ÌƒXƒe[ƒ^ƒX‚ªã¸");
+        uiManager.AddLogText(action.target.nameText + "ã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãŒä¸Šæ˜‡");
     }
 
     void DeBuff(BattleAction action, UnitController target) 
     {
         target.GetUnitData().GetStatusRuntime().AddDeBuff(action);
 
-        Debug.Log(action.target.nameText + "‚ÌƒXƒe[ƒ^ƒX‚ªŒ¸­");
+        Debug.Log(action.target.nameText + "ã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãŒæ¸›å°‘");
 
-        uiManager.AddLogText(action.target.nameText + "‚ÌƒXƒe[ƒ^ƒX‚ªã¸");
+        uiManager.AddLogText(action.target.nameText + "ã®ã‚¹ãƒ†ãƒ¼ã‚¿ã‚¹ãŒä¸Šæ˜‡");
 
     }
 
-    //  í“¬I—¹”»’è
+    //  æˆ¦é—˜çµ‚äº†åˆ¤å®š
     bool CheckBattleEnd()
     {
         bool allPlayersDead = players.All(p => p.isDead);
@@ -639,7 +658,7 @@ public class BattleSystemManager : MonoBehaviour
         {
             state = BattleState.Win;
             uiManager.ShowResult("Victory!", true);
-            
+
             return true;
         }
         if (allPlayersDead)
@@ -665,7 +684,7 @@ public class BattleSystemManager : MonoBehaviour
                 BackToPlayerMenu();
                 break;
             case BattleState.PlayerMenu:
-                // ‚±‚±‚Å‚Í‰½‚à‚µ‚È‚¢ or ƒLƒƒƒ“ƒZƒ‹•s‰Â
+                // ç¸ºè–™ï¼…ç¸ºï½§ç¸ºï½¯è´è¼”ï½‚ç¸ºåŠ±â†‘ç¸º or ç¹§ï½­ç¹ï½£ç¹ï½³ç¹§ï½»ç¹ï½«è³æ¦Šåº„
                 break;
         }
     }
@@ -683,9 +702,9 @@ public class BattleSystemManager : MonoBehaviour
 
     void BackToPlayerMenu()
     {
-        //  Œ»İ‘I‘ğ’†‚ÌƒLƒƒƒ‰ƒNƒ^[‚ª‚O”Ô‚Ìê‡ƒ‹[ƒgƒƒjƒ…[‚Ö
-        //  ‚»‚¤‚Å‚È‚¢ê‡‚Í‘O‚ÌƒLƒƒƒ‰ƒNƒ^[‘I‘ğ‚Ö–ß‚é
-        if(currentPlayerIndex == 0)
+        //  è¿´ï½¾è¨ï½¨é©•ï½¸è¬šæ¨”ï½¸ï½­ç¸ºï½®ç¹§ï½­ç¹ï½£ç¹ï½©ç¹§ï½¯ç¹§ï½¿ç¹ï½¼ç¸ºé¯‰ï½¼åƒåˆ†ç¸ºï½®è£ï½´èœ·åŒ»Îç¹ï½¼ç¹åŒ»Î“ç¹ä¹Î—ç¹ï½¼ç¸ºï½¸
+        //  ç¸ºæ˜´â‰§ç¸ºï½§ç¸ºï½ªç¸ºï¿½ï½´èœ·åŒ»ï¿½èœ‘é˜ªï¿½ç¹§ï½­ç¹ï½£ç¹ï½©ç¹§ï½¯ç¹§ï½¿ç¹ï½¼é©•ï½¸è¬šæ§­âˆˆè¬Œï½»ç¹§
+        if (currentPlayerIndex == 0)
         {
             state = BattleState.PlayerMenu;
             uiManager.ShowRootMenu();
@@ -693,7 +712,7 @@ public class BattleSystemManager : MonoBehaviour
         }
         currentPlayerIndex--;
 
-        //  ƒLƒƒƒ‰ƒNƒ^[‚Ìs“®‚ª‚©‚Î‚¤‚È‚ç
+        //  ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ã®è¡Œå‹•ãŒã‹ã°ã†ãªã‚‰
         if (turnActions[currentPlayerIndex].skill.type == ActionType.Cover) {
             isCoverSelectedThisTurn = false;
         }
@@ -701,7 +720,8 @@ public class BattleSystemManager : MonoBehaviour
         SelectActionForCharacter(currentPlayerIndex);
 
 
-        //  “o˜^Ï‚İ‚ÌƒAƒNƒVƒ‡ƒ“‚ğíœ
+
+        //  ç™»éŒ²æ¸ˆã¿ã®ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã‚’å‰Šé™¤
         turnActions.RemoveAll(a => a.actor == players[currentPlayerIndex]);
 
     }
