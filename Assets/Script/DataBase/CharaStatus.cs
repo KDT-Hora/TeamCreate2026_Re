@@ -1,6 +1,7 @@
 using JetBrains.Annotations;
 using NUnit.Framework;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Data
@@ -58,5 +59,29 @@ namespace Data
         public int matk;    // 魔法攻撃力        
         public int mdef;    // 魔法防御力
         public int speed;   // 速度
+
+        //  デバフ処理
+        public void AddDebug(BattleAction action)
+        {
+            var debuff = action.skill.power;
+            atk -= debuff;
+            def -= debuff;
+            matk -= debuff;
+            mdef -= debuff;
+            speed -= debuff;
+
+
+        }
+        //  バフ処理
+        public void AddBuff(BattleAction action)
+        {
+            var buff = action.skill.power;
+            atk += buff;
+            def -= buff;
+            matk += buff;
+            mdef += buff;
+            speed -= buff;
+
+        }
     }
 }

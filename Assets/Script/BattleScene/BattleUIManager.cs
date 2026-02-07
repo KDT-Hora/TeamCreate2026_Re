@@ -5,6 +5,8 @@ using TMPro;
 using System;
 using Unity.VisualScripting;
 using UnityEngine.EventSystems;
+using System.Numerics;
+using UnityEditor.ShaderKeywordFilter;
 
 public class BattleUIManager : MonoBehaviour
 {
@@ -44,6 +46,15 @@ public class BattleUIManager : MonoBehaviour
 
     private BattleSystemManager battleManager;
 
+    class LogText
+    {
+        public string text;
+        public int frame;   
+    }
+
+    private List<LogText> logTextList = new List<LogText>();
+    private System.Text.StringBuilder sb = new System.Text.StringBuilder();
+
     void Start()
     {
         battleManager = FindObjectOfType<BattleSystemManager>();
@@ -54,7 +65,11 @@ public class BattleUIManager : MonoBehaviour
 
         HideAllMenus();
     }
-      
+
+    private void Update()
+    {
+        logUpdate();
+    }
 
     //  全メニュー非表示へ
     public void HideAllMenus()
@@ -194,8 +209,32 @@ public class BattleUIManager : MonoBehaviour
     //  logのテキスト変更
     public void ShowLog(string text)
     {
-        logText.text = text;
-        // 数秒後に消すなどの処理を入れても良い
+        // logText.text = text;
+        LogText log = new LogText();
+        log.text = text;
+        log.frame = 1000;
+        logTextList.Add(log);
+    }
+
+    private void logUpdate()
+    {
+        foreach(var log in logTextList) {
+            log.frame--;
+        }
+        logTextList.RemoveAll(log => log.frame <= 0);
+
+        logText.text = "";
+        sb.Clear();
+
+        for(int i = 0; i < logTextList.Count; i++)
+        {
+//            var log = logTextList[i];
+//            logText.text += log.text + "\n";
+            sb.AppendLine(logTextList[i].text);
+        }
+
+       // logText.text = sb.ToString();
+        logText.SetText(sb.ToString());
     }
 
     public void ShowPhaseText(string text)
